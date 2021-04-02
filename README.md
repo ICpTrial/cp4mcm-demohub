@@ -6,7 +6,7 @@ IBM Cloud Pak for Mutlicloud Managemnet(以下 CP4MCM)を利用した マルチ�
 ハンズオン・サマリー
 |章|内容|ガイド｜
 --|--|--
-|0|[ハンズオン環境概要](https://github.com/ICpTrial/cp4mcm-demohub/blob/master/src/pages/gettingstarted/index.mdx)||
+|0|[ハンズオン環境概要](https://github.com/ICpTrial/cp4mcm-demohub/blob/master/src/pages/gettingstarted/index.mdx)|このハンズオン環境の利用の仕方について記載しています|
 |1|クラスター統合||
 |2|アプリケーション配置||
 |3|モニタリング||
