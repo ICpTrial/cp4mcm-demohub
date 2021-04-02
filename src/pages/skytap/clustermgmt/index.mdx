@@ -12,29 +12,25 @@ Cloud Pak for Multicloud Managementを のダッシュボードを理解する
 
 ***
 
-## Prerequisite
+## ビジネス・コンテキスト
 
-- You need to provision your own copy of the CP4MCM 2.0 environment, start it and verify for correct startup (check [here](../preparing/)).
+あなたは、クラウド運用チームのメンバーとして、ハイブリッド・マルチクラウド環境の管理に 問題を抱えています。  
+様々な環境にまたがって展開される クラウド・ベースのサービスやデータの管理作業は毎月のように膨らんでいき、あなたのチームは押しつぶされそうです。  
+あなたの会社は、オンプレミスおおびクラウド環境にたいして、複数のKubernetesクラスターを利用しています。    
+いくつかのチームは可用性のために、複数クラスター、複数リージョンにまたがるアプリケーションをデプロイしています。  
+また 開発やテストのためのクラスターもありますし、これらのKubernetesクラスターのアップグレードもしていく必要があります。  
 
-***
+管理対象となるクラスターが増えるに連れ、以下のようなチャレンジが出てきています。
+- このサービスはどこで稼働しているのだろうか？
+- クラスターやクラウドをまたがった、アプリケーションをどのようにモニタリングするのだろうか？
+- 問題のあるコンポーネントはどこで稼働しているのだろうか？
+- まるでひとつの環境であるかのように、クラスター群を管理できないだろうか？
+- アプリケーションを 環境をまたがって移動させることができないか？ ポリシーベースでアプリケーションを配置できないか？
+- 複数クラスター環境を、統一した基準で管理できているだろうか？ コンプライアンスの基準は満たせているだろうか？
 
-## Business Context
+これらの課題のなかで、あなたは IBM Cloud Pak for Multicloud Management の機能を確認しようとしています。
 
-As a member of the Cloud Operation team, you are having problems to manage your multicloud hybrid world. Operate your cloud-based services and data across multiple providers is overwhelming your team.
-Your company is deploying multiple Kubernetes clusters to address their specific needs. Some Dev teams are deploying clusters across public and private clouds, and some are deploying clusters across regions, and some are deploying clusters to support the development and test needs.
-
-As different teams deploy more clusters, new challenges are introduced:
--	Where are my services running?
--	How can I monitor applications across clusters and clouds?
--	How can I manage clusters as if they were one environment?
--	Where are the failed components?
--	How do I deploy applications across these environments?
--	How do I move workloads across environments?
--	How do I set consistent security policies across environments?
--	Which clusters are compliant?
--	How can I place workloads based on capacity, policy?
-
-Because of that, you want to explore how IBM Cloud Pak for Multicloud Management, provides consistent visibility, governance and automation of your complex environment.
+このチュートリアルのなかでは、
 
 In this tutorial, you use a Red Hat OpenShift cluster with Cloud Pak for MCM as a **Management Hub** and a second single-node cluster running MicroK8s as a **managed cluster**
 -	Hub cluster includes management console, federated monitoring, and all the controllers.
