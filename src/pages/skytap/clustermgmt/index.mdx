@@ -44,16 +44,36 @@ Cloud Pak for MCM および Red Hat Advanced Cluster Management の実体も Red
 
 ## 管理対象クラスターの払い出し
 
+1. ブラウザーのリンクから、IBM Cloud Pak for Multicloud Management をクリックします。
+1. Cloud Pak for Mutlticloud Management の認証タイプとして、**Default Authentication** を選択します。この演習環境では OpenShift認証との統合は実施されていません。
+![image](https://user-images.githubusercontent.com/22209835/113708342-101ac380-971c-11eb-9b4e-015af36d42bd.png)
+1. admin でログインします。パスワードはブラウザに保管されてものでログインできます。
+![image](https://user-images.githubusercontent.com/22209835/113708389-1f9a0c80-971c-11eb-83e5-febf23699b92.png)
+1. Cloud Pak Administration Hub の画面 が出たら、中央の 白文字 Cloud Pak for Multicloud Management のリンクをクリックし、Cloud Pak for MCMを開きます。 
+IBM Cloud Pak製品群は、一つのOpenShiftクラスター上に統合することが可能なため、ログイン時の初回には製品選択の画面が出ますが、二回目以降は表示されません。
+![image](https://user-images.githubusercontent.com/22209835/113708446-30e31900-971c-11eb-9d68-7f209581fead.png)
+
+1. Cloud Pak for Multicloud Management の画面が開きます。  メニューから Obeserve environement > Overview  の画面を開きます。
+![image](https://user-images.githubusercontent.com/22209835/113708616-6b4cb600-971c-11eb-8ed5-5dab1748c930.png)
+1. ダッシュボードには、Cloud Pak に統合されている管理対象が表示されています。Cloud Provider に １つOpenShift Cluster が統合され、VMware環境のVMインスタンスが４つ統合されているのが確認できます。
+このように Kubernetes環境と、従来型仮想化基盤の仮想マシン（Instarstructure VM)およびIaaSの仮想マシン(CloudVM)　双方を管理できるのが Cloud Pak for Multicloud Management のポイントです。 
+![image](https://user-images.githubusercontent.com/22209835/113707957-9da9e380-971b-11eb-89e2-ff96111536a2.png)
+1. すでに統合されているクラスターを確認していきます。メニューの Automate Infrastructure (基盤の自動化） から Clusters を開きます。
+![image](https://user-images.githubusercontent.com/22209835/113708056-bd410c00-971b-11eb-9b13-de297362f435.png)
+1. local-cluster として、この Cloud Pak for MCM が稼働する OpenShiftクラスターが統合されています。
+
 ### 新規クラスターの払い出し
 
 このチュートリアルでは、コントロール・プレーンから新規のクラスターを払い出す手順を確認します（環境の制約上、新規のOpenShiftクラスターの払い出しは、この演習ではできません）。
 
 ### 既存クラスターのインポート
 
-1. ブラウザーのリンクから、IBM Cloud Pak for Multicloud Management をクリックします。
-2. 
 
 
+
+
+
+  ログインできない場合は、Skytap環境のメニューの 鍵のマークをクリックして、admin のパスワードを Insertして下さい。
 
 ***
 
