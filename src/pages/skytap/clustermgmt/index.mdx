@@ -131,36 +131,36 @@ kube-system       Active   180d
 1. 以下のようになりますので、Enterで貼り付けた kubectlコマンドを実行します。
 ![image](https://user-images.githubusercontent.com/22209835/113717299-73a9ee80-9726-11eb-831e-a506546bb83b.png)
 1. 以下のように すべて **Created** となっていることを確認します。  
-```
-TVjMWUzODNiCg== | base64 --decode | kubectl apply -f -
-customresourcedefinition.apiextensions.k8s.io/klusterlets.operator.open-cluster-management.io created
-namespace/open-cluster-management-agent created
-serviceaccount/klusterlet created
-secret/bootstrap-hub-kubeconfig created
-secret/open-cluster-management-image-pull-credentials created
-clusterrole.rbac.authorization.k8s.io/klusterlet created
-clusterrole.rbac.authorization.k8s.io/open-cluster-management:klusterlet-admin-aggregate-clusterrole created
-clusterrolebinding.rbac.authorization.k8s.io/klusterlet created
-deployment.apps/klusterlet created
-klusterlet.operator.open-cluster-management.io/klusterlet created
-```
-タイミングにより、最後のklusterletの生成ができてないことがあります。そのような場合には上矢印キーで戻り、もう一度同じコマンドを実行します。  
-同じkubernetes定義を再度applyしているだけですので、問題ありません。
+    ```
+    TVjMWUzODNiCg== | base64 --decode | kubectl apply -f -
+    customresourcedefinition.apiextensions.k8s.io/klusterlets.operator.open-cluster-management.io created
+    namespace/open-cluster-management-agent created
+    serviceaccount/klusterlet created
+    secret/bootstrap-hub-kubeconfig created
+    secret/open-cluster-management-image-pull-credentials created
+    clusterrole.rbac.authorization.k8s.io/klusterlet created
+    clusterrole.rbac.authorization.k8s.io/open-cluster-management:klusterlet-admin-aggregate-clusterrole created
+    clusterrolebinding.rbac.authorization.k8s.io/klusterlet created
+    deployment.apps/klusterlet created
+    klusterlet.operator.open-cluster-management.io/klusterlet created
+    ```
+    タイミングにより、最後のklusterletの生成ができてないことがあります。そのような場合には上矢印キーで戻り、もう一度同じコマンドを実行します。  
+    同じkubernetes定義を再度applyしているだけですので、問題ありません。
 
 1. 黄色の**MicroK8s**のターミナルで、以下のコマンドで名前空間を確認します。
-```
-ibmuser@microk8s:~$ kubectl get ns
-NAME                                  STATUS   AGE
-default                               Active   180d
-ingress                               Active   180d
-kube-node-lease                       Active   180d
-kube-public                           Active   180d
-kube-system                           Active   180d
-open-cluster-management-agent         Active   2m57s
-open-cluster-management-agent-addon   Active   76s
-```
-**open-cluster-management-agent** および **open-cluster-management-agent-addon** の名前空間が生成されることに留意ください。
-これらの名前空間上に、**管理ハブクラスター＊＊とコミュニケーションをとるためのエージェントが自動的に導入され稼働しています。
+    ```
+    ibmuser@microk8s:~$ kubectl get ns
+    NAME                                  STATUS   AGE
+    default                               Active   180d
+    ingress                               Active   180d
+    kube-node-lease                       Active   180d
+    kube-public                           Active   180d
+    kube-system                           Active   180d
+    open-cluster-management-agent         Active   2m57s
+    open-cluster-management-agent-addon   Active   76s
+    ```
+    **open-cluster-management-agent** および **open-cluster-management-agent-addon** の名前空間が生成されることに留意ください。
+    これらの名前空間上に、**管理ハブクラスター＊＊とコミュニケーションをとるためのエージェントが自動的に導入され稼働しています。
 
 1. Cloud Pak for Multicloud Management の画面に戻ります。以下のように、**microk8s**が統合され、Statusが **Ready**となっていることを確認してください。  
 Status が **Pending**状態の場合は、ハンズオン管理者にご相談ください。
