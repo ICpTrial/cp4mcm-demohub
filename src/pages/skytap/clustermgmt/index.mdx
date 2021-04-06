@@ -77,8 +77,19 @@ htpasswdでのログインを選択します。
 1. ibmadmin として、ブラウザに保管された認証情報でログインします。
 ![image](https://user-images.githubusercontent.com/22209835/113710119-48bb9c80-971e-11eb-93a9-bd344d6182c4.png)
 1. 例として、VMware環境に新規にクラスターを払い出す手順を確認していきます。
-i. 任意のクラスター名を指定します。
-
+    1. 任意のクラスター名を指定します。
+    1. 払い出しを行う Kubernetesタイプとして、Red Hat OpenShift が選択されています。
+    1. OpenShiftの払い出し先として **VMWare vSphere**を選択します。
+    1. Release Imageとして OpenShit環境の初期構築に利用する OpenShift イメージを選択します。
+    1. Provider Connection として、払い出し先の vSphereへの接続情報を指定します。
+    ![image](https://user-images.githubusercontent.com/22209835/113711723-3f333400-9720-11eb-8cea-1a17e4ced0c5.png)
+    1. 払出される環境のネットワーク情報を指定します
+    1. Node Poolとして、払出される環境の WorkerNodeの定義を指定します。 用途に応じて複数のWorkerPool を指定することができます。
+    ![image](https://user-images.githubusercontent.com/22209835/113711802-5c680280-9720-11eb-94e0-e22ce20a7753.png)
+    1. すべて指定をしたら、右上の **Create** ボタンをクリックすると実際に OpenShift環境のデプロイが開始されます。
+1. Create a Cluster というページタイトルの 右にある **YAML:On** を有効化することで、作成した定義のYAMLファイルが作成されます。
+　　これを保存し、適宜加工することで、**管理ハブ・クラスター**のターミナルから oc apply -f clusterdeployment で、CLIからOpenShift環境を自動化して払い出すことが可能です。
+![image](https://user-images.githubusercontent.com/22209835/113712761-7c4bf600-9721-11eb-9f42-1a37222285d9.png)
 
 
 ### 既存クラスターのインポート
