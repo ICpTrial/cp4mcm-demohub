@@ -30,173 +30,30 @@ Cloud Pak for Multicloud Managementを のダッシュボードを理解する
 
 これらの課題のなかで、あなたは IBM Cloud Pak for Multicloud Management の機能を確認しようとしています。
 
-このチュートリアルのなかでは、
+このチュートリアルでは、 **管理ハブクラスター** で稼働する Cloud Pak for MCM および、Cloud Pak for MCM に統合された Red Hat Advanced Cluster Management を確認していきます。  
+Cloud Pak for MCM および Red Hat Advanced Cluster Management の実体も Red Hat OpenShift で稼働し、Operator により管理されるコンテナー・アプリケーションです。  
+また、２つ目の **管理対象クラスター** として単一ノードで稼働するMircroK8sを利用します。
+※製品の正式なサポート対象ではありませんが、リソースをおさえた環境での演習のため、便宜的に MircoK8sとして、バニラKubernetes を利用しています。  
 
-In this tutorial, you use a Red Hat OpenShift cluster with Cloud Pak for MCM as a **Management Hub** and a second single-node cluster running MicroK8s as a **managed cluster**
--	Hub cluster includes management console, federated monitoring, and all the controllers.
--	Managed cluster includes klusterlet components that communicate status back to the Hub cluster.
+このチュートリアルのなかでは、**管理ハブクラスター** で稼働する Cloud Pak for Multicloud Management から Red Hat Advanced Cluster Management をキックして、以下を実施します。
+- 管理対象クラスターの追加
+- クラスター・トポロジーの確認
+- 複数クラスター環境の確認
+- ちもｒ
 
-The relationship between hub and managed clusters is shown in the diagram below:
 
-![](images/1-cluster-mgmt-img.png)
+## 管理対象クラスターの払い出し
 
-In this tutorial, you will log in to the Hub cluster to do cluster management.
+### 新規クラスターの払い出し
 
-You will complete the following tasks:
--	Add a managed cluster
--	Visualize cluster topology
--	Visualize clusters and launch to each cluster
-- Deploy remote cluster cloud native monitoring
--	Deploy an application to remote cluster
--	Manage cluster objects
+このチュートリアルでは、コントロール・プレーンから新規のクラスターを払い出す手順を確認します（環境の制約上、新規のOpenShiftクラスターの払い出しは、この演習ではできません）。
 
-***
+### 既存クラスターのインポート
 
-## Add Managed Clusters
+1. ブラウザーのリンクから、IBM Cloud Pak for Multicloud Management をクリックします。
+2. 
 
-In this section, you will add two new managed clusters in your Control Panel. As explained before, you will add your OpenShift Hub cluster and your Microk8s managed cluster.
 
-1. To start the lab, you should be in your Cloud Pak for Multicloud Management Web Console. If you are not, check [here](../preparing/) how to open your console page.
-
-  ![](images/2-cluster-mgmt-img.png)
-
-2. Now, let's explore the Cluster view. Click the hamburger **Menu** (1) and select **Automated Infrastructure -> Clusters** (2).
-
-  ![](images/2020-09-17-19-58-15.png)
-
-3. Initially, you shouldn't have any cluster registered here. Let's add our first cluster. Click **Add cluster**.
-
-  ![](images/2020-09-17-19-59-07.png)
-
-4. You can add a cluster by Importing an existing cluster or provisioning a new cluster using a Service Library. We use the first option. Select **Import an Existing cluster** (1) and click **Import** (2).
-
-  ![](images/2020-09-17-20-00-49.png)
-
-5. Enter **hub-cluster** for cluster name (1) and **hub-cluster** for namespace (2). You can view the yaml file and change the settings as needed (3). To import an OpenShift cluster no further changes are needed. Click **Generate command** to continue (4).
-
-  ![](images/6-cluster-mgmt-img.png)
-
-6. A curl command is generated that you will use to add the new cluster. Click **Copy command** button (1) and click **View cluster** (2) to see the new hub-cluster details page.
-
-  ![](images/7-cluster-mgmt-img.png)
-
-7. Open the terminal window clicking the **Terminal** link on the desktop. The **Management Hub** windows has a green background.
-
-  ![](images/2020-09-17-20-01-43.png)
-
-  To set the the context to use your Hub cluster (login to the cluster), run the command below:
-
-  ```
-  ./oclogin.sh
-  ```
-
-  ![](images/2020-09-17-20-02-48.png)
-
-8. Let's test the new context configuration. Run the command below to get the cluster nodes.
-
-  ```
-  oc get nodes
-  ```
-
-  ![](images/2020-09-17-20-04-17.png)
-
-  Great, you are accessing the Hub cluster. Now you are ready to execute the generated command.
-
-9. **Paste** the generated command that you previously copied in the clipboard.  When you run the command, several Kubernetes objects are created in the multicluster-endpoint namespace.
-
-  ![](images/2020-09-17-20-05-03.png)
-
-  In case you will see the error like shown below, run the command again.
-
-  ![](images/2020-09-17-20-06-15.png)
-
-  This error is a result of performance limitations of the Skytap environment - the final result should look like below:
-
-  ![](images/2020-09-17-20-07-48.png)
-
-10. You can view the progress by entering the command:
-
-  ```
-  oc get pods -n multicluster-endpoint
-  ```
-
-  Make sure all the pods are in the running state.
-
-  ![](images/2020-09-17-20-09-29.png)
-
-11. The cluster endpoint (klusterlet) is ready when all the Pods are in Running state. Back to the browser window, click **View cluster** and make sure that the cluster status is **Ready** now (if necessary, refresh the details page). On the page navigation breadcrumb, click on **Clusters** link.
-
-  ![](images/2020-09-17-20-16-12.png)
-
-12. Now you can see your hub-cluster on the clusters list. You can add labels to identify your new cluster. On the hub-cluster row, click on the three dots icon (1) and select **Edit labels** (2).
-
-  ![](images/2020-09-17-20-19-23.png)
-
-13. Add a new label, **environment** (1), and give a value **Dev** (2). Click **+** (3) and **save** (4) the changes.
-
-  ![](images/2020-09-17-20-22-16.png)
-
-  Great, your first cluster is ready! Now let's add your MicroK8s managed cluster.
-
-14. Click **Add cluster** again.
-
-  ![](images/14-cluster-mgmt-img.png)
-
-15. Select again **Import an Existing cluster** (1) and click **Import** (2).
-
-  ![](images/2020-09-17-20-00-49.png)
-
-16. Enter **microk8s** for cluster name (1) and **microk8s** for namespace (2). Click **Generate command** to continue (3).
-
-  ![](images/2020-09-17-20-26-25.png)
-
-17. A curl command is generated that you will use to add the new cluster. Click **Copy command** button (1).
-
-  ![](images/7-cluster-mgmt-img.png)
-
-18. Go back to the desktop and open the terminal window to MicroK8s cluster clicking the **MicroK8s Terminal** link.
-
-![](images/2020-09-17-20-30-28.png)
-
-19. MicroK8s terminal has a yellow background. To verify the cluster status run the following command in the **MicroK8s** window
-
-  ```
-  kubectl get nodes
-  ```
-
-  ![](images/2020-09-17-20-32-22.png)
-
-  Great, you are accessing the managed cluster. Now you are ready to execute the generated command.
-
-20. **Paste** the generated command that you previously copied in the clipboard. When you run the command, several Kubernetes objects are created in the multicluster-endpoint namespace.
-
-  ![](images/2020-09-17-20-33-29.png)
-
-  If you see the error as before - just run the command again.
-
-21. You can view the progress by entering the command:
-
-  ```
-  kubectl get pods -n multicluster-endpoint
-  ```
-
-  Make sure all the pods are in the running state.
-
-  ![](images/2020-09-17-20-35-48.png)
-
-22. Back to the browser window, click **View cluster** and make sure that the cluster status is **Ready** now (if necessary, refresh the details page).
-
-  ![](images/2020-09-17-20-37-12.png)
-
-  ![](images/2020-09-17-20-38-01.png)
-
-23. On the page navigation breadcrumb, click on **Clusters** link
-
-  ![](images/2020-09-17-20-39-09.png)
-
-24. Now you can see your both clusters in a clusters list. You should add labels to identify your new cluster. Follow the same procedure as in steps 12-13 above to add a label **environment** = **QA** to the microK8s cluster
-
-  Great, your both clusters are ready and managed by IBM Cloud Pak for Multicloud Management. Using this Pak, you are able to manage both cluster from a single pane of glass. Let's check it in the next section.
 
 ***
 
