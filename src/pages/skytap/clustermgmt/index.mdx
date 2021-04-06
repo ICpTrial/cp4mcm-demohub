@@ -65,8 +65,9 @@ Cloud Provider に １つOpenShift Cluster が統合され、VMware環境のVM�
 ![image](https://user-images.githubusercontent.com/22209835/113708056-bd410c00-971b-11eb-9b13-de297362f435.png)
 1. local-cluster として、この Cloud Pak for MCM が稼働する OpenShiftクラスターが統合されています。
 
-### 新規クラスターの払い出し
+***
 
+### 新規クラスターの払い出し
 コントロール・プレーンから新規のOpenShiftクラスターを払い出す流れを確認します。環境の制約上、新規のOpenShiftクラスターの払い出しは、この演習ではできません。
 1. クラスター管理画面の右上にある青いボタン **Add a cluster** をクリックします。
 1. 以下のメニューが開きますので、上の **Create an OpenShift Cluster** (OpenShiftクラスターの新規作成） をクリックすると、下の **Launch** ボタンが青くなりますので、クリックして開きます。
@@ -86,20 +87,84 @@ htpasswdでのログインを選択します。
     1. 払出される環境のネットワーク情報を指定します
     1. Node Poolとして、払出される環境の WorkerNodeの定義を指定します。 用途に応じて複数のWorkerPool を指定することができます。
     ![image](https://user-images.githubusercontent.com/22209835/113711802-5c680280-9720-11eb-94e0-e22ce20a7753.png)
-    1. すべて指定をしたら、右上の **Create** ボタンをクリックすると実際に OpenShift環境のデプロイが開始されます。
-1. Create a Cluster というページタイトルの 右にある **YAML:On** を有効化することで、作成した定義のYAMLファイルが作成されます。
-　　これを保存し、適宜加工することで、**管理ハブ・クラスター**のターミナルから oc apply -f clusterdeployment で、CLIからOpenShift環境を自動化して払い出すことが可能です。
+    1. すべて指定をしたら、右上の **Create** ボタンをクリックすると実際に OpenShift環境のデプロイが開始されます。  
+1. **Create a Cluster** というページタイトルの 右にある **YAML:On** を有効化することで、作成した定義のYAMLファイルが作成されます。  
+これを保存し、適宜加工することで、**管理ハブ・クラスター**のターミナルから oc apply -f clusterdeployment.yaml で、CLIからOpenShift環境を自動化して払い出すことが可能です。
 ![image](https://user-images.githubusercontent.com/22209835/113712761-7c4bf600-9721-11eb-9f42-1a37222285d9.png)
-
+1. この演習では一旦 cansel ボタンを押して、Cloud Pak for Multicloud Management の画面に戻ります。
+***
 
 ### 既存クラスターのインポート
+つぎに、すでに稼働している Kubernetesクラスターを、MCMに統合する手順を確認します。
+1. 一旦ブラウザの最大化をやめて、デスクトップの **MicroK8s Terminal**の ターミナルのアイコンをクリックします。黄色のターミナルが開くはずです。  
+![image](https://user-images.githubusercontent.com/22209835/113714237-28421100-9723-11eb-8779-861e8bcb9818.png)
+1. **MicroK8s Terminal**で以下のコマンドを実行し、MicroK8sクラスターを構成するノードを確認します。
+``` 
+ibmuser@microk8s:~$ kubectl get nodes
+NAME       STATUS   ROLES    AGE    VERSION
+microk8s   Ready    <none>   180d   v1.18.16
+```
+1. **MicroK8s Terminal**で以下のコマンドを実行し、MicroK8sクラスターに構成された名前空間を確認します。 
+``` 
+ibmuser@microk8s:~$ kubectl get ns
+NAME              STATUS   AGE
+default           Active   180d
+ingress           Active   180d
+kube-node-lease   Active   180d
+kube-public       Active   180d
+kube-system       Active   180d
+``` 
+1. 再び ブラウザに戻り、Cloud Pak for MCMクラスター管理画面の右上にある青いボタン **Add a cluster** をクリックします。
+1. 以下のメニューが開きますので、上の **Import an existing cluster by running a command ** (コマンド実行による既存クラスターのインポート） をクリックして、**Launch** ボタンを開きます。
+![image](https://user-images.githubusercontent.com/22209835/113709687-c206bf80-971d-11eb-8e47-f318e875de47.png)
+1. ふたたび、 Red Hat ACMの画面が開きますので、実際に MicroK8sクラスターを **管理対象クラスター**として、インポートしていきます。
+        1. ClusterName に **microk8s** を指定します。
+        1. Environment に **qa**を指定します。これは クラスターの特徴を管理するための ラベルの一つとして反映されます。
+        1. その他、クラスターを管理するための任意のラベルを指定します。ここでは **clusterowner=support**を指定します。  クラスター追加後も任意のラベル名でカスタマイズ可能です。
+        ![image](https://user-images.githubusercontent.com/22209835/113716134-3abd4a00-9725-11eb-8548-623bdb2c6a2e.png)
+        1. 右上の **Generate Command** をクリックします。以下のように統合用の Kuberentesコマンドが生成されます。
+        ![image](https://user-images.githubusercontent.com/22209835/113716330-6fc99c80-9725-11eb-8438-f774973e8e84.png)
+        1. 生成された コマンドの右端にある 紙のアイコンをクリックして、生成されたコマンドを Copyします。
+        ![image](https://user-images.githubusercontent.com/22209835/113716620-bfa86380-9725-11eb-8d03-6c94342fa5ca.png)
+1. 先程開いていた 黄色のターミナルを開き、右クリック > Pasteで、バッファーに保管されたコマンドを貼り付けます。
+![image](https://user-images.githubusercontent.com/22209835/113717211-5a08a700-9726-11eb-9072-f81f7f7cacc8.png) 
+1. 以下のようになりますので、Enterで貼り付けた kubectlコマンドを実行します。
+![image](https://user-images.githubusercontent.com/22209835/113717299-73a9ee80-9726-11eb-831e-a506546bb83b.png)
+1. 以下のように すべて **Created** となっていることを確認します。  
+```
+TVjMWUzODNiCg== | base64 --decode | kubectl apply -f -
+customresourcedefinition.apiextensions.k8s.io/klusterlets.operator.open-cluster-management.io created
+namespace/open-cluster-management-agent created
+serviceaccount/klusterlet created
+secret/bootstrap-hub-kubeconfig created
+secret/open-cluster-management-image-pull-credentials created
+clusterrole.rbac.authorization.k8s.io/klusterlet created
+clusterrole.rbac.authorization.k8s.io/open-cluster-management:klusterlet-admin-aggregate-clusterrole created
+clusterrolebinding.rbac.authorization.k8s.io/klusterlet created
+deployment.apps/klusterlet created
+klusterlet.operator.open-cluster-management.io/klusterlet created
+```
+タイミングにより、最後のklusterletの生成ができてないことがあります。そのような場合には上矢印キーで戻り、もう一度同じコマンドを実行します。  
+同じkubernetes定義を再度applyしているだけですので、問題ありません。
 
+1. 黄色の**MicroK8s**のターミナルで、以下のコマンドで名前空間を確認します。
+```
+ibmuser@microk8s:~$ kubectl get ns
+NAME                                  STATUS   AGE
+default                               Active   180d
+ingress                               Active   180d
+kube-node-lease                       Active   180d
+kube-public                           Active   180d
+kube-system                           Active   180d
+open-cluster-management-agent         Active   2m57s
+open-cluster-management-agent-addon   Active   76s
+```
+**open-cluster-management-agent** および **open-cluster-management-agent-addon** の名前空間が生成されることに留意ください。
+これらの名前空間上に、**管理ハブクラスター＊＊とコミュニケーションをとるためのエージェントが自動的に導入され稼働しています。
 
-
-
-
-
-  ログインできない場合は、Skytap環境のメニューの 鍵のマークをクリックして、admin のパスワードを Insertして下さい。
+1. Cloud Pak for Multicloud Management の画面に戻ります。以下のように、**microk8s**が統合され、Statusが **Ready**となっていることを確認してください。  
+Status が **Pending**状態の場合は、ハンズオン管理者にご相談ください。
+![image](https://user-images.githubusercontent.com/22209835/113718772-f1222e80-9727-11eb-8956-c78f38faf3e2.png)
 
 ***
 
