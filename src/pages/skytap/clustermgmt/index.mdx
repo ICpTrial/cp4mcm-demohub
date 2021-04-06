@@ -159,8 +159,32 @@ kube-system       Active   180d
     open-cluster-management-agent         Active   2m57s
     open-cluster-management-agent-addon   Active   76s
     ```
-    **open-cluster-management-agent** および **open-cluster-management-agent-addon** の名前空間が生成されることに留意ください。
-    これらの名前空間上に、**管理ハブクラスター＊＊とコミュニケーションをとるためのエージェントが自動的に導入され稼働しています。
+    **open-cluster-management-agent** および **open-cluster-management-agent-addon** の名前空間が生成されていることに留意ください。
+    **open-cluster-management-agent** はクラスター登録のためのエージェント、**open-cluster-management-agent-addon**は クラスター管理のためのエージェントが自動的に導入され、**管理ハブクラスター** とコミュニケーションを開始しています。  
+    興味があるかたは、以下のコマンドでどのようなpodが稼働しているかご確認ください。
+    ```
+    ibmuser@microk8s:~$ kubectl get pods -n open-cluster-management-agent
+    NAME                                             READY   STATUS    RESTARTS   AGE
+    klusterlet-6dc7bb476b-chcgd                      1/1     Running   0          16m
+    klusterlet-registration-agent-6bbf48c767-89tp8   1/1     Running   0          15m
+    klusterlet-registration-agent-6bbf48c767-jcbt6   1/1     Running   0          15m
+    klusterlet-registration-agent-6bbf48c767-sszng   1/1     Running   0          15m
+    klusterlet-work-agent-5f4b474cc6-bqslw           1/1     Running   0          15m
+    klusterlet-work-agent-5f4b474cc6-g6vhn           1/1     Running   1          15m
+    klusterlet-work-agent-5f4b474cc6-tmtps           1/1     Running   0          15m
+    ```
+    ```
+    ibmuser@microk8s:~$ kubectl get pods -n open-cluster-management-agent-addon 
+    NAME                                                        READY   STATUS    RESTARTS   AGE
+    klusterlet-addon-appmgr-5bdcb4fb48-vgjkh                    2/2     Running   0          14m
+    klusterlet-addon-certpolicyctrl-5f7c4c586f-7fzq2            2/2     Running   0          14m
+    klusterlet-addon-iampolicyctrl-66f87f5757-zrvzn             2/2     Running   0          14m
+    klusterlet-addon-operator-56fd68d678-nvhx5                  1/1     Running   0          14m
+    klusterlet-addon-policyctrl-config-policy-64b6956dd-kx52p   1/1     Running   0          14m
+    klusterlet-addon-policyctrl-framework-5695fcbc5f-b45dg      4/4     Running   0          14m
+    klusterlet-addon-search-7dcd98f4bb-b8qsg                    2/2     Running   0          14m
+    klusterlet-addon-workmgr-767d9c9d96-4zlpr                   2/2     Running   0          14m
+    ```
 
 1. Cloud Pak for Multicloud Management の画面に戻ります。以下のように、**microk8s**が統合され、Statusが **Ready**となっていることを確認してください。  
 Status が **Pending**状態の場合は、ハンズオン管理者にご相談ください。
@@ -168,7 +192,7 @@ Status が **Pending**状態の場合は、ハンズオン管理者にご相談�
 
 ***
 
-## Overview of the managed environments
+## 管理対象概要の把握
 
 In this section, you visualize key information about your managed environments in a Cloud Pak for Multicloud Management dashboard.
 
