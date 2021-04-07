@@ -192,52 +192,6 @@ Status が **Pending**状態の場合は、ハンズオン管理者にご相談�
 
 ***
 
-## 管理対象概要の把握
-
-In this section, you visualize key information about your managed environments in a Cloud Pak for Multicloud Management dashboard.
-
-1. With IBM Cloud Pak for Multicloud Management you are able to manage all your environments from a single control panel. Open the **Menu** button (1) and click **Observe environments** (2) > **Overview** (3).
-
-  ![](images/22-cluster-mgmt-img.png)
-
-2. The Overview menu option displays the status of all clusters including the health and resource metrics. The top section shows the operations details across all your cloud providers. In the first section, you can see information about cloud providers, compute resources, applications and infrastructure. Because your both clusters are completely new, you don't have a lot of information here. But in a real production environment here is your starting point to explore your multiple clusters.
-
-  ![](images/2020-09-17-20-55-29.png)
-
-3. Scroll down to the bottom section showing Resource Overview. Here you can see Cluster Compliance status, Cluster status, CPU, Memory, and Storage Resource View.
-
-  ![](images/2020-09-17-20-56-29.png)
-
-4. Now, navigate to the **Applications** page. Select "hamburger" menu in the top-left corner and then (1) **Manage applications** and (2) **Hybrid applications**.
-
-   ![](images/2020-09-17-21-11-52.png)
-
-   By now, you don't have any application here. But it is important to know, that in this area, you will see information about the deployment of an application. Don’t worry about it now, you will explore it later.
-
-5. Now, let’s explore a really good feature of Cloud Pak for Multicloud Management: Visual Web Terminal. On the top right navigator, click on **Visual Web Terminal** button.
-
-  ![](images/2020-09-17-21-13-10.png)
-
-6. You can use the Visual Web Terminal to run many commands across your environment. When categorized data is returned, such as when you enter a search command, it is returned in an interactive tabular format.
-
-  The Visual Web Terminal is particularly useful when troubleshooting issues that require running multiple commands and navigating the results of the commands in an easy way. Let’s try something simple! Enter the command bellow:
-
-   ```
-   oc project multicluster-endpoint
-   ```
-
-   ```
-   oc get pods
-   ```
-
-  ![](images/2020-09-17-21-33-24.png)
-
-  The information that is provided in the Visual Web Terminal is limited by the permissions of the user. When you run a command, only the items that you have permission to view are displayed. You can click on any row in the displayed table (3) and then explore the details of the specific resource - for example Events (4)
-
-  Next section, you learn how to deploy an application to the local or remote cluster.
-
-***
-
 ## Deploy an Application
 
 In this step, you install a helm chart from the catalog to your hub-cluster and your managed-roks cluster. Let's do it!
