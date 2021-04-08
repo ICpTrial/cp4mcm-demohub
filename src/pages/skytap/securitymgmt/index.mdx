@@ -15,252 +15,96 @@ Red Hat Advanced Cluster Managementコンポーネントの **Govern Risk**ダ�
 それぞれのポリシーには、１つまたは複数のポリシー・テンプレートが関連付けられます。
 
 ポリシーベースの Goevernance and Compliance, Riks 機能を利用することによって、以下のことができるようになります。 
--　セキュリティやアプリケーション、基盤に対するポリシーを設定し、強制する、またはクラスター・レベルで強制する
--  環境のパラメータや構成、ポリシーに対して準拠状況を確認する
--　ポリシーに対する違反を自動的に修正する
+- セキュリティやアプリケーション、基盤に対するポリシーを設定し、強制する、またはクラスター・レベルで強制する
+- 環境のパラメータや構成、ポリシーに対して準拠状況を確認する
+- ポリシーに対する違反を自動的に修正する
 
-In this tutorial, you create and enforce the following governance policies:
--	`Namespace policy`
--	`Network policy`
+このチュートリアルでは、以下のガバナンスに関わるポリシーを作成して、管理していきます。
+- `Namespace policy`
+- `Network policy`
 
 ***
 ## Namespace Policy
+このハンズオンでは、もっともシンプルな構成管理のためのポリシーとして、Namespaceポリシーの挙動を確認します。  
+Kubernetes namespace（名前空間）は、クラスター環境におけるリソースの論理的分割するための定義です。namespace に対して、リソース・クォータをかけて利用できるリソースに制限をかけることが可能です。
+たとえば、新規作成されたクラスターにおいて、あなたの会社で標準的に定義されている標準的な名前空間の作成が漏れているケースを想像してください。
+Namespaceポリシーは、その標準構成からの逸脱を検知し、ポリシーにしたがって、アクションを取ります。
 
-Kubernetes namespaces help organize cluster resources between multiple users and split the resource quote. Cluster administrator might restrict the user to use specific namespaces for applications. The namespace policy allows you to catch cluster violations when namespaces are not defined as per the policies.
-
-A sample namespace policy resemble the following:
-
-  ![](images/1-sec-mgmt-img.png)
-
-In this section, you create a policy that ensures that a specified namespace is present in clusters that match the selection criteria.
-
-1.Open the **OCP 311 Terminal** window (blue terminal).
-
-  ![](images/new-image-4.png)
-
-2.Later you will create a Policy to inform/enforce a namespace in your cluster. Let’s verify that you don’t have this namespace by now. Run the command below:
-
-```
-oc get ns | grep k8demo
+作成するネームスペース・ポリシーは、以下のようになります。
 ```
 
-  ![](images/new-image-25.png)
-
-  So far, you don’t have the k8demo namespace. Great! Let’s create a Policy to inform when your cluster is not compliance with a namespace policy.
-
-4.Back to the IBM Cloud Pak for Multicloud Management Web Console page on your browser.
-
-  On the top-left of the page, open the **Menu** (1) and select **Govern risk** (2).
-
-  ![](images/new-image-26.png)
-
-5.Here you see the Policy tab. This view displays the policies that have been created and the dashboard of policy compliance for each cluster. By now, you don’t have any Policy created. Let’s do it! Click **Create policy**.
-
-  ![](images/5-namespace-policy-image.png)
-
-6.On the Name field type **policy-namespace** (1), on the Namespace field select **default** (2), on the Specifications field select **namespace** (3) and on Cluster binding select **environment: QA** (4).
-
-  ![](images/6-namespace-policy-image.png)
-
-7.Now, let’s change the namespace name value. In the YAML file section, on the right, change the name attribute from prod to k8demo. With that, you are creating a Policy to verify if you have a k8demo namespace/project in your cluster.
-
-  ![](images/7-namespace-policy-image.png)
-
-8.Notice that the policy is set to inform rather than enforce. With value inform, the policy only reports whether the cluster is compliant to the specified policies. With value enforce, the policy provides automatic remediation. Keep inform value by now.
-
-  ![](images/8-namespace-policy-image.png)
-
-9.Click the button **Create** to create your new policy.
-
-  ![](images/9-namespace-policy-image.png)
-
-10.In a few seconds, the policy controller will check if the namespace k8demo is present and provides information regarding the current compliance of the policies.
-Remember, you did not enforce this policy. Instead we specified inform. As such, the Governance and risk view displays a policy violation in our cluster, as illustrated below (you need to scroll down the page).
-
-  ![](images/new-image-27.png)
-
-11.Click the **Resource violations** link to find which cluster is violating the policy.
-
-    ![](images/new-image-28.png)
-
-12.The ocp311 cluster is in violation of the policy which requires a namespace that is called “k8sdemo” to exist.
-
-13.The ocp311 is the same cluster that you verified in the first step of this section that k8sdemo namespace does not exist. Hence it shows that there is no namespace k8demo in the cluster.
-
-  ![](images/new-image-29.png)
-
-14.Now, let’s verify the k8demo namespace still does not exist. Back to the OCP311 terminal window (blue terminal), run the command below:
 
 ```
-oc get ns
+
+業務チームAのアプリケーションは、**k8sdemo**で稼働することを前提としています。この名前空間は必ず管理対象クラスターに存在し、ここに業務チームのアプリケーションが払出される前提があるとします。  
+これをポリシーとして定義し、かならず名前空間が存在することを担保します。  
+
+1. デスクトップにといて、**Microk8s Terminal**のアイコンをクリックして、Microk8sのターミナル（黄色）を開きます。
+1. 以下のコマンドで、これから作成する 名前空間 **k8sdemo** が存在しないことを確認します。
+```
+kubectl get ns | grep k8sdemo
+```
+1. Red Hat Advanced Cluster Management のコンソールを開き、メニューから、 **Govern risk**を開きます。
+![image](https://user-images.githubusercontent.com/22209835/113988574-8f2e0a00-988a-11eb-9eb7-25b2b988eeb9.png)
+1. まだなにもポリシーが定義されていませんので、右上の **Create policy**をクリックして、ポリシーを作成してきいきます。
+![image](https://user-images.githubusercontent.com/22209835/113988665-a79e2480-988a-11eb-9fd6-69f20ed04199.png)
+1. 以下の情報を指定して、ポリシーのテンプレートを作成します。
+|項目|値|備考
+--|--|--
+|Name|policy-ns-k8sdemo|ポリシー名|
+|Namespace|default|ポリシー定義が配置される名前空間|
+|Specifications|Namespace|定義するポリシーのテンプレート|
+|ClusterBinding|environment:qa|ラベルでポリシーが適用されるクラスターを指定します。アプリケーション配置と同様 environment:qaでMicrok8sが選択されます。  特定アプリケーションが稼働できるクラスターにはラベルで appA-enabled:true を設定しておくなど、ラベルで様々にクラスターの特徴を管理することができます。ラベルによって指定することで、環境が増減した場合でも柔軟にポリシーを適用可能です|
+その他の値は、そのままでOKです。
+1. 同じページの右に開いているYAMLファイル・エディターで、詳細な指定を行っていきます。  テンプレート定義では prod ネームスペースを確認するようになっていますので、ここを **k8sdemo**に変更します。
+```
+        object-templates:
+          - complianceType: musthave
+            objectDefinition:
+              kind: Namespace # must have namespace 'prod'
+              apiVersion: v1
+              metadata:
+                name: k8sdemo # <-ここを変更する
+```
+![image](https://user-images.githubusercontent.com/22209835/113991919-e7b2d680-988d-11eb-8dee-babca51b2a74.png)
+
+1. ポリシー・ダッシュボードが開きます。作成した policy-ns-k8sdemo が定義されていることを確認します。
+![image](https://user-images.githubusercontent.com/22209835/113992036-03b67800-988e-11eb-9bc0-6f3c9d0c10b0.png)
+作成された１つのポリシーに対して １つの PolicyViolations が発生しており、準拠していないクラスターが1つあることが分かります。   
+実際には、N個のポリシー定義に対してX個のPolicyViolationsが発生し、ポリシーの管理対象となっているクラスターのうち、違反状態のクラスターが何個あるかが示されています。
+
+1. **policy-ns-k8sdemo**をクリックして、ポリシーの詳細画面を見ていきます。  
+**details** タブの 中央 Placementsの表を確認すると、**microk8s**クラスターが、ポリシーに準拠していないことが分かります。
+![image](https://user-images.githubusercontent.com/22209835/113992901-dcac7600-988e-11eb-8d12-342c719579f8.png)
+1. **status** タブを開きます。  
+ここでは、**microk8s**クラスターが**Not Compliant**のステータスであり、  
+メッセージとして **NonCompliant; violation - namespaces `k8sdemo` does not exist as specified** が表示され、k8sdemoネームスペースが存在せず準拠できていないことを検知しています。
+![image](https://user-images.githubusercontent.com/22209835/113993105-0a91ba80-988f-11eb-9577-2c77ac5b5d46.png)
+
+1. 再びPolicyのダッシュボードに戻ります。ここで このpolicy-ns-k8sdemoの **Remediation**修復方法が **inform**通知であることを確認します。
+![image](https://user-images.githubusercontent.com/22209835/113993628-9f94b380-988f-11eb-95b4-7cc46492bb7b.png)
+1. この**Remeditaion**のポリシーをinformから **enforce**に強制することで、ポリシーへの準拠を自動化し強制できるポリシーも存在します。
+ネームスペース・ポリシーは、この自動化が可能なポリシーですので、ポリシーを編集して対応を自動化します。  
+policy-ns-k8sdemoの右端のメニューをクリックし、**Enforce**を選択します。
+![image](https://user-images.githubusercontent.com/22209835/113994532-6dd01c80-9890-11eb-9063-b15323374a3a.png)
+1. 確認の画面が出ますので、**Enforce Policy**を選択します。
+![image](https://user-images.githubusercontent.com/22209835/113994624-82acb000-9890-11eb-82e7-6a50a151af20.png)
+1. policy-ns-k8sdemoの **Remediation**が**enforce**になっていることを確認します。  
+しばらく待機すると、ポリシーのアイコンが 緑色に変わり ClusterViolationsが **0/1**となり、すべてが準拠した状態に変わります。
+![image](https://user-images.githubusercontent.com/22209835/113994810-a5d75f80-9890-11eb-883f-e832eaa6d243.png)
+1. policy-ns-k8sdemoの詳細画面でも、Compliantのステータスとなっていることを確認できます。  
+![image](https://user-images.githubusercontent.com/22209835/113995219-05356f80-9891-11eb-81ab-2d3b5b099dfd.png)
+1. **status**タブを開き、メッセージが変わっていることを確認します。右端にある **View History**のリンクを開きます。
+![image](https://user-images.githubusercontent.com/22209835/113995726-783ee600-9891-11eb-9d05-820cc27e002d.png)
+1. メッセージ に **Compliant; notification - namespaces `k8sdemo` was missing, and was created successfully**とあり、 policyの Remediation アクションとして、microk8sクラスターに **k8sdemo**ネームスペースが自動的に作成されたことが分かります。
+![image](https://user-images.githubusercontent.com/22209835/113995921-a58b9400-9891-11eb-85ba-8d269cc722da.png)
+1. ふたたび Microk8sのターミナルを開き、以下のコマンドで **microk8s**ネームスペースが存在していることを確認します。
+```
+ibmuser@microk8s:~$ kubectl get ns | grep k8sdemo
+k8sdemo                               Active   8m59s
 ```
 
-  ![](images/new-image-30.png)
-
-  There should not be a namespace named k8demo listed, which indicates that the policy did not enforce it to be created.
-
-15.Back to the browser. Now, let’s change the policy to be enforced. In the policies view, click on **POLICY VIOLATIONS**.
-
-  ![](images/new-image-31.png)
-
-16.Click the **policy-namespace** link.
-
-  ![](images/16-namespace-policy-image.png)
-
-17.Open the **YAML** tab.
-
-  ![](images/17-namespace-policy-image.png)
-
-18.Click the **Edit** button to go into edit mode to modify the YAML file.
-
-  ![](images/18-namespace-policy-image.png)
-
-19.Change the value of remediationAction: inform to **remediationAction: enforce**.
-
-  ![](images/new-image-32.png)
-
-20.Click the **Submit** button to save the change.
-
-  ![](images/20-namespace-policy-image.png)
-
-21.Open the **Details** tab.
-
-  ![](images/21-namespace-policy-image.png)
-
-22.A few seconds later, the policy violation is automatically removed.
-
-  ![](images/new-image-33.png)
-
-23.Open the **Violations** tab.
-
-  ![](images/23-namespace-policy-image.png)
-
-24.You also can validate the same from the Violations view: No Policy violations detected.
-
-  ![](images/new-image-34.png)
-
-25.Now, let’s check how the policy on enforce mode, removed the violation. Back to the OCP311 terminal window (blue terminal), run the command below, to ensure that the k8demo namespace is created in the cluster.
-
-```
-oc get project | grep k8demo
-```
-
-  ![](images/new-image-35.png)
-
-  You have successfully implemented the Namespace Policy!
-
-***
-
-## Network Policy
-
-A network policy is a specification of how groups of pods are allowed to communicate with each other and other network endpoints.NetworkPolicy resources use labels to select pods and define rules which specify what traffic is allowed to the selected pods.
-
-Apply the network policy to define which network request to deny. For more information about network policies, refer to this [documentation](https://kubernetes.io/docs/tasks/administer-cluster/declare-network-policy/).
-
-A sample network policy resembles the following:
-
-  ![](images/0-network-policy-image.png)
-
-IBM Cloud Pak for Multicloud Management enables your team to check and enforce network policy compliance against your multiple clusters in your hybrid environment.
-
-In this section, you learn how to create a Network Policy in IBM Cloud Pak for Multicloud Management. This lab needs an application that has at least two pods with services where one pod needs to connect to other pod's associated service. You will use the application Quote of the Day that is already deployed on the cluster in the default project.
-
-1.Back to the CP4MCM Console page tab on your browser, click **Policies** link on navigation breadcrumb.
-
-  ![](images/new-image-36.png)
-
-2.On the Policies view, click **New policy**.
-
-  ![](images/new-image-37.png)
-
-3.Enter **policy-network** as name of the policy (1), select **default** as namespace (2), on specifications field choose **NetworkPolicy – deny network request** (3). On the cluster binding field select **name: ocp311** (4).
-
-  ![](images/new-image-38.png)
-
-4.On the YAML file editor, change the objectDefinition > metadata > name from deny-from-other-namespaces to **deny-all-ingress-egress-traffic**.
-
-  ![](images/4-network-policy-image.png)
-
-5.The spec section is defined as follow:
-```
-spec:
-	podSelector: {}
-	policyTypes:
-		- Ingress
-		- Egress
-```
-
-  ![](images/new-image-39.png)
-
-6.Keep remediationAction as inform by now. Click **Create**.
-
-  ![](images/new-image-40.png)
-
-7.After few seconds, you should check that the policy violation was detected but not enforced.
-
-  ![](images/new-image-41.png)
-
-  Because the policy is on inform mode, the policy is not forced.
-
-8.Click on the new policy: **policy-network**.
-
-  ![](images/new-image-42.png)
-
-9.You see that one decision is in violation.
-
-  ![](images/new-image-43.png)
-
-10.Click the **Violations** tab.
-
-  ![](images/new-image-44.png)
-
-11.Here you see the violation about network isolation. Your ocp311 cluster is not compliance with this network policy. Let’s fix it!
-
-  ![](images/new-image-45.png)
-
-12.Click on the OCP311 console link, to open the cluster Web Console.
-
-  ![](images/new-image-46.png)
-
-13.You need to accept the risks. And log in with admin / passw0rd.
-
-  ![](images/new-image-47.png)
-
-14.If necessary, change to Cluster Console view.
-
-  ![](images/new-image-48.png)
-
-15.Use the side bar menu and select **Networking > Network Policies**.
-
-  ![](images/new-image-49.png)
-
-16.Click the **Create Network Policy** button.
-
-  ![](images/15-network-policy-image.png)
-
-17.To the right of the view are a list of policy samples. Fortunately for us, there is a Network Policy Sample that we can use.  Click the Try it link (1). Then, edit the YAML, insert the letters from to the metadata name and replace deny-other-namespaces with deny-all-ingress-egress-traffic (2). Click the Create button to create this policy (3).
-
-  ![](images/new-image-50.png)
-
-18.Great the policy is created now.
-
-  ![](images/17-network-policy-image.png)
-
-19.Go back to the CP4MCM browser tab.  You should notice that there are no violations now (wait 10 seconds if you have to).
-
-  ![](images/new-image-51.png)
-
-20.Click on **Policies** link in breadcrumbs, to go back to the Policies page.
-
-  ![](images/19-network-policy-image.png)
-
-21.After waiting 10 seconds, you should see that all violations are gone.
-
-  ![](images/new-image-52.png)
-
-  Great! You have successfully implemented Network Policy!
-
-***
+以上で、Namespace Policyのハンズオンは終了です。
 
 ## Summary
 
