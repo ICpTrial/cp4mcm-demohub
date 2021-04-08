@@ -105,52 +105,30 @@ Infrastructure Monitoringを確認していきます。
 
 ***
 
-## Deploy Bookinfo Application
+## シンセティック・モニタリングとゴールデン・シグナル
+クラウドネイティブ環境では、従来の基盤チームがになってきた基盤モニタリングだけでなく、提供しているビジネス・アプリケーションの挙動も理解し、ユーザー体験を改善していく必要があります。  
+2020年末の IBMによるInstana社買収により、この**アプリケーション・パフォーマンス・モニタリング** および **Observablity**の領域は、今後 強力な機能強化が予定されています。  
+別Chapterにて **IBM Obserbability with Instana**の演習を用意していますので、時間がない場合は、ここで Instanaの演習に移ってください。  
+まだハンズオンの時間に余裕がある場合には、引き続き、現在 IBM Cloud Pak for Multicloud Managementのモニタリング・コンポーネントで なにができるか確認していきます。
 
-On top of monitoring Linux worker nodes and basic Kubernetes objects Operations teams want are responsible for monitoring business applications. So let's deploy sample application, called Bookinfo
-
-1. To start, clone the git repository containing the yaml files needed to deploy the application. Using the green terminal window, run the following commands on the **Management Hub**
-
-   ```sh
-   git clone https://github.com/dymaczew/charts
-   cd charts
-   ```
-
-2. Apply the application resources running the following commands:
-
-   ```sh
-   /home/ibmuser/oclogin.sh
-   oc apply -f bookinfo-multiclister-2020.2.1
-   oc apply -f kubernetes-1.18-ingress-deployable.yaml
-   ```
-
-   If you happen to run Kubernetes 1.19 on the your managed cluster (outside the Skytap environment) use kubernetes-1.19-ingress-deployable.yaml. Ingress API was changed in 1.19 and extended with new mandatory fields
-
-   The output looks like the following:
-
-   ![](images/2020-09-30-13-38-44.png)
-
-   Don't worry about the error in the last line - it just means that ImagePolicy admission controller is not used in the environment.
-
-3. Now, let's edit the placement rule for the application to get it deployed on the managed cluster (we tagged in with label "environment=QA"). Navigate to application view, selecting the "hamburger" menu in the top-left corner, then **Observe environments** and **Overview**
-
-   ![](images/2020-09-30-13-48-03.png)
-
-   On the overview page, scroll down to the Applications section and select **bookinfo-app** link. We recommend this way, becasue for some reason (probably a bug?) the application is not listed directly on the Hybrid Applications list
-
-   ![](images/2020-09-30-13-50-11.png)
-
-4. When the Application view opens, click on the **bookinfo-rule** icon
-
-   ![](images/2020-09-30-13-51-45.png)
-
-5. Edit the placement rule in the editor on the right, changing the value of the label from **Dev** to **QA** (1) and then apply you changes with the button on top of the editor(2)
-
-   ![](images/2020-09-30-13-56-39.png)
-
-6. After a few seconds, you should notice that the application is now being placed on the **microk8s** cluster. The deployment takes usually 1-2 minutes needed to pull images and start containers.
-
-   ![](images/2020-09-30-18-55-48.png)
+1. 演習用に、マイクロサービス・アプリケーション Bookinfo をデプロイします。  Red Hat Advanced Cluster Managementコンポーネントのコンソールを開きます。
+1. メニューから **Manage Applications**を開きます。
+1. アプリケーションのダッシュボードから、右上にある**Create Appliations**のボタンをクリックします。
+1. 以下の定義でアプリケーションを指定し、払出します。
+|項目|値|
+--|--
+|name|bookinfo|
+|namespace|bookinfons|
+|repository|Git|
+|Git URL|https://github.com/ICpTrial/bookinfo|
+|Git Branch|main|
+|Select Clusters deploy to| Deploy application resources only on clusters matching specified labels を選択|
+|Label|environment|
+|Value|qa|
+![image](https://user-images.githubusercontent.com/22209835/114014852-03c17280-98a4-11eb-85ae-4ed9a6d5d432.png)
+1. bookinfo のアプリケーションが microk8sクラスターに払出され、各種サービスが立ち上がることを待機します。  
+クラスターが定義されない場合は、ラベルの指定を誤っていないか確認ください。特に environment のスペル！
+![image](https://user-images.githubusercontent.com/22209835/114015570-cc06fa80-98a4-11eb-8daf-9f76c7d68ff9.png)
 
 7. You can verify if the application was successfuly deployed and is accessible by opening a new browser tab and entering the URL: `bookinfo.10.0.0.2.nip.io`. You should reach the page that looks like below:
 
