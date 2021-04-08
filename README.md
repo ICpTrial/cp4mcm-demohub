@@ -4,7 +4,7 @@ IBM Cloud Pak for Mutlicloud Managemnet(以下 CP4MCM)を利用した マルチ�
 この ハンズオン環境を利用することで、 複数 Kubernetesクラスターを対象としたマルチクラウド環境に対する操作を 体験することが可能です。  
 
 ハンズオン・サマリー
-|章|タイトル|ハンズオン内容｜
+|章|タイトル|ハンズオン内容
 --|--|--
 |0|[ハンズオン環境概要](https://github.com/ICpTrial/cp4mcm-demohub/blob/master/src/pages/gettingstarted/index.mdx)|このハンズオン環境の利用の仕方について記載しています|
 |1|[クラスター統合管理](https://github.com/ICpTrial/cp4mcm-demohub/blob/master/src/pages/skytap/clustermgmt/index.mdx)|マルチクラスター環境の統合と統合管理|
