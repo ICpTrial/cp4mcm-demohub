@@ -9,9 +9,9 @@ IBM Cloud Pak for Mutlicloud Managemnet(以下 CP4MCM)を利用した マルチ�
 |0|[ハンズオン環境概要](https://github.com/ICpTrial/cp4mcm-demohub/blob/master/src/pages/gettingstarted/index.mdx)|このハンズオン環境の利用の仕方について記載しています|
 |1|[クラスター統合管理](https://github.com/ICpTrial/cp4mcm-demohub/blob/master/src/pages/skytap/clustermgmt/index.mdx)|マルチクラスター環境の統合と統合管理|
 |2|[アプリケーション配置](https://github.com/ICpTrial/cp4mcm-demohub/blob/master/src/pages/skytap/appmgmt/index.mdx)|GitOpsを実現するためのアプリケーション配置機能|
-|3|モニタリング||
-|4|イベント管理とRunbook Automation||
-|5|ポリシー＆ガバナンス||
+|3|ポリシー＆ガバナンス||
+|4|モニタリング||
+|5|イベント管理とRunbook Automation||
 |6|Instana||
 
 Digital Technical Exchange ハンズオンラボ用環境は、IBMの担当テクニカル・セールスのメンバーに声をかけていただくことで、個別に用意することが可能です。 担当営業を通じてご相談ください。
