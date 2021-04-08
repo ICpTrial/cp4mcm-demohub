@@ -15,10 +15,39 @@ Cloud Pak for Multicloud Managementにおいて、モニタリング・モジュ
 ![image](https://user-images.githubusercontent.com/22209835/114004332-84c73c80-9899-11eb-93df-2877dca27b8e.png)
 1. 以下のように リストに　**ibm.com/cloud-native-monitoring=enabled**が加えられてことを確認して、**Save**をクリックします。
 ![image](https://user-images.githubusercontent.com/22209835/114004446-a1fc0b00-9899-11eb-84c9-2f63b9b9caf7.png)
-１．
-![image](https://user-images.githubusercontent.com/22209835/114004446-a1fc0b00-9899-11eb-84c9-2f63b9b9caf7.pn
-
-
+これにより、Kubernetes データ・コレクターが自動的に **microk8s**クラスターに払出され、構成されます。
+1. デスクトップの**Microk8s Teminal**をクリックして、**microk8s**クラスターのターミナルを開き、以下のコマンドを実行します。  
+   1. **cp4mcm-cloud-native-monitoring**ネームスペースが作成され、モニタリング・エージェントが構成されていることを確認します。
+      ```
+      ibmuser@microk8s:~$ kubectl get ns 
+      NAME                                  STATUS   AGE
+      cp4mcm-cloud-native-monitoring        Active   8m
+      default                               Active   182d
+      ingress                               Active   182d
+      k8sdemo                               Active   70m
+      kube-node-lease                       Active   182d
+      kube-public                           Active   182d
+      kube-system                           Active   182d
+      microk8s                              Active   44h
+      modresort                             Active   4h52m
+      open-cluster-management-agent         Active   44h
+      open-cluster-management-agent-addon   Active   44h
+      ```
+   1. 以下のコマンドで、エージェントが稼働していることを確認します。  
+   多少時間がかかりますので、まだ構成が開始されていることを確認できれば、次のステップに進んでください。
+      ```
+      ibmuser@microk8s:~$ kubectl get pods -n cp4mcm-cloud-native-monitoring 
+      NAME                                        READY   STATUS      RESTARTS   AGE
+      ibm-dc-autoconfig-operator-f8f9848c-kgmpc   1/1     Running     0          8m20s
+      ibm-dc-autoconfig-operator-qf5s4            0/1     Completed   0          8m20s
+      job-ua-operator-7ztdr                       0/1     Completed   0          8m20s
+      k8sdc-cr-k8monitor-7cd7b75cb-hhffl          2/2     Running     0          7m40s
+      k8sdc-operator-f95dc4f8b-p5q7t              1/1     Running     0          8m20s
+      reloader-6bc9967d6-x4d48                    1/1     Running     0          8m20s
+      ua-mgmt-ua-cloud-monitoring-688zj           1/1     Running     0          8m9s
+      ua-operator-59bf778dcc-9ctwd                1/1     Running     0          8m20s
+      ```
+### operationsチームへの リソースアクセス権限の設定
 次に **operations**チームの運用ユーザーが新規に追加されたクラスターを管理できるよう、**operations**チームのリソース・アクセス定義に microk8sクラスターを追加します。
 1. Cloud Pak for Multicloud Managementのコンソールを開き、Administer > Identity & Access を開きます。
 ![image](https://user-images.githubusercontent.com/22209835/114000343-e1285d00-9895-11eb-82b2-11ada65c0bf6.png)
@@ -36,47 +65,21 @@ LDAPなどからインポートしたユーザーやグループを、Cloud Pak 
 実際の動作イメージを説明すると、管理ハブ・クラスターの microk8s ネームスペース上に、管理対象クラスター上で稼働するデータコレクターから集められたデータが保管されます。  
 このため、この管理ハブ・クラスター上の micork8s ネームスペースへのアクセス許可を与えることで、**operations**チームのメンバーは microk8sクラスターへのデータを見ることができるようになっています。
 
+### operationsチームへの リソースアクセス権限の設定
+最後に、**oprations**チームのメンバー **bob**として、モニタリング・モジュールのコンソールを開きます。
+1. 一旦、ヘッダー右上の人間アイコンをクリックして、メニューを開き、ログアウトを選択します。
+![image](https://user-images.githubusercontent.com/22209835/114007125-0324de00-989c-11eb-984c-0f1ebb1a850d.png)
+1. ログインページで、**bob** としてログインしてください。ブラウザに保管されたパスワードで入れますが、明示的に指定する場合には **Passw0rd**を指定します。  
+![image](https://user-images.githubusercontent.com/22209835/114007443-5008b480-989c-11eb-8844-12f715a06ae2.png)
+ログイン出来ない場合には、**Change your authentication type**から、明示的に**Enterprise LDAP**を指定して、再度試してください。
+1. bobとしてログインしたら、メニューから Infrastructure Monitoring を選択します。  
+![image](https://user-images.githubusercontent.com/22209835/114008169-ed63e880-989c-11eb-9b0c-01251654dbd5.png)
+もしなにもリソースが表示されてないようでしたら、しばらく、Kubernetes data collectorが開始されるのを数分待機してください。  
+Microk8sターミナル（黄色）から、さきほどのステータス確認コマンド `kubectl get pods -n cp4mcm-cloud-native-monitoring`で、状況を確認してみてもいいでしょう。 
+1. 正常に稼働すると、以下のようにInfrastructure Monitoringのダッシュボードが表示されます。
+![image](https://user-images.githubusercontent.com/22209835/114008723-7d099700-989d-11eb-9745-bc7d4ba0e5c6.png)
 
-To deploy Kuberenetes data collector (also known as cloud native monitoring) complete the steps below.
-
-1. First, you need to label target cluster with **ibm.com/cloud-native-monitoring=enabled**. You can do this in web console, or run the following command in a green terminal titled **Management Hub**
-
-   ```sh
-   cloudctl mc label cluster microk8s ibm.com/cloud-native-monitoring=enabled -n microk8s
-   ```
-
-   ![](images/2020-09-27-17-05-18.png)
-
-2. Second, you need to add the target cluster namespace as a managed resource to your team. Again, you can do this in web console (Menu -> Administer -> Identity and access -> Teams tab, select the team 'operations', edit the Resources), or run the following command in a green terminal titled **Management Hub**
-
-   ```sh
-   cloudctl iam resource-add operations -r crn:v1:icp:private:k8:mycluster:n/microk8s:::
-   ```
-
-   This command adds a namespace **microk8s** (this namespace was automatically created during cluster import and contains the cluster CRD) as a managed resource to the team **operations**. This operations triggers the deployment process of cloud-native-monitoring operator to the target cluster.
-
-   You can check that the operator was deployed running the following commands in a yellow terminal connected to **MicroK8s** cluster
-
-   ```sh
-   kubectl get pods -n cp4mcm-cloud-native-monitoring
-   ```
-
-   ![](images/2020-09-27-17-15-43.png)
-
-3. Finally, you need to open the Monitoring module console as a user belonging to the operations team - user **bob** in our case. Select "hamburger" menu in the top-left corner and then **Monitor health** (2) and **Infrastructure monitoring**.
-
-   ![](images/2020-09-27-17-21-27.png)
-
-   If you are redirected to login page, login again as user **bob** with password **Passw0rd**. Eventually, you should see the **Resources** tab shown below:
-
-   ![](images/2020-09-27-17-23-53.png)
-
-   The page probably won't show any resources yet, because the process to install Kubernetes data collector was just started. You can check if it was successfully deployed running the previous command again (in yellow terminal).
-
-   ![](images/2020-09-30-12-44-36.png)
-
-   When it is deployed, after 1-2 minutes you can refresh the browser, and you should see the view showing now all the resources from the managed cluster.
-
+ ## Infrastructureモニタリング
    ![](images/2020-09-27-17-32-27.png)
 
    Click the **Kubernetes cluster**.
