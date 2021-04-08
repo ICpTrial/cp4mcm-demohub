@@ -80,29 +80,29 @@ Microk8sターミナル（黄色）から、さきほどのステータス確認
 ![image](https://user-images.githubusercontent.com/22209835/114008723-7d099700-989d-11eb-9745-bc7d4ba0e5c6.png)
 
  ## Infrastructureモニタリング
-   ![](images/2020-09-27-17-32-27.png)
-
-   Click the **Kubernetes cluster**.
-
-   ![](images/2020-09-27-17-34-20.png)
-
-   Then click **microk8s**.
-
-   ![](images/2020-09-27-17-35-36.png)
-
-   The next view, let you explore the metrics and events releated to the selected resource. On top, you can see the Event timeline (1) for wihich you can change the time window (from 30 minutes to 1 week). Deployment topology widget (2) shows how the specific resource is located within the cluster.
-
-   ![](images/2020-09-27-17-40-30.png)
-
-   If you hover over the numbers on the Timeline (1) you can see the details of the events. You can also click the 'How do I read this' link (2) on the Deployment topology to learn hot to use that widget.
-
-   ![](images/2020-09-27-17-44-10.png)
-
-   ![](images/2020-09-27-17-45-38.png)
-
-   Feel free to explore other resources and their metrics. For example you can click the worker node icon on the Deployment topology widget.
-
-   ![](images/2020-09-27-17-49-48.png)
+Infrastructure Monitoringを確認していきます。
+1. **Kubernetes Cluster**をクリックします。
+![image](https://user-images.githubusercontent.com/22209835/114009458-1fc21580-989e-11eb-8f54-f83c2a2e08b0.png)
+1. **microk8s**をクリックします。
+![image](https://user-images.githubusercontent.com/22209835/114009589-3cf6e400-989e-11eb-9976-56990c80050d.png)
+1. microk8sクラスターの詳細画面が開きます。一番上には、このクラスターで発生した イベントのタイムラインが表示されています。
+![image](https://user-images.githubusercontent.com/22209835/114009984-9e1eb780-989e-11eb-86ff-260c491fde29.png)
+1. 左の大きなは、トポロジー・マップです。トポロジー・マップの下に表示されている **How do I read this?**をクリックしてください。
+大きな円がクラスター、中の六角形がノードを意味しています。microk8sは１ノードクラスターのため、六角形は一つだけですが、通常は複数ノードが存在します。  
+また、問題が発生している場合は、当該コンポーネントの色が変わることで、問題がある環境に気づくことができます。
+![image](https://user-images.githubusercontent.com/22209835/114010542-28ffb200-989f-11eb-8e7f-459777bec0d4.png)
+1. Xで 凡例を閉じて、真ん中のノードをクリックします。
+![image](https://user-images.githubusercontent.com/22209835/114010798-78de7900-989f-11eb-8298-7d34e9efcb9b.png)
+1. ノードの詳細画面が開きます。正常稼働していないPodがいれば、白ではない色で表示されているものがいるかもしれません。
+![image](https://user-images.githubusercontent.com/22209835/114011045-bd6a1480-989f-11eb-9b12-a2c2f6895b9c.png)
+1. 上野イベント・タイムラインの青いバーを左右にスクロールさせることで、イベントやトポロジーおよびリソースの変化を確認することができます。  
+問題が発生した場合には、時系列で環境の変化を確認していくことができます。
+![image](https://user-images.githubusercontent.com/22209835/114011628-6749a100-98a0-11eb-979e-7a0ebb737dac.png)
+1. ページを下にスクロールダウンすると、当該ノード上で稼働する podのリストが出てきます。  
+たとえば、Resource Limitが設定されていないPodが存在し、そのPodのアプリケーションがメモリー・リークすることでノードが不安定になったような場合には、  
+そのノードで問題が発生する直前までイベントのタイムラインをスクロールさせ、Podをメモリー使用量でソートして、問題を起こしていたPodを特定するといったことができます。  
+![image](https://user-images.githubusercontent.com/22209835/114011889-b263b400-98a0-11eb-838c-824c906448af.png)
+1. その他自由に触ってみてください。
 
 ***
 
