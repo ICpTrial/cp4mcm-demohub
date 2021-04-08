@@ -1,153 +1,29 @@
+# Chapter3 - Security & Compliance Management 
 ---
-title: Lab 3 - Security & Compliance Management - Skytap
-description: Security & Compliance Management with IBM Cloud Pak for Multicloud Management
----
-
-<FeatureCard
-  title="Security & Compliance Management with IBM Cloud Pak for Multicloud Management"
-  color="dark"
-  >
-
-![banner](/images/secmgmt-banner.jpg)
-
-</FeatureCard>
-
-
-<AnchorLinks>
-  <AnchorLink>Lab Overview</AnchorLink>
-  <AnchorLink>Prerequisite</AnchorLink>
-  <AnchorLink>Business Context</AnchorLink>
-  <AnchorLink>Namespace Policy</AnchorLink>
-  <AnchorLink>Network Policy</AnchorLink>
-  <AnchorLink>Summary</AnchorLink>
-</AnchorLinks>
-
-***
 
 ## Lab Overview
 
-IBM Cloud Pak for Multicloud Management provides consistent visibility, automation, and governance across a range of multicloud management capabilities such as cost and asset management, infrastructure management, application management, multi-cluster management, edge management, and integration with existing tools and processes. Customers can leverage Cloud Pak for Multicloud Management to simplify their IT and application ops management, while increasing flexibility and cost savings with intelligent data analysis driven by predictive signals.
+この章では、マルチクラスター環境にわたって、一貫した 構成ポリシーとセキュリティ・ポリシーを効かせて管理していくための、**Governamance and Compliance, Risk** GCR機能を見ていきます。  
 
-IBM Cloud Pak for Multicloud Management helps companies make the transition from traditional monitoring systems to cloud-based ones more easily. It effectively monitors all kinds of IT resources in a hybrid environment. It helps Operation teams manage hybrid environments without hiring new personnel to support each new technology that is being used by developers.
+## ビジネス・コンテキスト
+あなたは セキュリティ運用チーム（SecOps）チームのメンバーとして、複数クラスターから構成されるマルチクラウド・ハイブリッド環境において、各環境が会社の定めた基準に満たされていることを確認し、問題が発生するリスクを抑える必要があります。たとえば、管理対象のクラスターで起きた問題に対応するために、管理対象クラスターの管理者権限を持っているユーザーがポリシーに違反する強い権限を持ったコンテナーを払出してしまうことは発生する可能性はあります。また、新規クラスターを追加した際に作業漏れが発生し、存在すべきネットワーク・ポリシーが定義されていないといった可能性もありえます。  
+こういった多様な環境にまたがった複数クラスターを管理する作業を、個別に管理していくことを想定すると、運用作業者のリソースがネックとなり、環境のスケーラビリティが確保できなくなります。  
+あなたの会社は、IBM Cloud Pak for Multicloud Managementに含まれる Red Hat Advanced Cluster Managementコンポーネントを利用し、環境の一貫した可視化とガバナンスを効かせることを決めました。  
 
-This Tutorial explores how to use governance and compliance features to manage your multicloud environments with a consistent set of configuration and security policies across all applications and clusters.You explore the following key capabilities:
--	`Understand Cloud Pak Policy and Governance`
--	`Learn to create and customize policies with the out of the box policy templates`
--	`Learn to use namespace policies`
--	`Learn to use network policies`
+Red Hat Advanced Cluster Managementコンポーネントの **Govern Risk**ダッシュボードでは、クラスターやアプリケーションに起こりうるセキュリティリスクとポリシー違反を管理していくことが可能です。  
+ポリシー・テンプレートには、すぐに利用できる事前定義ポリシーがあります。また、追加で構成されたセキュリティ機能や3rdパーティの提供するセキュリティ機能と統合したセキュリティ・ポリシーも構成することが可能です。たとえば、これらのポリシーには IBM Cloud Pak for Multicloud Management の 脆弱性アドバイザーや改ざん検知アドバイザーと連携するポリシーもあります。   
+それぞれのポリシーには、１つまたは複数のポリシー・テンプレートが関連付けられます。
 
-***
-
-## Prerequisite
-
-- You need to provision your own copy of the CP4MCM 2.0 environment, start it and verify for correct startup (check [here](../preparing/)).
-
-***
-
-## Business Context
-
-As a member of the Security Operation (SecOps) team, you are having problems to minimize risks and identify policies violations in your multicloud hybrid world. Manage a Security Policy for all your cloud-based services and data across multiple providers is overwhelming your team.
-Your company is deploying multiple Kubernetes clusters to address their specific needs. Some Dev teams are deploying clusters across public and private clouds, and some are deploying clusters across regions, and some are deploying clusters to support the development and test needs.
-
-As different teams deploy more clusters, new challenges are introduced:
--	How do I set consistent security policies across environments?
--	Which clusters are compliant?
-
-Because of that, you want to explore how IBM Cloud Pak for Multicloud Management, provides consistent visibility, governance and automation of your complex environment.
-
-IBM Cloud Pak for Multicloud Management Governance and risk dashboard allows you to view and manage the number of security risks and policy violations in your clusters and applications. Policy templates are used to create one or more policies for third party or external security controls. For example, you can create a mutation policy with the mutation policy controller. Each policy document can have at least one or multiple templates.
-
-By using policy-based role and compliance management, you are able to:
--	Set and enforce polices for security, applications, and infrastructure or auto enforcement at the cluster level.
--	Check compliance against deployment parameters, configuration, and policies.
--	Automatically remediate violations.
+ポリシーベースの Goevernance and Compliance, Riks 機能を利用することによって、以下のことができるようになります。 
+-　セキュリティやアプリケーション、基盤に対するポリシーを設定し、強制する、またはクラスター・レベルで強制する
+-  環境のパラメータや構成、ポリシーに対して準拠状況を確認する
+-　ポリシーに対する違反を自動的に修正する
 
 In this tutorial, you create and enforce the following governance policies:
 -	`Namespace policy`
 -	`Network policy`
 
 ***
-
-## Add Managed Clusters
-
-In this section, you will add two new managed clusters in your Control Panel. As explained before, you will add your OpenShift Hub cluster and your Microk8s managed cluster.
-
-1. To start the lab, you should be in your Cloud Pak for Multicloud Management Web Console. If you are not, check [here](../preparing/) how to open your console page.
-
-  ![](images/2-cluster-mgmt-img.png)
-
-2. Now, let's explore the Cluster view. Click the hamburger **Menu** (1) and select **Automate Infrastructure -> Clusters** (2).
-
-  ![](images/new-image-1.png)
-
-3. Initially, you shouldn't have any cluster registered here. Let's add our first cluster. Click **Add cluster**.
-
-  ![](images/2020-09-17-19-59-07.png)
-
-4. You can add a cluster by Importing an existing cluster or provisioning a new cluster using a Service Library. We use the first option. Select **Import an Existing cluster** (1) and click **Import** (2).
-
-  ![](images/2020-09-17-20-00-49.png)
-
-5. Enter **ocp311** for cluster name (1) and **ocp311** for namespace (2). You can view the yaml file and change the settings as needed (3). To import an OpenShift cluster no further changes are needed. Click **Generate command** to continue (4).
-
-  ![](images/new-image-3.png)
-
-6. A curl command is generated that you will use to add the new cluster. Click **Copy command** button (1) and click **View cluster** (2) to see the new hub-cluster details page.
-
-  ![](images/7-cluster-mgmt-img.png)
-
-7. Open the terminal window clicking the **OCP 3.11 Terminal** link on the desktop. The **OCP 311** windows has a blue background.
-
-  ![](images/new-image-4.png)
-
-8. Let's test the new context configuration. Run the command below to get the cluster nodes.
-
-  ```
-  oc get nodes
-  ```
-
-  ![](images/new-image-5.png)
-
-  Great, you are accessing the OCP 3.11 cluster. Now you are ready to execute the generated command.
-
-9. **Paste** the generated command that you previously copied in the clipboard.  When you run the command, several Kubernetes objects are created in the multicluster-endpoint namespace.
-
-  ![](images/new-image-6.png)
-
-  In case you will see the error like shown below, run the command again.
-
-  ![](images/new-image-7.png)
-
-  This error is a result of performance limitations of the Skytap environment - the final result should look like below:
-
-  ![](images/new-image-8.png)
-
-10. You can view the progress by entering the command:
-
-  ```
-  watch oc get pods -n multicluster-endpoint
-  ```
-
-  Make sure all the pods are in the running state.
-
-  ![](images/new-image-9.png)
-
-11. The cluster endpoint (klusterlet) is ready when all the Pods are in Running state (press CTRL+C to cancel the watch command). Back to the browser window, click **View cluster** and make sure that the cluster status is **Ready** now (if necessary, refresh the details page). On the page navigation breadcrumb, click on **Clusters** link.
-
-  ![](images/new-image-10.png)
-
-12. Now you can see your ocp311 cluster on the clusters list. You can add labels to identify your new cluster. On the hub-cluster row, click on the three dots icon (1) and select **Edit labels** (2).
-
-  ![](images/new-image-11.png)
-
-13. Add a new label, **environment** (1), and give a value **Dev** (2). Click **+** (3) and **save** (4) the changes.
-
-  ![](images/new-image-12.png)
-
-  Great, your first cluster is ready! Now let's add your MicroK8s managed cluster.
-
-***
-
 ## Namespace Policy
 
 Kubernetes namespaces help organize cluster resources between multiple users and split the resource quote. Cluster administrator might restrict the user to use specific namespaces for applications. The namespace policy allows you to catch cluster violations when namespaces are not defined as per the policies.
