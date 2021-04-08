@@ -1,534 +1,66 @@
 ---
-title: Lab 2 - Application Management
-description:
----
-
-<FeatureCard
-  title="Application Management with IBM Cloud Pak for Multicloud Management"
-  color="dark"
-  >
-
-![banner](/images/appmgmt-banner.jpg)
-
-</FeatureCard>
-
-
-<AnchorLinks>
-  <AnchorLink>Lab Overview</AnchorLink>
-  <AnchorLink>Prerequisite</AnchorLink>
-  <AnchorLink>Business Context</AnchorLink>
-  <AnchorLink>Define Application Channel</AnchorLink>
-  <AnchorLink>Create a Subscription</AnchorLink>
-  <AnchorLink>Deploy the Application</AnchorLink>
-  <AnchorLink>Validate the Application</AnchorLink>
-  <AnchorLink>Move the Application</AnchorLink>
-  <AnchorLink>Summary</AnchorLink>
-</AnchorLinks>
-
-***
-
-## Lab Overview
-
-IBM Cloud Pak for Multicloud Management provides consistent visibility, automation, and governance across a range of multicloud management capabilities such as cost and asset management, infrastructure management, application management, multi-cluster management, edge management, and integration with existing tools and processes. Customers can leverage Cloud Pak for Multicloud Management to simplify their IT and application ops management, while increasing flexibility and cost savings with intelligent data analysis driven by predictive signals.
-
-Customers can leverage IBM Cloud Pak for Multicloud Management to simplify their IT and application ops management, while increasing flexibility and cost savings with intelligent data analysis driven by predictive signals.
-
-In this tutorial, you will explore the following key capabilities:
--	`Understand Cloud Pak for Multicloud Management`
--	`Deploy an application using Channels and Subscriptions`
--	`Move the application between clusters using Placement Policies`
--	`Visualize the application health using Grafana dashboards`
-
-***
-
-## Prerequisite
-
-- You need to provision your own copy of the CP4MCM 2.0 environment, start it and verify for correct startup (check [here](../../gettingstarted/)).
-
-***
-
-## Business Context
-
-As a member of the Cloud Operation team, you are having problems to manage your multicloud hybrid world. Operate your cloud-based services and data across multiple providers is overwhelming your team.
-Your company is deploying multiple Kubernetes clusters to address their specific needs. Some Dev teams are deploying clusters across public and private clouds, and some are deploying clusters across regions, and some are deploying clusters to support the development and test needs.
-
-As different teams deploy more clusters, new challenges are introduced:
--	Where are my services running?
--	How can I monitor applications across clusters and clouds?
--	How can I manage clusters as if they were one environment?
--	How do I monitor usage across clouds?
--	Where are the failed components?
--	How do I deploy applications across these environments?
--	How do I move workloads across environments?
--	How do I set consistent security policies across environments?
--	Which clusters are compliant?
--	How can I place workloads based on capacity, policy?
-
-Because of that, you want to explore how IBM Cloud Pak for Multicloud Management, provides consistent visibility, governance and automation of your complex environment.
-
-IBM Cloud Pak for Multicloud Management provides enhanced application management capabilities through an improved application model and deployment options. The concept helps simplify and streamline application life cycle management across clusters.
-
-In this tutorial, you will be using a sample Modresort application to demonstrate how to deploy an application in multiple clusters using channels and subscriptions. The Modresort is a WebSphere Liberty Java application available in Dockerhub.
-
-![](images/1-app-mgmt-img.png)
-
-In this tutorial, you use two Red Hat OpenShift clusters.
--	Hub-cluster is the Hub cluster that includes management console, federated monitoring, and all the controllers. In this Lab, you identify the hub-cluster with the label Dev for environment.
--	Managed-cluster is an Openshift cluster managed by the Hub cluster. In this Lab, you identify the managed cluster with the label QA for environment
-
-You will complete the following tasks:
--	`Deploy Modresort application using Channels and Subscriptions`
--	`Move the application between clusters using Placement Policies`
--	`Visualize application health by using Grafana dashboard`
-
-***
-
-## Add Managed Clusters
-
-In this section, you will add two new managed clusters in your Control Panel. As explained before, you will add your OpenShift Hub cluster and your Microk8s managed cluster.
-
-1. To start the lab, you should be in your Cloud Pak for Multicloud Management Web Console. If you are not, check [here](../gettingstarted/) how to open your console page.
-
-  ![](images/2-cluster-mgmt-img.png)
-
-2. Now, let's explore the Cluster view. Click the hamburger **Menu** (1) and select **Automate Infrastructure -> Clusters** (2).
-
-  ![](images/new-image-1.png)
-
-3. Initially, you shouldn't have any cluster registered here. Let's add our first cluster. Click **Add cluster**.
-
-  ![](images/2020-09-17-19-59-07.png)
-
-4. You can add a cluster by Importing an existing cluster or provisioning a new cluster using a Service Library. We use the first option. Select **Import an Existing cluster** (1) and click **Import** (2).
-
-  ![](images/2020-09-17-20-00-49.png)
-
-5. Enter **ocp311** for cluster name (1) and **ocp311** for namespace (2). You can view the yaml file and change the settings as needed (3). To import an OpenShift cluster no further changes are needed. Click **Generate command** to continue (4).
-
-  ![](images/new-image-3.png)
-
-6. A curl command is generated that you will use to add the new cluster. Click **Copy command** button (1) and click **View cluster** (2) to see the new hub-cluster details page.
-
-  ![](images/7-cluster-mgmt-img.png)
-
-7. Open the terminal window clicking the **OCP 3.11 Terminal** link on the desktop. The **OCP 311** windows has a blue background.
-
-  ![](images/new-image-4.png)
-
-8. Let's test the new context configuration. Run the command below to get the cluster nodes.
-
-  ```
-  oc get nodes
-  ```
-
-  ![](images/new-image-5.png)
-
-  Great, you are accessing the OCP 3.11 cluster. Now you are ready to execute the generated command.
-
-9. **Paste** the generated command that you previously copied in the clipboard.  When you run the command, several Kubernetes objects are created in the multicluster-endpoint namespace.
-
-  ![](images/new-image-6.png)
-
-  In case you will see the error like shown below, run the command again.
-
-  ![](images/new-image-7.png)
-
-  This error is a result of performance limitations of the Skytap environment - the final result should look like below:
-
-  ![](images/new-image-8.png)
-
-10. You can view the progress by entering the command:
-
-  ```
-  watch oc get pods -n multicluster-endpoint
-  ```
-
-  Make sure all the pods are in the running state.
-
-  ![](images/new-image-9.png)
-
-11. The cluster endpoint (klusterlet) is ready when all the Pods are in Running state (press CTRL+C to cancel the watch command). Back to the browser window, click **View cluster** and make sure that the cluster status is **Ready** now (if necessary, refresh the details page). On the page navigation breadcrumb, click on **Clusters** link.
-
-  ![](images/new-image-10.png)
-
-12. Now you can see your ocp311 cluster on the clusters list. You can add labels to identify your new cluster. On the hub-cluster row, click on the three dots icon (1) and select **Edit labels** (2).
-
-  ![](images/new-image-11.png)
-
-13. Add a new label, **environment** (1), and give a value **Dev** (2). Click **+** (3) and **save** (4) the changes.
-
-  ![](images/new-image-12.png)
-
-  Great, your first cluster is ready! Now let's add your MicroK8s managed cluster.
-
-14. Click **Add cluster** again.
-
-  ![](images/new-image-13.png)
-
-15. Select again **Import an Existing cluster** (1) and click **Import** (2).
-
-  ![](images/2020-09-17-20-00-49.png)
-
-16. Enter **microk8s** for cluster name (1) and **microk8s** for namespace (2). Click **Generate command** to continue (3).
-
-  ![](images/2020-09-17-20-26-25.png)
-
-17. A curl command is generated that you will use to add the new cluster. Click **Copy command** button (1).
-
-  ![](images/7-cluster-mgmt-img.png)
-
-18. Go back to the desktop and open the terminal window to MicroK8s cluster clicking the **MicroK8s Terminal** link.
-
-![](images/2020-09-17-20-30-28.png)
-
-19. MicroK8s terminal has a yellow background. To verify the cluster status run the following command in the **MicroK8s** window
-
-  ```
-  kubectl get nodes
-  ```
-
-  ![](images/2020-09-17-20-32-22.png)
-
-  Great, you are accessing the managed cluster. Now you are ready to execute the generated command.
-
-20. **Paste** the generated command that you previously copied in the clipboard. When you run the command, several Kubernetes objects are created in the multicluster-endpoint namespace.
-
-  ![](images/2020-09-17-20-33-29.png)
-
-  If you see the error as before - just run the command again.
-
-21. You can view the progress by entering the command:
-
-  ```
-  watch kubectl get pods -n multicluster-endpoint
-  ```
-
-  Make sure all the pods are in the running state (press CTRL+C to terminate the watch command).
-
-  ![](images/2020-09-17-20-35-48.png)
-
-22. Back to the browser window, click **View cluster** and make sure that the cluster status is **Ready** now (if necessary, refresh the details page).
-
-  ![](images/2020-09-17-20-37-12.png)
-
-  ![](images/2020-09-17-20-38-01.png)
-
-23. On the page navigation breadcrumb, click on **Clusters** link
-
-  ![](images/new-image-14.png)
-
-24. Now you can see your both clusters in a clusters list. You should add labels to identify your new cluster. Follow the same procedure as in steps 12-13 above to add a label **environment** = **QA** to the microK8s cluster
-
-  Great, your both clusters are ready and managed by IBM Cloud Pak for Multicloud Management. Using this Pak, you are able to manage both cluster from a single pane of glass. Let's check it in the next section.
-
-***
+# Chapter 2 - アプリケーション管理
+
+## ハンズオン概要
+この章では、アプリケーション管理にまつわる以下の機能を確認していきます。
+-	`アプリケケーションプレイスメント機能をもちいて、アプリケーションを払い出す`
+-	`払い出したアプリケーションを PlacementRuleをもちいて、移動させる`
+-	`ダッシュボードVisualize the application health using Grafana dashboards`
 
 ## Define Application Channel
 
-IBM Cloud Pak for Multicloud Management provides enhanced application management capabilities through an improved application model and new deployment options. The new model and deployment options are designed to unify and simplify the deployment experience for creating and managing your applications across clusters.
+IBM Cloud Pak for Multicloud Management に統合された Red Hat Advanced Cluster Management コンポーネントには、 GitOps を実現するための、アプリケーション管理機能があります。
+このアプリケーション管理機能は、クラスターにまたがってアプリケーションを払いだし、管理するプロセスを、統合しシンプルにします。    
+  
+このアプリケーション管理機能を用いることによって、複雑となりがちなアプリケーション配置管理を、Gitのソースコード・レポジトリの変更管理と統合することが可能です。
+アプリケーションの定義は、YAMLで管理されるKubernetesリソースとして、または Helmチャートにパッケージされたアプリケーションとして Gitレポジトリーに保管されています。
+Red Hat Adanced Cluster Managementコンポーネントから、ソースとなる レポジトリを指定し、払い出し先を決定するために必要となる定義を指定することで、選定されたクラスターに対してアプリケーションが配置されます。
+アプリケーション定義のソースはGitレポジトリにありますので、Gitに統合された開発サイクルを通じて、Gitレポジトリを修正すると、変更された内容が すでにリリースされている環境にも反映されていきます。
 
-The new application management capabilities use Channels and Subscriptions to gain improved continuous and automated delivery of deployables to target managed clusters.
-
-The concept is similar to subscription model of TV channels. In this model, all the applications, which are packaged as helm charts, will be hosted in one or more repositories. The repositories, which contain the application packages, are defined as channels that broadcast across the clusters. If you want to deploy an application, then define a subscription to the channel with the name of the application (one or more) you want to deploy
-
-![](images/2-app-mgmt-img.png)
-
-Channels (Channel.app.ibm.com) define a namespace within the hub cluster and point to a physical place where resources are stored for deployment; such as an object store, Kubernetes namespace, or Helm repository.
-
+このアプリケーション払い出しモデルには、チャネルとサブスクリプションというモデルが使われており、継続的に自動的に Kubernetesリソースを対象となる管理クラスターに払い出します。 
+チャネル (Channel.app.ibm.com) の実体は、ハブクラスター内の名前空間を定義しおり、この名前空間に デプロイメントのための各種KubernetesリソースやHelmチャートが保管されます。
 ![](images/3-app-mgmt-img.png)
 
-In this section, you define Application and Channel resources to deploy the Modresort application. The resources will be created using YAML files. The modresort application is a simple application with only one component.
+ここでは、オープンソースのマイクロサービス・サンプル・アプリケーションである Bookinfoアプリケーションを、アプリケーション配置機能を使って払い出しを行います。
 
-1.Back to the Desktop, open the Management Hub terminal window (green terminal).
+1. Red Hat Advanced Cluster Management コンポーネントの コンソールを開き、メニューより **Manage applications** を選択します。
+![image](https://user-images.githubusercontent.com/22209835/113955033-f41b3d00-9855-11eb-932e-9a61f3eaad4f.png)
 
-  ![](images/new-image-15.png)
+1. 管理対象となっているアプリケーションはありませんので、右上の **Create application** をクリックします。
+![image](https://user-images.githubusercontent.com/22209835/113955108-1745ec80-9856-11eb-904e-1ddf8004610d.png)
 
-  To set the the context to use your Hub cluster (login to the cluster), run the command below:
+1. アプリケーションの定義画面が開きます。
+![image](https://user-images.githubusercontent.com/22209835/113955299-68ee7700-9856-11eb-8cd9-853d1931a7b0.png)
+        1. アプリケーションの名前として **modresort** を指定します
+        1. 払出し先の名前空間を指定します。既存の名前空間から選択することもできますが、ここでは **modresort** を指定し、払出し時に名前空間を新規作成します。
+        ![image](https://user-images.githubusercontent.com/22209835/113957488-49594d80-985a-11eb-97e1-9e81f884b7aa.png)
+        1. レポジトリー・タイプとして、ここでは **Git Repository**を選択します。選択すると、レポジトリを指定するための詳細画面が開きます。
+        ![image](https://user-images.githubusercontent.com/22209835/113955865-7e17d580-9857-11eb-82c4-01261ae7bfbd.png)
+        1. レポジトリ情報として、以下の情報を指定してください。
+        |項目|値|
+        --|--
+        |URL|https://github.com/ICpTrial/ModernResort|
+        |UserName|（パブリック・レポジトリですので不要です）|
+        |AccessToken|（パブリック・レポジトリですので不要です）|
+        |Branch|master|
+        |Path|（指定不要）|
+        ![image](https://user-images.githubusercontent.com/22209835/113960180-064da900-985f-11eb-8f1c-7babe252f611.png)
+        |Path|（指定不要）|
+        1. 配置先クラスターの指定
+        配置先クラスターとして、すべての管理対象クラスターに払い出すことや、ハブ・クラスター(localcluster)のみに払い出すことが可能ですが、
+        ここでは、ラベルによって条件を設定し、その条件にマッチするクラスターにアプリケーションを払い出します。　　
+        **Deploy application resources only on clusters matching specified labels**にチェックを入れて、以下の値を指定します。
+        |項目|値|
+        --|--
+        |Label|enviromemnt|
+        |Value|qa|
+        ![image](https://user-images.githubusercontent.com/22209835/113960262-3137fd00-985f-11eb-9ad0-a4fbeb88e2b6.png)
+        1. 内容を確認し、**Save**を保管します。Saveを押すとアプリケーションのデプロイメントが開始されます。
+        ![image](https://user-images.githubusercontent.com/22209835/113960323-4876ea80-985f-11eb-9e71-811528fc9d2e.png)
+        1. デプロイしたアプリケーションのKubernetesリソースが表示されていますので確認していきます。
+        ![image](https://user-images.githubusercontent.com/22209835/113960442-7a884c80-985f-11eb-9093-bd0088b21070.png)
 
-```
-./oclogin.sh
-```
-
-  ![](images/2020-09-17-20-02-48.png)
-
-2.Let's create our YAML files to define Channel, Application, Subscription, etc. To simplify the lab steps, you will clone a pre-created YAML. Don't worry, because we will understand them. To copy pre-created YAML files, let's use the Git CLI (if you don't have Git CLI, check [here](https://pages.github.ibm.com/demohub/cloudpak-mcm/labs/installcli/) how to install it). Run the command below:
-
-```
-git clone https://github.com/rafosorio/appmgmtlab.git
-```
-
-```
-cd appmgmtlab
-```
-
-  ![](images/new-image-16.png)
-
-3.Now you have two folders (modresortchan and modresortapp). Let's start exploring the **modresortchan** and use any editor to see the content of the **channel.yaml** file.
-
-```
-cd modresortchan
-```
-```
-vi channel.yaml
-```
-
-4.Our channel.yaml has the content below.
-
-```
-apiVersion: app.ibm.com/v1alpha1
-kind: Channel
-metadata:
-  name: modresort-devchan
-  namespace: modresort-entitlement
-  labels:
-    app: modresortchan
-spec:
-  type: Namespace
-  pathname: modresort-entitlement
-```
-
-  It is a really simple file. The spec collection defines the type of the channel. In this lab, the channel is of type namespace, meaning that the yaml you create will be deployed and stored in OpenShift namespaces rather than in a Helm chart or Object store. This file is ready, and you don't need to edit it, go ahead and **close** the channel.yaml file.
-
-5.The modresort application component consists of a **deployment resource definition** and a **service resource definition**.
-
-  To enable these components to be used by the channel subscription, each of the resources need to be wrapped by a new custom resource definition (CRD) called Deployable.
-
-  Use your editor again and check now the **deployable.yaml** file.
-
-```
-vi deployable.yaml
-```
-
-```
-apiVersion: app.ibm.com/v1alpha1
-kind: Deployable
-metadata:
-  name: devchan-modresortchan-deployment
-  namespace: modresort-entitlement
-  annotations:
-    app.ibm.com/is-local-deployable: "false"
-  labels:
-    app: modresortchan
-    component: main
-    package: modresort
-spec:
-  template:
-    kind: Deployment
-    apiVersion: apps/v1
-    metadata:
-      name: devchan-modresortchan-deployment
-      labels:
-        app: modresortchan
-    spec:
-      selector:
-        matchLabels:
-          app: modresortchan
-          release: modresort-devchan
-          tier: frontend
-      replicas: 1
-      template:
-        metadata:
-          labels:
-            app: modresortchan
-            release: modresort-devchan
-            tier: frontend
-        spec:
-          containers:
-            - name: frontend
-              image: "kpostreich/modresort:1.0"
-              imagePullPolicy: Always
-              ports:
-                - containerPort: 9080
-              env:
-              - name: GET_HOSTS_FROM
-                value: dns
-              - name: WLP_LOGGING_CONSOLE_FORMAT
-                value: json
-              - name: WLP_LOGGING_CONSOLE_LOGLEVEL
-                value: info
-              - name: WLP_LOGGING_CONSOLE_SOURCE
-                value: message,trace,accessLog,ffdc
----
-apiVersion: app.ibm.com/v1alpha1
-kind: Deployable
-metadata:
-  name: devchan-modresortchan-service
-  namespace: modresort-entitlement
-  annotations:
-    app.ibm.com/is-local-deployable: "false"
-  labels:
-    app: modresortchan
-    component: main
-    package: modresort
-spec:
-  template:
-    kind: Service
-    apiVersion: v1
-    metadata:
-      name: devchan-modresortchan-service
-      labels:
-        app: modresortchan
-    spec:
-      type: NodePort
-      ports:
-        - port: 9080
-      selector:
-        app: modresortchan
-        release: modresort-devchan
-        tier: frontend
----
-apiVersion: app.ibm.com/v1alpha1
-kind: Deployable
-metadata:
-  name: devchan-modresortchan-route
-  namespace: modresort-entitlement
-  annotations:
-    app.ibm.com/is-local-deployable: "false"
-  labels:
-    app: modresortchan
-    component: main
-    package: modresort
-spec:
-  template:
-    apiVersion: route.openshift.io/v1
-    kind: Route
-    metadata:
-      labels:
-        app: devchan-modresortchan-route
-      name: modresorts
-    spec:
-      host: modresorts-default.10.0.0.15.nip.io
-      port:
-        targetPort: 9080
-      subdomain: ""
-      to:
-        kind: Service
-        name: devchan-modresortchan-service
-        weight: 100
-      wildcardPolicy: None
-```
-
-  There are three Deployables defined in the yaml file that wrap the modresort Kubernetes resources
-  - One for the modresort deployment, refers to the location of the Docker image;
-  - One for the modresort service, refers to the service port and defines a NodePort;
-  - One for the modresort routes, refers to domain name and exposes to the external network;
-
-  Refer to the [online documentation](https://www.ibm.com/support/knowledgecenter/en/SSFC4F_1.2.0/mcm/applications/managing_deployables.html) for details on the construct of the Deployable definition.
-
-  Next section, you learn how to create a subscription.
-
-***
-
-## Create a Subscription
-
-The subscription to a channel package contains
-  -	Application Definition
-  - Placement Rules Definition
-  - Subscription Definition
-
-**Applications** (Application.app.k8s.io) in IBM Multicloud Manager are used for grouping application components.
-
-**Placement rules** (PlacementRule.app.ibm.com) define the target clusters where deployables can be deployed. You can use placement rules to help you facilitate the multi-cluster deployment of your deployables. Placement rules can be referenced by deployables and subscriptions.
-
-**Subscriptions** (Subscription.app.ibm.com) are sets of definitions that identify deployables within channels by using annotations, labels, and versions.
-
-The subscription controller can monitor the channel for new or updated deployables, such as an updated Helm release or a new Kubernetes deployable object. Then, the controller can download the Kubernetes deployable object or Helm release directly from the source location (Helm repository, object store, or namespace) to the target managed clusters.
-
-1.Back to the Management Hub terminal window, let's explore the YAML files on modresortapp folder.
-
-```
-cd ../modresortapp
-```
-
-2.Now, using your editor again, open the **application.yaml**. Below is the content of the file:
-
-```
-apiVersion: app.k8s.io/v1beta1
-kind: Application
-metadata:
-  name: modresort101-modresortapp
-  namespace: modresort-project
-  labels:
-    app: modresortapp
-spec:
-  selector:
-    matchExpressions:
-    - key: release
-      operator: In
-      values:
-      - modresort101
-  componentKinds:
-  - group: app.ibm.com
-    kind: Subscription
-```
-
-  Here we have the definition of our modresort application. Refer to the [online documentation](https://www.ibm.com/support/knowledgecenter/en/SSFC4F_1.2.0/mcm/applications/app_lifecycle.html) for details on configuring the Application resource.
-
-3.**Close** the application.yaml file.
-
-4.Use your editor again, to explore the **placementrules.yaml** file. Below is the file's content:
-
-```
-apiVersion: app.ibm.com/v1alpha1
-kind: PlacementRule
-metadata:
-  name: modresortapp101-modresortapp
-  namespace: modresort-project
-  labels:
-    app: modresortapp
-    release: modresort101
-spec:
-  clusterReplicas: 1
-  clusterLabels:
-    matchLabels:
-      environment: Dev
-```
-
-  Placement Rules defines where and how Helm charts and deployables are deployed. Use placement rules to help you facilitate multi-cluster deployments of your deployables. Refer to the [online documentation](https://www.ibm.com/support/knowledgecenter/en/SSFC4F_1.2.0/mcm/applications/managing_placement_rules.html) for details on configuring the Placement Rules resource.
-
-  In your case, the placementrules.yaml is defining to deploy the modresortapp in Dev environment only.
-
-5.**Close** the placementrules.yaml file.
-
-6.Now, let’s explore the **subscription.yaml** file.
-
-```
-apiVersion: app.ibm.com/v1alpha1
-kind: Subscription
-metadata:
-  name: modresort101-modresortapp
-  namespace: modresort-project
-  labels:
-    app: modresortapp
-    release: modresort101
-spec:
-  channel: modresort-entitlement/modresort-devchan
-  name: ""
-  packageFilter:
-    version: ">=1.x"
-    labelSelector:
-      matchLabels:
-        package: modresort
-        component: main
-  placement:
-    placementRef:
-      name: modresortapp101-modresortapp
-      kind: PlacementRule
-      group: app.ibm.com
-  overrides:
-  - clusterName: "/"
-    clusterOverrides:
-    - path: "metadata.namespace"
-      value: default
-```
-
-  This contains the details of relating the placement rule definition with the application specification. Refer to the [online documentation](https://www.ibm.com/support/knowledgecenter/en/SSFC4F_1.2.0/mcm/applications/managing_subscriptions.html) for details on configuring the Subscription resource.
-
-7.**Close** the subscription.yaml file. All your files are ready to deploy the application.
-
-  This completes enabling an existing application with policies so that they can be deployed to any Kubernetes managed cluster. Next section, you deploy the application using the channel and subscription created here.
-
-***
+        
 
 ## Deploy the Application
 
