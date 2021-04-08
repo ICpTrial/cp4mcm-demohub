@@ -190,121 +190,29 @@ kube-system       Active   180d
 Status が **Pending**状態の場合は、ハンズオン管理者にご相談ください。
 ![image](https://user-images.githubusercontent.com/22209835/113718772-f1222e80-9727-11eb-8956-c78f38faf3e2.png)
 
-***
 
-## Deploy an Application
+## クラスター・リソースの管理
+Red Hat Advanced Cluster Management の 管理コンソールを通じて、単一のインターフェースから、すべてのクラスターの Kubenetesリソースの詳細を 確認することが可能です。
 
-In this step, you install a helm chart from the catalog to your hub-cluster and your managed-roks cluster. Let's do it!
+1. Red Hat Advanced Cluster Management のコンソールを開き、コンソールのヘッダーにある **Search** ボタンをクリックします。
+![image](https://user-images.githubusercontent.com/22209835/113952277-5a04c600-9850-11eb-93f0-a9d769ef6760.png)
 
-1. Open the **Menu** (1) and click on **Administer** (2) > **Helm repository** (3).
+2. サーチ・メニュー は 管理対象のクラスターの アプリケーション・リソースとKubernetesオブジェクトに対するアクセスを提供します。非常に強力な機能で、 パブリック・クラウド、プライベート・クラウドどこで稼働していても、容易に I確認が必要なリソースを見つけることが可能です。サーチ・オーバービューはのダッシュボードには、よく利用される検索フィルターが事前定義されています。これらのフィルターは、特定のアプリケーションに特化したフィルター、特定のクラスターに特化したフィルターなど、利用者のニーズに応じて作成して保管しておくことが可能です。  
+ここでは **Created Last Hour**のボタンをクリックします。
+![image](https://user-images.githubusercontent.com/22209835/113952400-91737280-9850-11eb-8f50-31d8ec206dae.png)
 
-TO BE REPLACED!!!
+3. **Pod**セクションをスクロールダウンしていくと、先ほど作成した**demo-modresort**Podが見えるはずです。 フィルター・セクションに search criteria を追加することで、さらに絞り込むことも可能です。
 
-2. On the Helm Repositories page, click **Add Repository** to register a new Helm Repository.
 
-  ![add repository](images/2020-09-18-16-00-28.png)
-
-3. Enter **dte-charts** (1) as repository Name, and enter **https://raw.githubusercontent.com/dymaczew/charts/master/repo/incubator** as URL (2). Click **Add** (3).
-
-  ![repo add dialog](images/2020-09-18-16-02-55.png)
-
-4. After few seconds, you should see Sync Status as **Completed** (1). Now, let’s deploy an application from this new Helm repository. Click **Catalog** (2) on upper right corner of the page to view the list of helm charts that you can deploy.
-
-  ![helm repo added](images/2020-09-18-16-05-20.png)
-
-5. Search for **mod** (1) and select **modresortapp** (2) application.
-
-  ![modresortapp](images/2020-09-18-16-07-07.png)
-
-6. The chart deploys a simple Liberty web application for demonstration purposes. Select **Configure** to continue.
-
-  ![configure](images/2020-09-18-16-08-32.png)
-
-7. Enter **demo** as Helm release name (1), select **default** as Target namespace (2). On Target cluster, select the **local-cluster** (3). Then click **Install** (4).
-
-  ![install](images/2020-09-18-16-12-42.png)
-
-8. The installation starts immediately but it takes a few minutes to deploy the application to remote cluster. Click **View Helm Releases** to view the status.
-
-  ![](images/2020-09-18-16-14-00.png)
-
-9. On the Helm releases page, you can check that **demo** helm is deployed to your Hub cluster.
-
-  ![](images/2020-09-18-16-15-10.png)
-
-10. Now, go back to the **Hybrid applications** menu ("hamburger" -> Manage Applications -> Hybrid Applications). You can notice that now it shows your just deployed application. Click the **demo-modresrtapp** application.
-
-  NOTE: If the Hybrid Applicatiuons view is not showing the app it may be related to the bug in a code. Go to the Overview page ("hamburger" -> Observe environments -> Overview) and scroll down. In the Applications section you should see a **demo-moderesortapp**. Click the link and continue.
-
-  ![](images/2020-09-18-16-27-52.png)
-
-11. You should see the details of the sample application, as shown below. Click on any of the icons to see the details of each object.
-
-  ![](images/2020-09-18-16-38-53.png)
-
-12. Click the **demo-modresortapp** placement rule (1) and notice that it defines the placement of the application to the clusters with label **environment=Dev** (2). It also specify that one instance of the application should be deployed in case more clusters is labeled this way.
-
-  ![](images/2020-09-18-16-43-05.png)
-
-13. Let's modify the target cluster. Edit the label in the yaml file on the right (1) changing the **Dev** to **QA** and apply the changes with the **Update** icon (2)
-
-  ![](images/2020-09-18-20-22-10.png)
-
-14. In a short time you should notice that the placement rule change is picked by the system and the different target cluster is designeted as a target for deployment.
-
-  ![](images/2020-09-18-20-25-11.png)
-
-15. Let's verify that the application is actually running on MicroK8s cluster. Go back to the yellow **MicroK8s** terminal windows and run the following commands:
-
-  ```sh
-  oc get pods -n default
-  oc get service -n default
-  ```
-
-  ![](images/2020-09-18-20-27-03.png)
-
-16. Notice the **Node port** used by the service. In the example screenshot it is `31946`
-
-  ![](images/2020-09-18-20-28-29.png)
-
-17. Go back to your browser window, open a new tab and provide the following URL `http://microk8s.demo.ibmdte.net:[port-number-from-previous-step]/resorts`
-
-  ![](images/2020-09-18-20-31-41.png)
-
-18. Great! Your Liberty application is available on your managed cluster.
-
-  This application is really a simple sample, just to show you how easy is to install an application from the catalog in multiple clusters. In our next lab you will deploy a hybrid application learning details about Application Management deployment using channels and subscriptions concepts.
-
-***
-
-## Manage Cluster Objects
-
-You can use the management console to create, manage, view details, and troubleshoot application resources and Kubernetes objects in all clusters from a single interface. The management console search page supports searching for application resources by the component kind for each resource.
-
-1. Back to the IBM Cloud Pak for Multicloud Management web page tab, click on the **Search** button.
-
-  ![](images/46-cluster-mgmt-img.png)
-
-2. The Search menu gives access to application resources and Kubernetes objects across all managed clusters. It is really powerful feature allowing you to easily find any resource in your IT infrastructure - no matter where it is actually located - public or private cloud. The Search overview screen displays commonly used search filters - a pre-defined templates to view workloads, unhealthy pods and workloads created in last hour. You can also create and save your own search filters. Click on **Created Last Hour** button.
-
-  ![](images/47-cluster-mgmt-img.png)
-
-3. If you scroll down to the **Pod** section, you should see the **demo-modresort** pod that you created earlier in the list along with other pods. You can also provide the search criteria in the filter section. For example: type `kind` and select **pod**, provide the `modresort` as search string and specify `status` as **Running**.
-
-  ![](images/2020-09-18-20-39-41.png)
-
-  Congratulations! You have successfully completed the lab “Multicluster Management with IBM Cloud Pak for Multicloud Management”.
-
+お疲れさまでした。 第一章の クラスター統合のハンズオンは終了です。
 ***
 
 ## Summary
 
-You completed the Cloud Pak for Multicloud Management tutorial: Multi-cluster Management. Throughout the tutorial, you explored the key takeaways:
-- `Understand Cloud Pak for Multicloud Management`;
-- `Add a managed cluster`;
-- `Deploy an application`;
--	`Manage and monitor application resources of local and remote clusters`;
+!
 
-If you would like to learn more about Cloud Pak for Multicloud Management, please refer to:
--	<a href="https://www.ibm.com/cloud/cloud-pak-for-management" target="blank">Cloud Pak for Multicloud Management home page</a>
-- <a href="https://www.ibm.com/demos/collection/Cloud-Pak-for-Multicloud-Management" target="blank">Cloud Pak for Multicloud Management Demos </a>
+この章では、IBM Cloud Pak for Multicloud Management をもちいて、以下の内容を確認しました。
+- `IBM Cloud Pak for Multicloud Management ダッシュボードから環境全体を概観する`;
+- `クラスターを新規にデプロイする`;
+- `既存クラスターをインポートする`;
+- `クラスターをまたがって、環境を確認する`;
