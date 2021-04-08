@@ -1,6 +1,41 @@
-## Deploy cloud native monitoring
+# Chapter4 インフラストラクチャ・モニタリング
 
-When the Cloud Pak for Multicloud Management is installed with the Monitoring module, you can automatically deploy the Kubernetes data collector to the remote managed clusters. This data collector is capable of gathering and sending to the Management Hub information about performance of all nodes, pods and other resources running in a managed cluster.
+## モニタリング・モジュールの構成
+Cloud Pak for Multicloud Managementにおいて、モニタリング・モジュールが構成されている場合、統合した管理対象クラスターに対して、自動的に Kubernetesデータ・コレクター（＊＊cloud native monitoring＊＊とも呼びます)をデプロイすることが可能です。  
+このデータ・コレクターは、管理ハブ・クラスターに すべてのノードやPodなど、Kubernetesリソースに関する情報を収集し送ることができます。
+
+### Kuberntesデータ・コレクターの構成
+まず Kubernetes データ・コレクターをデプロイします。これまでのアプリケーションのデプロイメントと同様、クラスターにラベルを付与することで、Kubentes データ・コレクターが自動的に配置されます。  
+1. Cloud Pak for Multicloud Management のコンソールを開き、メニューから Automate Infrastructure > Clusters を開きます。 
+クラスターに対する定義内容は、Red Hat Advanced Cluster Managementコンポーネントを見ていますので、Red Hat Advanced Cluster Management コンポーネントのコンソールから実施して頂いても問題ありません。 
+![image](https://user-images.githubusercontent.com/22209835/114003236-8ba17f80-9898-11eb-997c-926399ead109.png)
+1. microk8s クラスターの右端のメニューより **Edit labels**を開きます。
+![image](https://user-images.githubusercontent.com/22209835/114003570-cf948480-9898-11eb-9868-8909c5097f9d.png)
+1. ラベル設定画面が開きますので、ラベル名**ibm.com/cloud-native-monitoring**、値=＊＊enabled**　を指定し、**Add +**をクリックします。
+![image](https://user-images.githubusercontent.com/22209835/114004332-84c73c80-9899-11eb-93df-2877dca27b8e.png)
+1. 以下のように リストに　**ibm.com/cloud-native-monitoring=enabled**が加えられてことを確認して、**Save**をクリックします。
+![image](https://user-images.githubusercontent.com/22209835/114004446-a1fc0b00-9899-11eb-84c9-2f63b9b9caf7.png)
+１．
+![image](https://user-images.githubusercontent.com/22209835/114004446-a1fc0b00-9899-11eb-84c9-2f63b9b9caf7.pn
+
+
+次に **operations**チームの運用ユーザーが新規に追加されたクラスターを管理できるよう、**operations**チームのリソース・アクセス定義に microk8sクラスターを追加します。
+1. Cloud Pak for Multicloud Managementのコンソールを開き、Administer > Identity & Access を開きます。
+![image](https://user-images.githubusercontent.com/22209835/114000343-e1285d00-9895-11eb-82b2-11ada65c0bf6.png)
+1. アクセスコントロールの管理画面が開きます。  
+**Authentication**タブには、認証統合のための LDAPが定義されています。
+LDAPなどからインポートしたユーザーやグループを、Cloud Pak for Multicloud Management での役割に応じて編集する定義が **Teams** です。  **Teams**タブを開きます。
+![image](https://user-images.githubusercontent.com/22209835/114000758-3fedd680-9896-11eb-8e74-a85b676eacd2.png)
+1. Teamsで定義されている運用チーム **operations**チームをクリックします。  
+このoperationsチームには、LDAP上で*operations*グループに分類されているメンバーと、ユーザー *bob* が関連付けらています。
+![image](https://user-images.githubusercontent.com/22209835/114001320-caced100-9896-11eb-8bf5-9440baabd2e3.png)
+1. Resourecesタブを開きます。**operations**チームのメンバーがアクセス可能なリソースが定義されています。  ここに microk8s クラスターが含まれていないため、アクセス権限を追加します。
+![image](https://user-images.githubusercontent.com/22209835/114001729-27ca8700-9897-11eb-9b20-002aedba0dde.png)
+1. 右上の **Manage Resource**をクリックし、microk8s にチェックを入れて Saveします。  
+![image](https://user-images.githubusercontent.com/22209835/114001998-6eb87c80-9897-11eb-815b-e1e4024dee2f.png)
+実際の動作イメージを説明すると、管理ハブ・クラスターの microk8s ネームスペース上に、管理対象クラスター上で稼働するデータコレクターから集められたデータが保管されます。  
+このため、この管理ハブ・クラスター上の micork8s ネームスペースへのアクセス許可を与えることで、**operations**チームのメンバーは microk8sクラスターへのデータを見ることができるようになっています。
+
 
 To deploy Kuberenetes data collector (also known as cloud native monitoring) complete the steps below.
 
