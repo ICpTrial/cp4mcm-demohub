@@ -1,4 +1,3 @@
----
 # Chapter 2 - アプリケーション管理
 
 ## ハンズオン概要
@@ -6,8 +5,6 @@
 -	`アプリケケーションプレイスメント機能をもちいて、アプリケーションを払い出す`
 -	`払い出したアプリケーションを PlacementRuleをもちいて、移動させる`
 -	`ダッシュボードVisualize the application health using Grafana dashboards`
-
-## Define Application Channel
 
 IBM Cloud Pak for Multicloud Management に統合された Red Hat Advanced Cluster Management コンポーネントには、 GitOps を実現するための、アプリケーション管理機能があります。
 このアプリケーション管理機能は、クラスターにまたがってアプリケーションを払いだし、管理するプロセスを、統合しシンプルにします。    
@@ -109,191 +106,24 @@ Red Hat Adanced Cluster Managementコンポーネントから、ソースとな�
       そして、その結果として status.decisions として、microk8sクラスターが選択されていることが分かります。
     ![image](https://user-images.githubusercontent.com/22209835/113966160-8aa52980-9869-11eb-8bbb-2cb2a89db0dc.png)
 
-
-## Deploy the Application
-
-In this section, you will deploy the application components to their respective Kubernetes namespaces, using the yaml files that you created in the previous task.
-
-1.Back to the Management Hub terminal window, execute the command bellow to create two new Openshift projects.
-
-```
-oc new-project modresort-project
-```
-
-```
-oc new-project modresort-entitlement
-```
-
-  ![](images/new-image-17.png)
-
-2.Now, let’s deploy the modresortchan. Execute the commands below:
-
-```
-cd ..
-```
-
-```
-oc apply -f modresortchan
-```
-
-  The output of the above command will be similar to the illustration below. The output shows that Channel and Deployables are deployed.
-
-  ![](images/new-image-18.png)
-
-3.The subscription is deployed to a different namespace than the channel. Never deploy the subscription to the same namespace as the channel. Hence, deploy the subscription to the other namespace, modresort-project.
-
-```
-oc project modresort-project
-```
-
-```
-oc apply -f modresortapp
-```
-
-  ![](images/new-image-19.png)
-
-  Next section of the lab will walk you through validating the application deployment.
-
-***
-
-## Validate the Application
-
-The Application view in Cloud Pak for Multicloud Management console provides graphical view into the applications, channels and subscriptions deployed in the clusters. Let’s validate if the modresort application is deployed correctly.
-
-1.Back to the Firefox browser, you should be in your Cloud Pak for Multicloud Management Web Console.
-
-  ![](images/10-app-mgmt-img.png)
-
-2.On the top left of the page, open the **Menu** (1) and select **Manage Applications** (2) and click on **Hybrid applications** (3).
-
-  ![](images/new-image-20.png)
-
-3.Click on the **modresort101-modresortapp** application link to get to the application Overview page.
-
-  ![](images/new-image-21.png)
-
-4.Scroll down to view the application diagram.
-
-  ![](images/new-image-22.png)
-
-  *Note: It may take a couple of minutes for the application to deploy to the cluster.*
-
-  When the application is successfully deployed via the subscription, the pod in the application topology view will have a green icon as illustrated below.
-
-  ![](images/14-app-mgmt-img.png)
-
-  `Note (Only if you have issues): After a couple of minutes, if your pod has a yellow icon next to the pod, indicating it is in an unknown state, you will need to troubleshoot your yaml files for correctness and redeploy the resources.   Verify that your subscriptions are propagated correctly by running the command.`
-
-```
-oc get subscription.app.ibm.com --all-namespaces
-```
-
-  The subscription from the **modresort** should be in the **Propagated** state.
-
-5.Back to OCP311 terminal window (blue window), let’s check the pods are in running state.
-
-```
-oc get pods -n default
-```
-
-  You should see the devchan-modresort-deployment pod running in the default namespace
-
-  ![](images/new-image-23.png)
-
-6.Use the command line to get the devchan-modresortchan-service NodePort.
-
-```
-oc get services -n default
-```
-
-  ![](images/new-image-24.png)
-
-  Take note of the devchan-modresortchan-service nodePort (on the picture above is 30606), you will use it to access your application.
-
-7.Back to the browser, open a new tab and navigate to:
-
-```
-http://ocp311:<NodePort>/resorts
-```
-  For example, http://ocp311:32664/resorts
-
-  ![](images/new-image-25.png)
-
-  Congratulations! You have successfully deployed the modresorts application to the OpenShift 3.11 Cluster.
-
-***
-
-## Move the Application
-
-Applications deployed using the Subscription model are deployed to clusters based on PlacementRules. The placement rules for deployables can be defined as a stand-alone resource and referenced by the deployable. The placement rules use cluster labels to determine where to place the applications.
-
-In the following steps, you will move the application from the Dev cluster to the QA cluster by changing the placement policy. You also learn how to use cluster replicas.
-
-1.Currently, the application deployed as running on Dev cluster because of the placement values specified in application, as you verified earlier.
-
-  You can modify the placement policies from application view by selecting the placement policy and modifying the corresponding values in the yaml file. Let’s do it!
-
-  Back to the Multicloud Management page, on the Resource topology chart, click on the **modresortapp101 placement policy** icon.
-
-  ![](images/18-app-mgmt-img.png)
-
-2.On the Editor, modify the environment setting from Dev to QA.
-
-  ![](images/new-image-26.png)
-
-3.Apply changes by clicking on **update** icon as shown below.
-
-  ![](images/20-app-mgmt-img.png)
-
-4.Within a few minutes, the cluster value changes from ocp311 to microk8s, and the application is now running on microk8s cluster.
-
-  ![](images/new-image-27.png)
-
-5.Let’s verify that the application is actually running on MicroK8s cluster. Go back to the yellow MicroK8s terminal windows and execute the following commands:
-
-```
-kubectl get pods -n default
-kubectl get service -n default
-```
-
-  ![](images/new-image-28.png)
-
-6.Notice the **Node port** used by the service. In the example screenshot it is `30726`.
-
-  ![](images/new-image-29.png)
-
-7.Go back to your browser window, open a new tab and provide the following URL:
-  `http://microk8s:[port-number-from-previous-step]/resorts`
-
-  ![](images/new-image-30.png)
-
-  Great, you moved the application from one cluster to the other.
-
-8.What if you want to run the application on both the clusters? This is possible by changing clusterReplicas and matchingLabel. Let’s do it!
-
-  Back to the Multicluster Management page, on the Editor, change **clusterReplicas** to **2**.
-
-  ![](images/new-image-31.png)
-
-9.On the spec **matchLabels** setting, **remove** the **environment label**, and add **cloud** label with value **Other**.
-
-  ![](images/new-image-32.png)
-
-  The label, cloud, exists on both the clusters and the value matches Other.
-
-12.Apply the changes by clicking update icon.
-
-  ![](images/27-app-mgmt-img.png)
-
-13.Within a few minutes, the resource overview refreshes, indicating that the application is running on both clusters. You can validate by checking the status of pods on both the clusters
-
-  ![](images/new-image-33.png)
-
-  Great, now you have your application on both clusters. Next section, you explore Grafana dashboard to visualize the application health across clusters.
-
-  Congratulations! You have successfully completed the lab “Application Management with IBM Cloud Pak for Multicloud Management”.
-
-***
+## アプリケーション配置の更新
+PlacementRule に定義されたラベルを変更することによって、アプリケーションの配置先クラスターを変更します。
+
+まず、**管理ハブクラスター**には、enrvironmentラベルが存在しないため、environemt:productionの ラベルを付与します。
+1. Red Hat ACMコンポーネントのコンソールを開き、メニューから Automate Infrastructure > Clusters を開きます。
+![image](https://user-images.githubusercontent.com/22209835/113968270-b7f3d680-986d-11eb-9ab0-172d239e5bbe.png)
+1. 管理ハブクラスターである**local-cluster**を選択し、右端にある ... をクリックして、**Edit labels**を開きます。
+![image](https://user-images.githubusercontent.com/22209835/113968386-f1c4dd00-986d-11eb-9bad-75d45c08811f.png)
+1. Labels欄に `enviroment=prod` を指定し、**Add**ボタンをクリックします。
+1. Labelのリストの中に `environment=prod`が追加されたことを確認して、**Done**ボタンをクリックします。
+![image](https://user-images.githubusercontent.com/22209835/113968584-541ddd80-986e-11eb-95a2-d6a03bfddd9e.png)
+1. Red Hat ACMコンポーネントのメニューから **Manage Applications**をクリックし、アプリケーション管理ページに移動します。
+1. 払出された **modresort**アプリケーションが確認できるはずです。右端のメニューをクリックし、**Edit application**を選択します。
+![image](https://user-images.githubusercontent.com/22209835/113968981-18374800-986f-11eb-966e-88ca157d6ff4.png)
+1. 払出し先クラスターを選択するラベルの画面までスクロールダウンし、environmentラベルの値 qa を **prod** に更新し、右上の**Update**ボタンをクリックします。
+![image](https://user-images.githubusercontent.com/22209835/113969170-73693a80-986f-11eb-9661-c470d1c5c7ca.png)
+1. 数分でアプリケーションの配置が更新されることが確認できます。配置先クラスターが **local-cluster**に更新されたことを確認してください。
+![image](https://user-images.githubusercontent.com/22209835/113969904-cee7f800-9870-11eb-9b19-a0aa53b9f194.png)
 
 ## Summary
 
