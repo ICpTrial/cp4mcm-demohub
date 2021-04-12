@@ -1,8 +1,10 @@
 ## 環境のクリーンアップ
 
 DTE環境払出し直後の環境は、 このハンズオンシナリオでは実施しないコンポーネントや、失敗したジョブの定義などが含まれています。  
-これらをクリーンナップするためには、cleanup-env.sh をダウンロードし、  
-デスクトップ上の緑色のターミナルをダブルクリックし、OpenShift にログインした状態で、スクリプトを実行ください。
+これらをクリーンナップするためには、以下を実施ください。
+1. デスクトップ上の緑色のターミナルをダブルクリック
+1. cleanup-env.sh をダウンロードし実行権限を付与
+1. OpenShift にログインした状態で、cleanup-env.sh を実行ください。
 
 ```
 [ibmuser@admin ~]$ pwd
@@ -18,6 +20,7 @@ Saving to: ‘cleanup-env.sh’
 100%[======================================>] 658         --.-K/s   in 0s      
 
 2021-04-12 03:35:28 (23.4 MB/s) - ‘cleanup-env.sh’ saved [658/658]
+[ibmuser@admin ~]$ chmod +x cleanup-env.sh 
 [ibmuser@admin ~]$ ./cleanup-env.sh 
 ibm-common-services
 error: resource(s) were provided, but no name, label selector, or --all flag specified
