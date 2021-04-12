@@ -115,6 +115,12 @@ Infrastructure Monitoringを確認していきます。
 1. メニューから **Manage Applications**を開きます。
 1. アプリケーションのダッシュボードから、右上にある**Create Appliations**のボタンをクリックします。
 1. 以下の定義でアプリケーションを指定し、払出します。
+
+Secretのコピー
+ oc get secrets ibm-management-pull-secret -n ibm-cp4mcm --export -o yaml | oc apply -n cp4mcm-cloud-native-monitoring -f -
+ oc secrets link ua-cloud-monitoring ibm-management-pull-secret -n cp4mcm-cloud-native-monitoring
+ oc secrets link ua-cloud-monitoring ibm-management-pull-secret --for=pull -n cp4mcm-cloud-native-monitoring
+ 
 |項目|値|
 --|--
 |name|bookinfo|
