@@ -57,37 +57,37 @@ Cloud Pak for Multicloud Managementには、外部からブラックボックス
 １． スクロールダウンすると、実際のテスト結果の詳細が分かります。グラフの中の任意のドットをクリックしてみましょう。各テストのタイミングでの状況が分かります。
 ![](images/2020-09-30-20-13-53.png)
 
+シンセティック・モニタリングでは、よりユーザーに近い環境にシンセティック・モニタリング用のエージェントを導入して、そこから要求を送ることにより、よりエンドユーザーに近いところで体験を可視化することもできます。
 
+## サービスのゴールデン・シグナルの確認
 
-## Explore SRE Golden Signals
+ここからは、アプリケーション・パフォーマンス監視のひとつのキーである、ゴールデン・シグナルを見ていきます。  
+ゴールデン・シグナルは どんな言語でアプリケーションが稼働していようとも、Site Reliability Engineer が問題判別のスタート地点とすることができる パフォーマンスのKPIです。  
 
-   During this lab exercise, you will be exploring the Golden Signals.  The Golden Signals are a way of normalizing the performance KPIs to make it easier and more intuitive for an SRE to debug a problem.
+1. Cloud Pak for Multicloud Management のコンソールから、Infrastructure Monitoring を開きます。
+![image](https://user-images.githubusercontent.com/22209835/114507857-ad22b280-9c6e-11eb-9260-300866bb29d8.png)
 
-1. In the browser with the Cloud Pak user interface, click the Resources tab
+1. **Resource Types**のタブから、**Kubernetes Services**を開きます。 
+![image](https://user-images.githubusercontent.com/22209835/114508210-11de0d00-9c6f-11eb-973d-625e020503af.png)
+ 
+１. 複数クラスター環境で作成されている Kubernetesサービスのリストが表示されます。
+![image](https://user-images.githubusercontent.com/22209835/114508026-e22f0500-9c6e-11eb-876e-a4bb6591f6e8.png)
 
-   ![](images/2020-01-19-17-21-00.png)
-
-2. Select "Kubernetes Services"
-
-   You will see a list of kubernetes services that are running in your environment
-
-   ![](images/2020-01-19-17-25-00.png)
-
-3. Click the link for the "productpage" resource
-
-   You will navigate to the page for the productpage microservice.  Let's explore this page as seen below
-
-   ![](images/2020-01-19-17-31-00.png)
-
-4. Deployment topology
-
-   In the upper left corner, you see the "Deployment topology".  You've seen this before in the context of the kubernetes cluster.  Now, you're viewing it in the context of the productpage microservice.  What the topology is showing you is that this microservice is deployed to one pod on one node in the cluster.  If you scaled out the deployment to 2 pods, then you would see 2 pods in the Deployment topology.
-
-5. Golden Signals
-
-   Next, look at the golden signals on the right side of the page.   The 4 graphs labeled Latency, Errors, Traffic, and Saturation are the Golden Signals.  These are the most important metrics for Site Reliability Engineering (SRE) as they show the metrics imoprtant from the end-user perspective, that have been normalized for different application/middleware domains.  Let's explore Latency a little more.
-
-6. Latency
+1. 検索バーを利用して、productopage リソースを見つけて、開いてください。  
+![image](https://user-images.githubusercontent.com/22209835/114508367-3b973400-9c6f-11eb-945e-422725b2f0fe.png)
+1. Bookinfo アプリケーションを構成する ProductPage マイクロサービスのページを開きます。
+![image](https://user-images.githubusercontent.com/22209835/114508631-8dd85500-9c6f-11eb-9a38-758e557d45c1.png)
+  
+  1. **デプロイメント・トポロジー**  
+  左上のコーナーには、デプロイメント・トポロジーが表示されています。Infrastructureモニタリングの際にすでに見ていますね。
+  ここでは、同じデプロイメント・トポロジーを、ProductPage マイクロサービスのビューのコンテキストで見ることができます。  
+  ここで分かるのは、１つのクラスターの中の１ノードにこのマイクロサービスのPodが１つ 稼働しているということです。もしPodをスケールアウトして２つに構成すれば、デプロイメント・トポロジーの図も２つになります。
+  色が付いている箇所は、問題が起きている箇所です。
+  
+  1. **ゴールデン・シグナル**  
+  右上にある ゴールデン・シグナルを見ていきます。ここでは、Latency（応答性能）、エラー数（Errors）、トラフィック量（Traffic）、リソースの飽和状態（Statuation）の４つを見ることができます。  
+  これらは、Site Reliability Engineer （SRE）にとって、もっとも大事なメトリックです。
+  
 
    Flyover the Latency Graph.  You'll see a graph showing the latency shown in different percentiles (50th, 90th, and 95th).  By using percentiles, you get a much better idea how the applicaiton is performing.
 
