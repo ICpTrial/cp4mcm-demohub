@@ -50,11 +50,10 @@ Cloud Pak for Multicloud Managementには、外部からブラックボックス
 
 1. Availability（アクセスできたか否か）と と応答時間のグラフを確認することができます。  
 ![image](https://user-images.githubusercontent.com/22209835/114504987-a72ad280-9c6a-11eb-84a9-25ca99b47861.png)
-
-１. 応答時間のグラフでは、アクセスにかかった処理の内訳をはあくすることができるので、SSLセッションを確立にかかった時間、ホスト名の名前解決にかかった時間、処理にかかった時間などの内訳を確認することができます。
+1. 応答時間のグラフでは、アクセスにかかった処理の内訳をはあくすることができるので、SSLセッションを確立にかかった時間、ホスト名の名前解決にかかった時間、処理にかかった時間などの内訳を確認することができます。
 ![](images/2020-09-30-20-11-38.png)
 
-１． スクロールダウンすると、実際のテスト結果の詳細が分かります。グラフの中の任意のドットをクリックしてみましょう。各テストのタイミングでの状況が分かります。
+1. スクロールダウンすると、実際のテスト結果の詳細が分かります。グラフの中の任意のドットをクリックしてみましょう。各テストのタイミングでの状況が分かります。
 ![](images/2020-09-30-20-13-53.png)
 
 シンセティック・モニタリングでは、よりユーザーに近い環境にシンセティック・モニタリング用のエージェントを導入して、そこから要求を送ることにより、よりエンドユーザーに近いところで体験を可視化することもできます。
@@ -70,59 +69,53 @@ Cloud Pak for Multicloud Managementには、外部からブラックボックス
 1. **Resource Types**のタブから、**Kubernetes Services**を開きます。 
 ![image](https://user-images.githubusercontent.com/22209835/114508210-11de0d00-9c6f-11eb-973d-625e020503af.png)
  
-１. 複数クラスター環境で作成されている Kubernetesサービスのリストが表示されます。
+1. 複数クラスター環境で作成されている Kubernetesサービスのリストが表示されます。
 ![image](https://user-images.githubusercontent.com/22209835/114508026-e22f0500-9c6e-11eb-876e-a4bb6591f6e8.png)
 
 1. 検索バーを利用して、productopage リソースを見つけて、開いてください。  
 ![image](https://user-images.githubusercontent.com/22209835/114508367-3b973400-9c6f-11eb-945e-422725b2f0fe.png)
+
 1. Bookinfo アプリケーションを構成する ProductPage マイクロサービスのページを開きます。
 ![image](https://user-images.githubusercontent.com/22209835/114508631-8dd85500-9c6f-11eb-9a38-758e557d45c1.png)
   
-   1. **デプロイメント・トポロジー**  
+   #### デプロイメント・トポロジー
    左上のコーナーには、デプロイメント・トポロジーが表示されています。Infrastructureモニタリングの際にすでに見ていますね。
    ここでは、同じデプロイメント・トポロジーを、ProductPage マイクロサービスのビューのコンテキストで見ることができます。  
    ここで分かるのは、１つのクラスターの中の１ノードにこのマイクロサービスのPodが１つ 稼働しているということです。もしPodをスケールアウトして２つに構成すれば、デプロイメント・トポロジーの図も２つになります。
    色が付いている箇所は、問題が起きている箇所です。
 
-   1. **ゴールデン・シグナル**  
+   #### ゴールデン・シグナル 
    右上にある ゴールデン・シグナルを見ていきます。ここでは、Latency（応答性能）、エラー数（Errors）、トラフィック量（Traffic）、リソースの飽和状態（Statuation）の４つを見ることができます。  
    これらは、Site Reliability Engineer （SRE）にとって、もっとも大事なメトリックです。
-
-   応答性能（Latency)のグラフの上に、カーソルを移動させてください。様々なパーセンタイル（50,90,95）での 応答性能を確認できます。  
-   応答性能は全体としては高速であっても、数％遅い値があったりするので、このパーセンタイルを利用して、よりよくアプリケーションの挙動を理解できます。
-   ![](images/2020-01-19-17-40-00.png)
-
-   次に、フィルターのドロップダウンリストを選んでください。デフォルトでは、すべてのURLへの要求への応答時間のメトリックを出していますが、特定のURLでのメトリックを確認することもできます。
-   ![](images/2020-01-20-08-12-32.png)  
-   productpage マイクロサービスのURLを選んでください。選んだURLの応答性能データを確認します。  
-   さらに、"/productpage?u=normal"のURLの右端にあるアイコンをクリックしてください。
-    ![](images/2020-01-20-08-16-32.png)
-   以下のような画面が確認できます。これは、選択したURLの応答要求の分散を確認できるチャートです。応答性能になんからのパターンがある場合には、このトランザクションを可視化する画面は役に立ちます。  
-   ひとつ要求を選ぶと、さらにその応答時間の内訳けを確認することができます。
-   ![](images/2020-01-19-19-59-00.png)
-  右上の "X"をクリックして、応答時間の内訳のウィンドウを閉じます。
-   ![](images/2020-01-20-08-19-27.png)
-   Latency（応答性能）の右上にある "Latency Options"から、表示するパーセンタイルを変更することもできます。試してみてください。
-   ![](images/2020-01-20-08-21-09.png)
-   ![](images/2020-01-19-17-49-00.png)
+     1. 応答性能（Latency)のグラフの上に、カーソルを移動させてください。様々なパーセンタイル（50,90,95）での 応答性能を確認できます。  
+     応答性能は全体としては高速であっても、数％遅い値があったりするので、このパーセンタイルを利用して、よりよくアプリケーションの挙動を理解できます。
+       ![](images/2020-01-19-17-40-00.png)
+     1. 次に、フィルターのドロップダウンリストを選んでください。デフォルトでは、すべてのURLへの要求への応答時間のメトリックを出していますが、特定のURLでのメトリックを確認することもできます。
+       ![](images/2020-01-20-08-12-32.png)  
+     1. productpage マイクロサービスのURLを選んでください。選んだURLの応答性能データを確認します。  
+     1. さらに、"/productpage?u=normal"のURLの右端にあるアイコンをクリックしてください。
+       ![](images/2020-01-20-08-16-32.png)
+     1. 以下のような画面が確認できます。これは、選択したURLの応答要求の分散を確認できるチャートです。応答性能になんからのパターンがある場合には、このトランザクションを可視化する画面は役に立ちます。ひとつ要求を選ぶと、さらにその応答時間の内訳けを確認することができます。
+      ![](images/2020-01-19-19-59-00.png)
+     1. 右上の "X"をクリックして、応答時間の内訳のウィンドウを閉じます。
+      ![](images/2020-01-20-08-19-27.png)
+     1. Latency（応答性能）の右上にある "Latency Options"から、表示するパーセンタイルを変更することもできます。試してみてください。
+      ![](images/2020-01-20-08-21-09.png)
+      ![](images/2020-01-19-17-49-00.png)
    
-   1. **サービス依存性マップ**
-   左下には productpageと関連があるサービスが可視化されています。
+   #### サービス依存性マップ
+   1. 左下には productpageと関連があるサービスが可視化されています。
    ![](images/2020-01-21-08-48-36.png)
    サービス依存性マップは、マイクロサービスの 1ホップ・トポロジー（当該マイクロサービスを呼び出しているもの、当該マイクロサービスから呼び出されているもの）を可視化します。  
-   productpageサービスでは、サービスに対してアクセスしてくるクライアントと、"details”サービスと"revies"サービスへの依存性が存在しています。
-   
-  
-   Click on "reviews" icon.  You will navigate to that microservice and see the 1-hop topology for the "review" service.  Examine the golden signals for the "reviews" service.
+   productpageサービスでは、"details”サービスと"reviews"サービスへの依存性が存在しています。
+   1. "reviews"アイコンをクリックします。"reviews"サービスの１ホップ・トポロジーを確認することができます。"reviews"サービスのゴールデン・シグナルも確認してみてください。
 
-8. Full Service Topology
-
-   Most of the time, the 1-hop topology is good enough to diagnose the root cause of a problem.  But, sometimes you need to see additional information.  Click the **"expand to the full screen"** icon in the upper right corner of the service dependencies to expand the view.
-
+   #### フル・サービス・トポロジー
+   1. 多くの場合、1ホップ・トポロジーは、問題原因を解析するには十分なことが多いです。大量のマイクロサービスに圧倒されずに済みます。しかし、もっと詳しく全体をみたいときもあります。  
+   その場合には、サービス依存性マップの右上にある **expand to the full screen**アイコンをクリックします。
    ![](images/2020-01-20-08-30-45.png)
-
-   The view you see comes from an embedded capability called Agile Service Manager (ASM).  ASM allows you to expand to more than hop in the topology. It also allows you to visualize changes that are occurring in the application.  Since change introduces most of the problems in IT, this is a powerful capability.
-
+   1. このビューは、製品に内蔵された Agile Service Manager(ASM)と呼ばれる機能で提供されています。ASMは １ホップ以上のトポロジーを可視化してくれます。  
+   さらに、当該アプリケーションに対して発生したサービスの追加などの変更も可視化してくれます。変更をきっかけに問題となる事象が発生することも多いですので、これらの変更のトラッキングは有用な機能です。
    ![](images/2020-01-19-19-46-00.png)
 
    Let's start by switching to a 2-hop topology.  Select the dropdown in the top-middle of the screen and change the value to "2".  Then click "Render"
