@@ -25,56 +25,61 @@
 ![image](https://user-images.githubusercontent.com/22209835/114014852-03c17280-98a4-11eb-85ae-4ed9a6d5d432.png)
 1. bookinfo のアプリケーションが microk8sクラスターに払出され、各種サービスが立ち上がることを待機します。  
 クラスターが定義されない場合は、ラベルの指定を誤っていないか確認ください。特に environment のスペル！
-![image](https://user-images.githubusercontent.com/22209835/114015570-cc06fa80-98a4-11eb-8daf-9f76c7d68ff9.png)
+![image](https://user-images.githubusercontent.com/22209835/114502010-00443780-9c66-11eb-80e3-f20817b7e081.png)
 
-7. You can verify if the application was successfuly deployed and is accessible by opening a new browser tab and entering the URL: `bookinfo.10.0.0.2.nip.io`. You should reach the page that looks like below:
-
-   ![](images/2020-09-30-19-50-18.png)
+1. 払出されたアプリケーション内に Ingressの定義があり、このアプリケーションは `bookinfo.10.0.0.2.nip.io` の URLでアクセスできるようになっています。  
+ブラウザから、このアプリケーションにアクセスできることを確認してください。
+![image](https://user-images.githubusercontent.com/22209835/114502475-cde70a00-9c66-11eb-9421-89a39666ee4d.png)
 
 ***
 
-## Exploring synthetics monitoring
+## シンセティック・モニタリング 
 
-Cloud Pak for Multicloud Management is capable of monitoring the application availability using a synthetic transaction monitoring. There is a default agent installed on the Hub cluster that automatically starts monitoring any ingress object that is deployed as a part of Hybrid application. Let's check how it looks like.
+Cloud Pak for Multicloud Managementには、外部からブラックボックスにアクセスして検証することでユーザーの挙動を理解する シンセティック・モニタリングの機能が含まれています。  
+シンセティック・モニタリングは、ハイブリッド・アプリケーションの一部として、デプロイされた Ingress を検知し、自動的にモニタリングを開始します。  
+確認していきましょう。
 
-1. Open the Monitoring module interface (Select "hamburger" menu, then **Monitor Health**, then **Infrastructure monitoring**). Then select the **Synthetic results** tab
+1. Cloud Pak for Multicloud Management のメニューから **Monitor Health** > **Synthetics** を開きます。
+![image](https://user-images.githubusercontent.com/22209835/114503867-eb1cd800-9c68-11eb-942e-5cdf75fc1f75.png)  
 
-   ![](images/2020-09-30-20-01-54.png)
-
-2. On the page Synthetic results page, you should see the automatically configured monitor for ingress deployed as a part of Bookinfo application. Click on the monitor name to explore details
-
+1. シンセティック・モニタリングのページには、Bookinfoアプリケーションの一部としてデプロイされたIngressに対する定義があるはずです。
    ![](images/2020-09-30-20-03-37.png)
 
-3. You can adjust the scope of the timeline, reducing the windows to last 30 minutes (1). You can also select to see a Response time graph or a response time Breakdown (2). This helps to diagnose issues related to name resolution on establishing the SSL session.
+3. モニタリングの間隔を３０分に減らしましょう。アプリケーションをデプロイした直後ですので、検証されるテストデータは少ないかもしれません。
+![image](https://user-images.githubusercontent.com/22209835/114504818-6e8af900-9c6a-11eb-933f-f877327c94c8.png)
 
-   ![](images/2020-09-30-20-11-38.png)
+1. Availability（アクセスできたか否か）と と応答時間のグラフを確認することができます。  
+![image](https://user-images.githubusercontent.com/22209835/114504987-a72ad280-9c6a-11eb-84a9-25ca99b47861.png)
 
-4. When you scroll down you can see the results of actual tests. Select any dot on the graph to see detailed breakdown of the response.
+１. 応答時間のグラフでは、アクセスにかかった処理の内訳をはあくすることができるので、SSLセッションを確立にかかった時間、ホスト名の名前解決にかかった時間、処理にかかった時間などの内訳を確認することができます。
+![](images/2020-09-30-20-11-38.png)
 
-   ![](images/2020-09-30-20-13-53.png)
+１． スクロールダウンすると、実際のテスト結果の詳細が分かります。グラフの中の任意のドットをクリックしてみましょう。各テストのタイミングでの状況が分かります。
+![](images/2020-09-30-20-13-53.png)
 
-   You can deploy more agents in different locations to have your applications tested for availability and response time from a customer perspective. Deploying own agents allows also to configure more sophisticated test schedules. Let's see how it works.
+## （オプション）シンセティック・モニタリングの追加構成
 
-5. Go to the green terminal titled **Management hub** and run the following commands to unpack the synthetics agent binaries that were downloaded for you.
+1. デフォルトで構成されるエージェントの他に、より顧客に近い環境にエージェントを配置し、そこからリクエストを送って検証を行うことも可能です。  みていきましょう。
 
+1. 緑の **Management Hub**のタブを開いて、以下のコマンドを実行して、シンセティック・モニタリング用のエージェントのバイナリーを構成していきましょう。
    ```sh
    cd
    tar xvf app_mgmt_syntheticpop_xlinux.tar.gz
    cd app_mgmt_syntheticpop_xlinux
    ```
-6. To configure the synthetic monitoring agent you need a config pack that will instruct agent where to look for test definitions and where to send the gathered data. Go back to you browser, click the **Synthetic results** breadcrumb in the top-left corner of the screen. Then select the Administration tab.
+1. シンセティック・モニタリング・エージェントを利用するためには、保管されたテスト・ターゲットの情報などをCloud Pak for MCMの管理ハブから取得する必要があり、この管理ハブの情報をConfigPakを利用して、エージェントに渡します。  Cloud Pak for MCM のコンソールに戻り、 **Administer > Monitoring** を開きます。
 
    ![](images/2020-10-01-12-00-43.png)
 
    ![](images/2020-10-01-12-02-04.png)
 
-7. On the Administration view select the **Integrations** tile, then **New integration** button.
+7. **Integration**のブロックをクリックし、**New integration**ボタンを開きます。
 
    ![](images/2020-10-01-13-00-10.png)
 
    ![](images/2020-10-01-13-01-05.png)
 
-8. Click **Configure** under the **Monitoring Data Collectors** tile
+8. **Configure**の下にある **Monitoring Data Collectors** ボタンをクリックします。
 
    ![](images/2020-10-01-13-02-18.png)
 
