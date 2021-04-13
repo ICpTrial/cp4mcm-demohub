@@ -4,101 +4,315 @@
 Cloud Pak for Multicloud Managementにおいて、モニタリング・モジュールが構成されている場合、統合した管理対象クラスターに対して、自動的に Kubernetesデータ・コレクター（＊＊cloud native monitoring＊＊とも呼びます)をデプロイすることが可能です。  
 このデータ・コレクターは、管理ハブ・クラスターに すべてのノードやPodなど、Kubernetesリソースに関する情報を収集し送ることができます。
 
-### Kuberntesデータ・コレクターの構成
-まず Kubernetes データ・コレクターをデプロイします。これまでのアプリケーションのデプロイメントと同様、クラスターにラベルを付与することで、Kubentes データ・コレクターが自動的に配置されます。  
-1. Cloud Pak for Multicloud Management のコンソールを開き、メニューから Automate Infrastructure > Clusters を開きます。 
-クラスターに対する定義内容は、Red Hat Advanced Cluster Managementコンポーネントを見ていますので、Red Hat Advanced Cluster Management コンポーネントのコンソールから実施して頂いても問題ありません。 
-![image](https://user-images.githubusercontent.com/22209835/114003236-8ba17f80-9898-11eb-997c-926399ead109.png)
-1. microk8s クラスターの右端のメニューより **Edit labels**を開きます。
-![image](https://user-images.githubusercontent.com/22209835/114003570-cf948480-9898-11eb-9868-8909c5097f9d.png)
-1. ラベル設定画面が開きますので、ラベル名**ibm.com/cloud-native-monitoring**、値=＊＊enabled**　を指定し、**Add +**をクリックします。
-![image](https://user-images.githubusercontent.com/22209835/114004332-84c73c80-9899-11eb-93df-2877dca27b8e.png)
-1. 以下のように リストに　**ibm.com/cloud-native-monitoring=enabled**が加えられてことを確認して、**Save**をクリックします。
-![image](https://user-images.githubusercontent.com/22209835/114004446-a1fc0b00-9899-11eb-84c9-2f63b9b9caf7.png)
-これにより、Kubernetes データ・コレクターが自動的に **microk8s**クラスターに払出され、構成されます。
-1. デスクトップの**Microk8s Teminal**をクリックして、**microk8s**クラスターのターミナルを開き、以下のコマンドを実行します。  
-   1. **cp4mcm-cloud-native-monitoring**ネームスペースが作成され、モニタリング・エージェントが構成されていることを確認します。
-      ```
-      ibmuser@microk8s:~$ kubectl get ns 
-      NAME                                  STATUS   AGE
-      cp4mcm-cloud-native-monitoring        Active   8m
-      default                               Active   182d
-      ingress                               Active   182d
-      k8sdemo                               Active   70m
-      kube-node-lease                       Active   182d
-      kube-public                           Active   182d
-      kube-system                           Active   182d
-      microk8s                              Active   44h
-      modresort                             Active   4h52m
-      open-cluster-management-agent         Active   44h
-      open-cluster-management-agent-addon   Active   44h
-      ```
-   1. 以下のコマンドで、エージェントが稼働していることを確認します。  
-   多少時間がかかりますので、まだ構成が開始されていることを確認できれば、次のステップに進んでください。
-      ```
-      ibmuser@microk8s:~$ kubectl get pods -n cp4mcm-cloud-native-monitoring 
-      NAME                                        READY   STATUS      RESTARTS   AGE
-      ibm-dc-autoconfig-operator-f8f9848c-kgmpc   1/1     Running     0          8m20s
-      ibm-dc-autoconfig-operator-qf5s4            0/1     Completed   0          8m20s
-      job-ua-operator-7ztdr                       0/1     Completed   0          8m20s
-      k8sdc-cr-k8monitor-7cd7b75cb-hhffl          2/2     Running     0          7m40s
-      k8sdc-operator-f95dc4f8b-p5q7t              1/1     Running     0          8m20s
-      reloader-6bc9967d6-x4d48                    1/1     Running     0          8m20s
-      ua-mgmt-ua-cloud-monitoring-688zj           1/1     Running     0          8m9s
-      ua-operator-59bf778dcc-9ctwd                1/1     Running     0          8m20s
-      ```
-### operationsチームへの リソースアクセス権限の設定
-次に **operations**チームの運用ユーザーが新規に追加されたクラスターを管理できるよう、**operations**チームのリソース・アクセス定義に microk8sクラスターを追加します。
-1. Cloud Pak for Multicloud Managementのコンソールを開き、Administer > Identity & Access を開きます。
-![image](https://user-images.githubusercontent.com/22209835/114000343-e1285d00-9895-11eb-82b2-11ada65c0bf6.png)
-1. アクセスコントロールの管理画面が開きます。  
-**Authentication**タブには、認証統合のための LDAPが定義されています。
-LDAPなどからインポートしたユーザーやグループを、Cloud Pak for Multicloud Management での役割に応じて編集する定義が **Teams** です。  **Teams**タブを開きます。
-![image](https://user-images.githubusercontent.com/22209835/114000758-3fedd680-9896-11eb-8e74-a85b676eacd2.png)
-1. Teamsで定義されている運用チーム **operations**チームをクリックします。  
-このoperationsチームには、LDAP上で*operations*グループに分類されているメンバーと、ユーザー *bob* が関連付けらています。
-![image](https://user-images.githubusercontent.com/22209835/114001320-caced100-9896-11eb-8bf5-9440baabd2e3.png)
-1. Resourecesタブを開きます。**operations**チームのメンバーがアクセス可能なリソースが定義されています。  ここに microk8s クラスターが含まれていないため、アクセス権限を追加します。
-![image](https://user-images.githubusercontent.com/22209835/114001729-27ca8700-9897-11eb-9b20-002aedba0dde.png)
-1. 右上の **Manage Resource**をクリックし、microk8s にチェックを入れて Saveします。  
-![image](https://user-images.githubusercontent.com/22209835/114001998-6eb87c80-9897-11eb-815b-e1e4024dee2f.png)
-実際の動作イメージを説明すると、管理ハブ・クラスターの microk8s ネームスペース上に、管理対象クラスター上で稼働するデータコレクターから集められたデータが保管されます。  
-このため、この管理ハブ・クラスター上の micork8s ネームスペースへのアクセス許可を与えることで、**operations**チームのメンバーは microk8sクラスターへのデータを見ることができるようになっています。
+***
 
-### operationsチームへの リソースアクセス権限の設定
-最後に、**oprations**チームのメンバー **bob**として、モニタリング・モジュールのコンソールを開きます。
-1. 一旦、ヘッダー右上の人間アイコンをクリックして、メニューを開き、ログアウトを選択します。
-![image](https://user-images.githubusercontent.com/22209835/114007125-0324de00-989c-11eb-984c-0f1ebb1a850d.png)
-1. ログインページで、**bob** としてログインしてください。ブラウザに保管されたパスワードで入れますが、明示的に指定する場合には **Passw0rd**を指定します。  
-![image](https://user-images.githubusercontent.com/22209835/114007443-5008b480-989c-11eb-8844-12f715a06ae2.png)
-ログイン出来ない場合には、**Change your authentication type**から、明示的に**Enterprise LDAP**を指定して、再度試してください。
-1. bobとしてログインしたら、メニューから Infrastructure Monitoring を選択します。  
-![image](https://user-images.githubusercontent.com/22209835/114008169-ed63e880-989c-11eb-9b0c-01251654dbd5.png)
-もしなにもリソースが表示されてないようでしたら、しばらく、Kubernetes data collectorが開始されるのを数分待機してください。  
-Microk8sターミナル（黄色）から、さきほどのステータス確認コマンド `kubectl get pods -n cp4mcm-cloud-native-monitoring`で、状況を確認してみてもいいでしょう。 
-1. 正常に稼働すると、以下のようにInfrastructure Monitoringのダッシュボードが表示されます。
-![image](https://user-images.githubusercontent.com/22209835/114008723-7d099700-989d-11eb-9745-bc7d4ba0e5c6.png)
+## シンセティック・モニタリングとゴールデン・シグナル
+クラウドネイティブ環境では、従来の基盤チームがになってきた基盤モニタリングだけでなく、提供しているビジネス・アプリケーションの挙動も理解し、ユーザー体験を改善していく必要があります。  
+2020年末の IBMによるInstana社買収により、この**アプリケーション・パフォーマンス・モニタリング** および **Observablity**の領域は、今後 強力な機能強化が予定されています。  
+別Chapterにて **IBM Obserbability with Instana**の演習を用意していますので、時間がない場合は、ここで Instanaの演習に移ってください。  
+まだハンズオンの時間に余裕がある場合には、引き続き、現在 IBM Cloud Pak for Multicloud Managementのモニタリング・コンポーネントで なにができるか確認していきます。
 
- ## Infrastructureモニタリング
-Infrastructure Monitoringを確認していきます。
-1. **Kubernetes Cluster**をクリックします。
-![image](https://user-images.githubusercontent.com/22209835/114009458-1fc21580-989e-11eb-8f54-f83c2a2e08b0.png)
-1. **microk8s**をクリックします。
-![image](https://user-images.githubusercontent.com/22209835/114009589-3cf6e400-989e-11eb-9976-56990c80050d.png)
-1. microk8sクラスターの詳細画面が開きます。一番上には、このクラスターで発生した イベントのタイムラインが表示されています。
-![image](https://user-images.githubusercontent.com/22209835/114009984-9e1eb780-989e-11eb-86ff-260c491fde29.png)
-1. 左の大きなは、トポロジー・マップです。トポロジー・マップの下に表示されている **How do I read this?**をクリックしてください。
-大きな円がクラスター、中の六角形がノードを意味しています。microk8sは１ノードクラスターのため、六角形は一つだけですが、通常は複数ノードが存在します。  
-また、問題が発生している場合は、当該コンポーネントの色が変わることで、問題がある環境に気づくことができます。
-![image](https://user-images.githubusercontent.com/22209835/114010542-28ffb200-989f-11eb-8e7f-459777bec0d4.png)
-1. Xで 凡例を閉じて、真ん中のノードをクリックします。
-![image](https://user-images.githubusercontent.com/22209835/114010798-78de7900-989f-11eb-8298-7d34e9efcb9b.png)
-1. ノードの詳細画面が開きます。正常稼働していないPodがいれば、白ではない色で表示されているものがいるかもしれません。
-![image](https://user-images.githubusercontent.com/22209835/114011045-bd6a1480-989f-11eb-9b12-a2c2f6895b9c.png)
-1. 上野イベント・タイムラインの青いバーを左右にスクロールさせることで、イベントやトポロジーおよびリソースの変化を確認することができます。  
-問題が発生した場合には、時系列で環境の変化を確認していくことができます。
-![image](https://user-images.githubusercontent.com/22209835/114011628-6749a100-98a0-11eb-979e-7a0ebb737dac.png)
-1. ページを下にスクロールダウンすると、当該ノード上で稼働する podのリストが出てきます。  
-たとえば、Resource Limitが設定されていないPodが存在し、そのPodのアプリケーションがメモリー・リークすることでノードが不安定になったような場合には、ノードで問題が発生する直前までイベントのタイムラインをスクロールさせ、Podをメモリー使用量でソートして、問題を起こしていたPodを特定するといったことができます。  
-![image](https://user-images.githubusercontent.com/22209835/114011889-b263b400-98a0-11eb-838c-824c906448af.png)
-1. その他自由に触ってみてください。
+1. 演習用に、マイクロサービス・アプリケーション Bookinfo をデプロイします。  Red Hat Advanced Cluster Managementコンポーネントのコンソールを開きます。
+1. メニューから **Manage Applications**を開きます。
+1. アプリケーションのダッシュボードから、右上にある**Create Appliations**のボタンをクリックします。
+1. 以下の定義でアプリケーションを指定し、払出します。
+ 
+|項目|値|
+--|--
+|name|bookinfo|
+|namespace|bookinfons|
+|repository|Git|
+|Git URL|https://github.com/ICpTrial/bookinfo|
+|Git Branch|main|
+|Select Clusters deploy to| Deploy application resources only on clusters matching specified labels を選択|
+|Label|environment|
+|Value|qa|
+
+![image](https://user-images.githubusercontent.com/22209835/114014852-03c17280-98a4-11eb-85ae-4ed9a6d5d432.png)
+1. bookinfo のアプリケーションが microk8sクラスターに払出され、各種サービスが立ち上がることを待機します。  
+クラスターが定義されない場合は、ラベルの指定を誤っていないか確認ください。特に environment のスペル！
+![image](https://user-images.githubusercontent.com/22209835/114015570-cc06fa80-98a4-11eb-8daf-9f76c7d68ff9.png)
+
+7. You can verify if the application was successfuly deployed and is accessible by opening a new browser tab and entering the URL: `bookinfo.10.0.0.2.nip.io`. You should reach the page that looks like below:
+
+   ![](images/2020-09-30-19-50-18.png)
+
+***
+
+## Exploring synthetics monitoring
+
+Cloud Pak for Multicloud Management is capable of monitoring the application availability using a synthetic transaction monitoring. There is a default agent installed on the Hub cluster that automatically starts monitoring any ingress object that is deployed as a part of Hybrid application. Let's check how it looks like.
+
+1. Open the Monitoring module interface (Select "hamburger" menu, then **Monitor Health**, then **Infrastructure monitoring**). Then select the **Synthetic results** tab
+
+   ![](images/2020-09-30-20-01-54.png)
+
+2. On the page Synthetic results page, you should see the automatically configured monitor for ingress deployed as a part of Bookinfo application. Click on the monitor name to explore details
+
+   ![](images/2020-09-30-20-03-37.png)
+
+3. You can adjust the scope of the timeline, reducing the windows to last 30 minutes (1). You can also select to see a Response time graph or a response time Breakdown (2). This helps to diagnose issues related to name resolution on establishing the SSL session.
+
+   ![](images/2020-09-30-20-11-38.png)
+
+4. When you scroll down you can see the results of actual tests. Select any dot on the graph to see detailed breakdown of the response.
+
+   ![](images/2020-09-30-20-13-53.png)
+
+   You can deploy more agents in different locations to have your applications tested for availability and response time from a customer perspective. Deploying own agents allows also to configure more sophisticated test schedules. Let's see how it works.
+
+5. Go to the green terminal titled **Management hub** and run the following commands to unpack the synthetics agent binaries that were downloaded for you.
+
+   ```sh
+   cd
+   tar xvf app_mgmt_syntheticpop_xlinux.tar.gz
+   cd app_mgmt_syntheticpop_xlinux
+   ```
+6. To configure the synthetic monitoring agent you need a config pack that will instruct agent where to look for test definitions and where to send the gathered data. Go back to you browser, click the **Synthetic results** breadcrumb in the top-left corner of the screen. Then select the Administration tab.
+
+   ![](images/2020-10-01-12-00-43.png)
+
+   ![](images/2020-10-01-12-02-04.png)
+
+7. On the Administration view select the **Integrations** tile, then **New integration** button.
+
+   ![](images/2020-10-01-13-00-10.png)
+
+   ![](images/2020-10-01-13-01-05.png)
+
+8. Click **Configure** under the **Monitoring Data Collectors** tile
+
+   ![](images/2020-10-01-13-02-18.png)
+
+9. Do not provide any name, just click the **Download file** button and save the file to your workstation
+
+   ![](images/2020-10-01-13-03-26.png)
+
+   ![](images/2020-10-01-12-58-21.png)
+
+10. Go back to the green terminal titled **Management Hub** and run the following commands to preconfigure and install the Synthetic Monitoring agent
+
+    ```sh
+    ./config-pop.sh -f /home/ibmuser/Downloads/ibm-cloud-apm-dc-configpack.tar
+    ```
+
+    Answer the installation wizard with the following values:
+
+    ```sh
+    You will configure a new local point of presence (PoP).
+
+    Enter a name for your PoP. Your PoP will be identified by this name: pop_user1 -- A point of presence name
+    The PoP name is set to pop_user1
+
+    Enter the name of the country in which your PoP is located: USA -- Use any country
+    The country name is set to USA
+
+    Enter the name of the city in which your PoP is located: Las Vegas -- Use any city
+    The city name is set to Las Vega
+
+    Enter a description of your PoP (optional): pop_user1 -- It is just descritpion
+    The description is set to "pop_user1"
+
+    Enter the proxy server address for communicating with IBM ICAM server. The address format is ip:port (Press Enter if you do not need to use a proxy) :  Press Enter
+    Proxy server address for communicating with IBM ICAM server is set to
+
+    Update the proxy type (no | manual | pac) for playbacking synthetic tests to monitor your web applications. Enter 'no' to choose no proxy. Enter 'manual' to configure your proxy with a proxy server ip address and port number. Enter 'pac' to use an automatic configuration URL. (Press Enter if you do not want to make any changes: no): Press Enter
+
+    Playback proxy type is set to no
+
+    Your PoP is configured with the following details:
+    LOCATION="pop_user1,USA,Las Vegas,0,0,pop_user1"
+    AGENT_PROXY_SERVER=""
+    PLAYBACK_PROXY_TYPE="no"
+    PLAYBACK_PROXY_HOST_PORT=""
+    PLAYBACK_PROXY_BYPASS=""
+    PLAYBACK_PROXY_CONFIG_URL=""
+    CACHE_REDIS_MAX_SIZE_MB=""
+
+    Do you confirm? [y for yes or n for no]: Press 'y'
+    pop.properties is configured! You can run start-pop.sh to start your PoP.
+    ```
+
+    Finally, run the following command to start the agent:
+
+    ```sh
+    ./start-pop.sh
+    ```
+
+11. Now, when you have additional Point-of-Presence (syntectic monitoring agent) installed, go back to your browser and navigate to the **Administration** page, and then select the **Synthetics** tile.
+
+    ![](images/2020-10-01-17-40-45.png)
+
+    Click **Create** button
+
+    ![](images/2020-01-15-13-33-53.png)
+
+    Give your test a name and description.
+
+    ![](images/2020-01-15-13-35-24.png)
+
+    Scroll down and select the test type (Webpage). You can notice there are other types of tests available - you can for example replay web session recorded with Selenium, or create API tests using either SOAP or REST APIs.
+
+    ![](images/2020-01-15-13-36-26.png)
+
+    In the next step you need to provide the URL of the bookinfo main application page. Scroll down and provide the following values:
+
+    URL: http://bookinfo.10.0.0.2.nip.io:9080/productpage?u=normal
+
+    **IMPORTANT** Use the above URL, don't worry that the screenshots below shows differnt one!
+
+    Threshold value for Warning: 1
+
+    Threshold value for Critical: 2
+
+    ![](images/2020-02-05-12-19-02.png)
+
+    Click **Verify test**
+
+    ![](images/2020-01-15-13-49-36.png)
+
+    ![](images/2020-01-15-13-51-17.png)
+
+    On the next page, change the test frequency to 1 minute and make sure that your previously installed PoP agent is selected
+
+    ![](images/2020-01-15-17-11-44.png)
+
+    Click **Finish** at the bottom of the page
+
+    ![](images/2020-01-15-17-09-11.png)
+
+    Now, you have synthetics agent that will generate the traffic against the Bookinfo application. You can move to the final part of the tutorial, exploring tools available for Site Reliability Engineers.
+
+***
+
+## Explore SRE Golden Signals
+
+   During this lab exercise, you will be exploring the Golden Signals.  The Golden Signals are a way of normalizing the performance KPIs to make it easier and more intuitive for an SRE to debug a problem.
+
+1. In the browser with the Cloud Pak user interface, click the Resources tab
+
+   ![](images/2020-01-19-17-21-00.png)
+
+2. Select "Kubernetes Services"
+
+   You will see a list of kubernetes services that are running in your environment
+
+   ![](images/2020-01-19-17-25-00.png)
+
+3. Click the link for the "productpage" resource
+
+   You will navigate to the page for the productpage microservice.  Let's explore this page as seen below
+
+   ![](images/2020-01-19-17-31-00.png)
+
+4. Deployment topology
+
+   In the upper left corner, you see the "Deployment topology".  You've seen this before in the context of the kubernetes cluster.  Now, you're viewing it in the context of the productpage microservice.  What the topology is showing you is that this microservice is deployed to one pod on one node in the cluster.  If you scaled out the deployment to 2 pods, then you would see 2 pods in the Deployment topology.
+
+5. Golden Signals
+
+   Next, look at the golden signals on the right side of the page.   The 4 graphs labeled Latency, Errors, Traffic, and Saturation are the Golden Signals.  These are the most important metrics for Site Reliability Engineering (SRE) as they show the metrics imoprtant from the end-user perspective, that have been normalized for different application/middleware domains.  Let's explore Latency a little more.
+
+6. Latency
+
+   Flyover the Latency Graph.  You'll see a graph showing the latency shown in different percentiles (50th, 90th, and 95th).  By using percentiles, you get a much better idea how the applicaiton is performing.
+
+   ![](images/2020-01-19-17-40-00.png)
+
+   Next, select the dropdown list in the Filter.  The default behavior is to show 50th, 90th, and 95th percentile for all URLs.  But, sometimes you want to filter the data.
+
+   ![](images/2020-01-20-08-12-32.png)
+
+   Select 1 or more of the URLs for the productpage microservice
+
+   View the latency data for the URLs that you selected.
+
+   Within filters, select the icon on the far right for the "/productpage?u=normal" URL.
+
+   ![](images/2020-01-20-08-16-32.png)
+
+   After you click the icon, you will see some very useful information as seen below.  At the top of the page, you see a scatter plot chart that allows you to see a distribution of the requests.  This is a very useful way to visualize the transactions because it allows you to see patterns and outliers.
+
+   Below that, expand one of the requests and you will see a breakdown of where the request spent its time.
+
+   ![](images/2020-01-19-19-59-00.png)
+
+   Close the Trace Breakdown window by clicking the "X" in the upper right corner.
+
+   ![](images/2020-01-20-08-19-27.png)
+
+   Now, click the 3 vertical dots in the upper right corner of the Latency graph and select "Latency Options"
+
+   ![](images/2020-01-20-08-21-09.png)
+
+   Notice that you can customize the latency options.  Either change the latency percentiles or add/delete lines from the graph.  Try it out.
+
+   ![](images/2020-01-19-17-49-00.png)
+
+7. Next, examine the Service dependencies
+
+   ![](images/2020-01-21-08-48-36.png)
+
+   The service dependency shows a 1-hop topology of the microservices.  For the productpage service, it shows that there are clients connecting to the service and there is a dependency on "details" and "reviews".
+
+   Click on "reviews" icon.  You will navigate to that microservice and see the 1-hop topology for the "review" service.  Examine the golden signals for the "reviews" service.
+
+8. Full Service Topology
+
+   Most of the time, the 1-hop topology is good enough to diagnose the root cause of a problem.  But, sometimes you need to see additional information.  Click the **"expand to the full screen"** icon in the upper right corner of the service dependencies to expand the view.
+
+   ![](images/2020-01-20-08-30-45.png)
+
+   The view you see comes from an embedded capability called Agile Service Manager (ASM).  ASM allows you to expand to more than hop in the topology. It also allows you to visualize changes that are occurring in the application.  Since change introduces most of the problems in IT, this is a powerful capability.
+
+   ![](images/2020-01-19-19-46-00.png)
+
+   Let's start by switching to a 2-hop topology.  Select the dropdown in the top-middle of the screen and change the value to "2".  Then click "Render"
+
+   ![](images/2020-01-22-09-51-29.png)
+
+   We won't examine it here, but ASM allows you to hide/show some additional objects in the topology.  In this topology, you see the microservice topology.  If you want, you can add the pods into the topology.  To add/hide elements on the page, click the **Filter** icon to the left of the "Render" button.
+
+   ![](images/2020-01-20-08-36-10.png)
+
+   ASM has powerful capabilities to show you what's changing.  This includes topology changes, state changes, and property changes.  We won't be exploring that capability since there haven't been any changes to the application.  Feel free to explore additional ASM capabilities.  When you are done exploring, you can click on one of the icons for the microservices and you will navigate back to the Golden Signal view.
+
+9. Drill Down into the Runtime
+
+   Sometimes you need additional details that can only be gathered from the data collector that is running within the runtime.  If the app server (python, Node.js, JVM, golang) is instrumented with a lightweight data collector, you can click on the container and drilldown into the runtime metrics.
+
+   Click on the "container" in the Deployment topology.
+
+   ![](images/2020-01-20-08-40-27.png)
+
+   You are now viewing the detailed container metrics for this microservice. To navigate to the detailed metrics reported by the data collector, scroll down and click the appropriate name in **Related resources** window.
+
+   ![](images/2020-01-20-08-42-07.png)
+
+   The runtime page shows selection of most important metrics for a selected runtime type
+
+   ![](images/2020-01-20-08-44-30.png)
+
+   To expore any other metric, scroll down the page and expand the **Custom metrics** section, picking the metric you want and additional filtering and display options.
+
+   ![](images/2020-01-20-08-47-50.png)
+
+   This concludes the exercise. You now understand how to naviagate Golden Signals view.
+
+   Additional resources:
+   - [Golden Signals video on YouTube](https://youtu.be/z5WLD6vANvw)
+   - [Blog: Golden Signals explained](https://www.ibm.com/cloud/blog/video-better-application-monitoring-with-sre-golden-signals)
+
+***
+
+## Summary
+
+You completed the Cloud Pak for Multicloud Management tutorial: Monitoring and using SRE Golden Signals. Throughout the tutorial, you explored the key takeaways:
+-	`Understand Cloud Pak for Multicloud Management Monitoring module`
+-	`Learn how to add cloud native monitoring to the managed cluster`
+- `learn how to gather monitoring metrics from the managed cluster`
+-	`Learn how to use SRE Golden Signals to monitor application running on the managed cluster`
+
+If you would like to learn more about Cloud Pak for Multicloud Management, please refer to:
+-	<a href="https://www.ibm.com/cloud/cloud-pak-for-management" target="blank">Cloud Pak for Multicloud Management home page</a>
+- <a href="https://www.ibm.com/demos/collection/Cloud-Pak-for-Multicloud-Management" target="blank">Cloud Pak for Multicloud Management Demos </a>
