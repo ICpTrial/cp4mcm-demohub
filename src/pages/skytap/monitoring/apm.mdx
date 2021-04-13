@@ -45,7 +45,7 @@ Cloud Pak for Multicloud Managementには、外部からブラックボックス
 1. シンセティック・モニタリングのページには、Bookinfoアプリケーションの一部としてデプロイされたIngressに対する定義があるはずです。
    ![](images/2020-09-30-20-03-37.png)
 
-3. モニタリングの間隔を３０分に減らしましょう。アプリケーションをデプロイした直後ですので、検証されるテストデータは少ないかもしれません。
+1. モニタリングの間隔を３０分に減らしましょう。アプリケーションをデプロイした直後ですので、検証されるテストデータは少ないかもしれません。
 ![image](https://user-images.githubusercontent.com/22209835/114504818-6e8af900-9c6a-11eb-933f-f877327c94c8.png)
 
 1. Availability（アクセスできたか否か）と と応答時間のグラフを確認することができます。  
@@ -78,57 +78,41 @@ Cloud Pak for Multicloud Managementには、外部からブラックボックス
 1. Bookinfo アプリケーションを構成する ProductPage マイクロサービスのページを開きます。
 ![image](https://user-images.githubusercontent.com/22209835/114508631-8dd85500-9c6f-11eb-9a38-758e557d45c1.png)
   
-  1. **デプロイメント・トポロジー**  
-  左上のコーナーには、デプロイメント・トポロジーが表示されています。Infrastructureモニタリングの際にすでに見ていますね。
-  ここでは、同じデプロイメント・トポロジーを、ProductPage マイクロサービスのビューのコンテキストで見ることができます。  
-  ここで分かるのは、１つのクラスターの中の１ノードにこのマイクロサービスのPodが１つ 稼働しているということです。もしPodをスケールアウトして２つに構成すれば、デプロイメント・トポロジーの図も２つになります。
-  色が付いている箇所は、問題が起きている箇所です。
-  
-  1. **ゴールデン・シグナル**  
-  右上にある ゴールデン・シグナルを見ていきます。ここでは、Latency（応答性能）、エラー数（Errors）、トラフィック量（Traffic）、リソースの飽和状態（Statuation）の４つを見ることができます。  
-  これらは、Site Reliability Engineer （SRE）にとって、もっとも大事なメトリックです。
-  
+   1. **デプロイメント・トポロジー**  
+   左上のコーナーには、デプロイメント・トポロジーが表示されています。Infrastructureモニタリングの際にすでに見ていますね。
+   ここでは、同じデプロイメント・トポロジーを、ProductPage マイクロサービスのビューのコンテキストで見ることができます。  
+   ここで分かるのは、１つのクラスターの中の１ノードにこのマイクロサービスのPodが１つ 稼働しているということです。もしPodをスケールアウトして２つに構成すれば、デプロイメント・トポロジーの図も２つになります。
+   色が付いている箇所は、問題が起きている箇所です。
 
-   Flyover the Latency Graph.  You'll see a graph showing the latency shown in different percentiles (50th, 90th, and 95th).  By using percentiles, you get a much better idea how the applicaiton is performing.
+   1. **ゴールデン・シグナル**  
+   右上にある ゴールデン・シグナルを見ていきます。ここでは、Latency（応答性能）、エラー数（Errors）、トラフィック量（Traffic）、リソースの飽和状態（Statuation）の４つを見ることができます。  
+   これらは、Site Reliability Engineer （SRE）にとって、もっとも大事なメトリックです。
 
+   応答性能（Latency)のグラフの上に、カーソルを移動させてください。様々なパーセンタイル（50,90,95）での 応答性能を確認できます。  
+   応答性能は全体としては高速であっても、数％遅い値があったりするので、このパーセンタイルを利用して、よりよくアプリケーションの挙動を理解できます。
    ![](images/2020-01-19-17-40-00.png)
 
-   Next, select the dropdown list in the Filter.  The default behavior is to show 50th, 90th, and 95th percentile for all URLs.  But, sometimes you want to filter the data.
-
-   ![](images/2020-01-20-08-12-32.png)
-
-   Select 1 or more of the URLs for the productpage microservice
-
-   View the latency data for the URLs that you selected.
-
-   Within filters, select the icon on the far right for the "/productpage?u=normal" URL.
-
-   ![](images/2020-01-20-08-16-32.png)
-
-   After you click the icon, you will see some very useful information as seen below.  At the top of the page, you see a scatter plot chart that allows you to see a distribution of the requests.  This is a very useful way to visualize the transactions because it allows you to see patterns and outliers.
-
-   Below that, expand one of the requests and you will see a breakdown of where the request spent its time.
-
+   次に、フィルターのドロップダウンリストを選んでください。デフォルトでは、すべてのURLへの要求への応答時間のメトリックを出していますが、特定のURLでのメトリックを確認することもできます。
+   ![](images/2020-01-20-08-12-32.png)  
+   productpage マイクロサービスのURLを選んでください。選んだURLの応答性能データを確認します。  
+   さらに、"/productpage?u=normal"のURLの右端にあるアイコンをクリックしてください。
+    ![](images/2020-01-20-08-16-32.png)
+   以下のような画面が確認できます。これは、選択したURLの応答要求の分散を確認できるチャートです。応答性能になんからのパターンがある場合には、このトランザクションを可視化する画面は役に立ちます。  
+   ひとつ要求を選ぶと、さらにその応答時間の内訳けを確認することができます。
    ![](images/2020-01-19-19-59-00.png)
-
-   Close the Trace Breakdown window by clicking the "X" in the upper right corner.
-
+  右上の "X"をクリックして、応答時間の内訳のウィンドウを閉じます。
    ![](images/2020-01-20-08-19-27.png)
-
-   Now, click the 3 vertical dots in the upper right corner of the Latency graph and select "Latency Options"
-
+   Latency（応答性能）の右上にある "Latency Options"から、表示するパーセンタイルを変更することもできます。試してみてください。
    ![](images/2020-01-20-08-21-09.png)
-
-   Notice that you can customize the latency options.  Either change the latency percentiles or add/delete lines from the graph.  Try it out.
-
    ![](images/2020-01-19-17-49-00.png)
-
-7. Next, examine the Service dependencies
-
+   
+   1. **サービス依存性マップ**
+   左下には productpageと関連があるサービスが可視化されています。
    ![](images/2020-01-21-08-48-36.png)
-
-   The service dependency shows a 1-hop topology of the microservices.  For the productpage service, it shows that there are clients connecting to the service and there is a dependency on "details" and "reviews".
-
+   サービス依存性マップは、マイクロサービスの 1ホップ・トポロジー（当該マイクロサービスを呼び出しているもの、当該マイクロサービスから呼び出されているもの）を可視化します。  
+   productpageサービスでは、サービスに対してアクセスしてくるクライアントと、"details”サービスと"revies"サービスへの依存性が存在しています。
+   
+  
    Click on "reviews" icon.  You will navigate to that microservice and see the 1-hop topology for the "review" service.  Examine the golden signals for the "reviews" service.
 
 8. Full Service Topology
