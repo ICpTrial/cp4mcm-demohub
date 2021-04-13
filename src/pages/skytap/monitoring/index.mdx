@@ -115,11 +115,6 @@ Infrastructure Monitoringを確認していきます。
 1. メニューから **Manage Applications**を開きます。
 1. アプリケーションのダッシュボードから、右上にある**Create Appliations**のボタンをクリックします。
 1. 以下の定義でアプリケーションを指定し、払出します。
-
-Secretのコピー
- oc get secrets ibm-management-pull-secret -n ibm-cp4mcm --export -o yaml | oc apply -n cp4mcm-cloud-native-monitoring -f -
- oc secrets link ua-cloud-monitoring ibm-management-pull-secret -n cp4mcm-cloud-native-monitoring
- oc secrets link ua-cloud-monitoring ibm-management-pull-secret --for=pull -n cp4mcm-cloud-native-monitoring
  
 |項目|値|
 --|--
@@ -131,6 +126,7 @@ Secretのコピー
 |Select Clusters deploy to| Deploy application resources only on clusters matching specified labels を選択|
 |Label|environment|
 |Value|qa|
+
 ![image](https://user-images.githubusercontent.com/22209835/114014852-03c17280-98a4-11eb-85ae-4ed9a6d5d432.png)
 1. bookinfo のアプリケーションが microk8sクラスターに払出され、各種サービスが立ち上がることを待機します。  
 クラスターが定義されない場合は、ラベルの指定を誤っていないか確認ください。特に environment のスペル！
