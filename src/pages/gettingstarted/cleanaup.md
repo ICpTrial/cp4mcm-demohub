@@ -9,6 +9,13 @@ DTE環境払出し直後の環境は、 このハンズオンシナリオでは�
 ```
 [ibmuser@admin ~]$ pwd
 /home/ibmuser
+[ibmuser@admin ~]$ oc login -u ibmadmin -p xxxxxx
+Login successful.
+
+You have access to 78 projects, the list has been suppressed. You can list all projects with 'oc projects'
+
+Using project "openshift-operators".
+
 [ibmuser@admin ~]$ wget https://raw.githubusercontent.com/ICpTrial/cp4mcm-demohub/master/cleanup-env.sh
 --2021-04-12 03:35:27--  https://raw.githubusercontent.com/ICpTrial/cp4mcm-demohub/master/cleanup-env.sh
 Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.111.133, 185.199.108.133, 185.199.109.133, ...
