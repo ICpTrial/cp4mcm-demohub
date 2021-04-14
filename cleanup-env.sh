@@ -8,6 +8,8 @@ do
  kubectl get pods -n $var  | grep "0/" | grep -v "Completed" | awk '{ print $1 }' | xargs kubectl -n $var  delete pods
 done
 
+oc delete route cp-console -n ibm-common-services
+
 ## Uninstall IM, ChatOps
 rm -f cp4mcm-cleanup-utility.sh
 wget https://raw.githubusercontent.com/IBM/cp4mcm-samples/master/scripts/cp4mcm-cleanup-utility.sh
