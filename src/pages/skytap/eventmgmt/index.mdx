@@ -1,83 +1,24 @@
+## Chapter 6 : イベント管理 と Runbook Automation
+
+IBM Cloud Pak for Multicloud Managementには Event Managmentコンポーネントが統合され、管理対象であるリソースやアプリケーションで発生した インシデントやイベントへの対応を、自動化/半自動化していく機能を提供しています。複数のクラスター環境を横串に把握し、モニタリングから必要な方法を得て、問題を特定します。イベントは、アプリケーションやサービス、そのほか監視している対象で発生した事象です。  
+Event Managementはオンプレミス、クラウドに関わらず、多様な監視対象からイベントを受け取ります。特定のアプリケーションや特定のクラスターに関連するイベントは、インシデントに関連付けられます。  
+
+このハンズオンでは、あなたは運用チームのリーダーとして、問題の解消に責任を持っています。あなたは、作業手順 Runbook を Ainsble を利用して用意し、問題の解消に当たります。  
+このチュートリアルでは、**MCMHubCluster**にログインして、以下の作業を実施します。
+
+- 運用サポートグループを定義する
+- Slack統合を構成する
+- Eventポリシーを定義する
+- Incidentポリシーを定義する
+- EventManagementに Ansible Towerを統合する
+- Runbook Automationを構成する
+- Runbook Automationをテストする
+
 ---
-title: Lab 5 - Event Management and Runbook Automation with IBM Cloud Pak for Multicloud Management
-description:
----
 
-<FeatureCard
-  title="Event Management and Runbook Automation with IBM Cloud Pak for Multicloud Management"
-  color="dark"
-  >
-
-![banner](/images/automation-banner.jpg)
-
-</FeatureCard>
-
-
-<AnchorLinks>
-  <AnchorLink>Lab Overview</AnchorLink>
-  <AnchorLink>Prerequisite</AnchorLink>
-  <AnchorLink>Business Context</AnchorLink>
-  <AnchorLink>Create Online Banking support group</AnchorLink>
-  <AnchorLink>Configure Slack integration</AnchorLink>
-  <AnchorLink>Define Incident Policy</AnchorLink>
-  <AnchorLink>Configure Ansible Tower</AnchorLink>
-  <AnchorLink>Configure Ansible playbooks</AnchorLink>
-  <AnchorLink>Configure Runbook automation</AnchorLink>
-  <AnchorLink>Test runbook automation</AnchorLink>
-</AnchorLinks>
-
-***
-
-## Lab Overview
-
-IBM Cloud Pak for Multicloud Management is the enterprise-grade multicloud management solution. This cloud-agnostic solution leverages open-source technology and your existing tools to provide an integrated dashboard to manage your environments and your applications where they need to reside - public, private, or edge - with choice of vendor cloud platform and consistent visibility, governance and automation.
-
-Event Management installed along with Monitoring module of the Cloud Pak gives you the capability to automate management of incidents and events that are associated with resources and applications. You can visualize and manage multiple clusters, and consolidate the information from your monitoring systems to address problems. Events can indicate something that happened on an application, service, or another monitored object. All events that are related to a single application, or to a particular cluster, are correlated with an incident. Event Management can receive events from various monitoring sources, either on-premises or in the cloud.
-
-In this lab, you are the leader of the Operations team, responsible for problem resolution. You define how your team is notified in the event of a failure and define a "runbook" guide of possible remediation steps.
-
-In this tutorial, you will explore the following key capabilities:
-
-- `Define a new support group and assign specific incidents to this group`
-- `Create incident policy that automatically send notifications to Slack channel`
-- `Configure Ansible Tower and define new Runbook automation`
-- `Create event policy that automatically runs Ansible playbook in response to the event`
-- `Generate sample events to verify that your new policies work as expected`
-
-
-***
-
-## Prerequisite
-
-- You need to provision your own copy of the CP4MCM 2.1 environment, start it and verify for correct startup (check [here](../../gettingstarted/)).
-
-***
-
-## Business Context
-
-In a real-world environment, an operator isn't going to continually watch the overview screen, waiting for new events or failures. This is where the event management capability comes in, which not only notifies operators when failure conditions occur but can also provide automated and guided remediation of error events.
-
-In this tutorial, you will log in to the Hub cluster to configure and use event management capabilities.
-
-You will complete the following tasks:
-
-- Create Online Banking support group
-- Configure Slack integration
-- Define Event Policy
-- Define Incident Policy
-- Configure Ansible Tower
-- Configure Runbook automation
-- Test runbook automation
-
-***
-
-## Create Online Banking support group
-
-In this exercise, your task is to configure event management for handling events related to the Online Banking application.
-
-1. To start the lab, you should be in your Cloud Pak for Multicloud Management Web Console. If you are not, check [here](../gettingstarted/) how to open your console page.
-
-  ![](images/2-cluster-mgmt-img.png)
+## 運用サポートグループを定義する
+このハンズオンでは、ユーザー・アプリケーションに関するイベントに対応していきます。
+IBM Cloud Pak for Multicloud Management の メニューから **Monitor Health** > **Incidents**  を開きます。
 
 2. Now, let's open the Monitoring module user inteface. Click the hamburger **Menu** and select **Monitor health -> Incidents**.
 
