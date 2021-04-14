@@ -14,4 +14,9 @@ oc delete route cp-console -n ibm-common-services
 rm -f cp4mcm-cleanup-utility.sh
 wget https://raw.githubusercontent.com/IBM/cp4mcm-samples/master/scripts/cp4mcm-cleanup-utility.sh
 chmod +x cp4mcm-cleanup-utility.sh
-./cp4mcm-cleanup-utility.sh --mode preUninstallCleanup --kubeconfigPath /home/ibmuser/.kube/config
+#./cp4mcm-cleanup-utility.sh --mode preUninstallCleanup --kubeconfigPath /home/ibmuser/.kube/config
+./cp4mcm-cleanup-utility.sh --kubeconfigPath /home/ibmuser/.kube/config --mode customResourceCleanup --InfraVM
+./cp4mcm-cleanup-utility.sh --kubeconfigPath /home/ibmuser/.kube/config --mode customResourceCleanup --InfraGRC
+./cp4mcm-cleanup-utility.sh --kubeconfigPath /home/ibmuser/.kube/config --mode customResourceCleanup --IMInstall
+./cp4mcm-cleanup-utility.sh --kubeconfigPath /home/ibmuser/.kube/config --mode customResourceCleanup --VMPolicyAnsible
+
