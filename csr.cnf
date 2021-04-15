@@ -1,0 +1,28 @@
+  # cat csr.cnf
+  [ req ]               # Main settings
+  default_bits = 2048       # Default key size in bits.
+  prompt = no               # Disables prompting for certificate values so the configuration file values are used.
+  default_md = sha256       # Specifies the digest algorithm.
+  req_extensions = req_ext  # Specifies the configuration file section that includes any extensions.
+  distinguished_name = dn   # Specifies the section that includes the distinguished name information.
+
+  [ dn ]               # Distinguished name settings
+  C = US                    # Country
+  ST = New York             # State or province
+  L = Armonk                # Locality
+  O = IBM Cloud Private     # Organization
+  OU = IBM Cloud Pak        # Organizational unit
+  CN = cp-console           # Common name. 
+
+  [ req_ext ]          # Extensions
+  subjectAltName = @alt_names # Subject alternative names
+
+  [ alt_names ]        # Subject alternative names
+  DNS.1 = cp-console.apps.demo.ibmdte.net
+
+  [ v3_ext ]          # x509v3 extensions
+  authorityKeyIdentifier=keyid,issuer:always  # Specifies the public key that corresponds to the private key that is used to sign a certificate.
+  basicConstraints=CA:FALSE                   # Indicates whether the certificate is a CA certificate during the certificate chain verification process. 
+  keyUsage=keyEncipherment,dataEncipherment   # Defines the purpose of the key that is contained in the certificate. 
+  extendedKeyUsage=serverAuth,clientAuth      # Defines the purposes for which the public key can be used. 
+  subjectAltName=@alt_names                   # Identifies the subject alternative names for the identify that is bound to the public key by the CA.
