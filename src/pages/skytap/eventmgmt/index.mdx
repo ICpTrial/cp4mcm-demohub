@@ -84,7 +84,7 @@ Event Managementはオンプレミス、クラウドに関わらず、多様な�
 
 1. Integrationの**Incoming**のタブに戻ります。イベントの統合元の右端に、**Sample events**がありますので、これを利用してサンプルイベントを発生させます。
 ![image](https://user-images.githubusercontent.com/22209835/114979374-bb1e4080-9ec5-11eb-9428-ee00a04e7ef3.png)
-1. **Success Notification**の通知が出て、サンプルのインシデントが生成されたことを確認します。数分待つと、チャネルに通知が届くはずです。
+1. **Success Notification**の通知が出て、サンプルのインシデントが生成されたことを確認します。
 ![image](https://user-images.githubusercontent.com/22209835/114979454-d8eba580-9ec5-11eb-977c-602bca77c025.png).
 
 ***
@@ -132,6 +132,8 @@ Event Managementはオンプレミス、クラウドに関わらず、多様な�
           
 1. 新しいインシデント・ポリシーが定義できました。ポリシーは、画面で見えている順に評価が行われます。順序を変更したい場合には、右端の**︙**をクリックして、**Move up**や**Move down**で順番を入れ替えます。
 ときに評価の順序は重要です。順序が正しくないと、たとえばより上位のポリシーで、Priorityが変更されてしまい、実質的に使われないポリシーができてしまうかもしれません。
+1. いま一度サンプル・イベントを生成し、暫く待つとイベントの情報を含む インシデントの通知が Slackに飛びます。
+![image](https://user-images.githubusercontent.com/22209835/114996708-0e9a8980-9eda-11eb-8f34-7bebc3bc32ad.png)
 
 ***
 
@@ -149,7 +151,9 @@ IBM Cloud Pak for Multicloud Managementには、**Ansible Engine**によって�
 ![image](https://user-images.githubusercontent.com/22209835/114992391-a9dd3000-9ed5-11eb-8f47-9188671b77d0.png)
 1. まず、Ansible ジョブ実行対象に対する認証情報を定義します。左のメニューから **Credentials**を選んで、緑色の `+`ボタンをクリックして、新しい認証情報を定義します。 
 ![image](https://user-images.githubusercontent.com/22209835/114992676-fc1e5100-9ed5-11eb-8f6a-54fd59b5cdcd.png)
-1. ここでは ２種類の認証情報を定義します。１つはvCenterの認証情報を定義です。これを使って、Ansible Towerは定義されたVMWare vSphereから環境の情報を取得します。もう一つは、個々の仮想マシンにSSHでアクセスして、Ansible Playbookを実行するための認証情報です。
+1. ここでは ２種類の認証情報を定義します。  
+１つはvCenterの認証情報を定義です。これを使って、Ansible Towerは定義されたVMWare vSphereから環境の情報を取得します。  
+もう一つは、個々の仮想マシンにSSHでアクセスして、Ansible Playbookを実行するための認証情報です。ubuntuの仮想マシン用と、desktopVM用の２つ定義します。
     1. vSphereの認証情報を定義し、保管します。
         |名前|設定値|備考|
         --|--|--
@@ -158,15 +162,27 @@ IBM Cloud Pak for Multicloud Managementには、**Ansible Engine**によって�
         |vCenterHost|10.0.0.100||
         |Username|administrator@vsphere.local||
         |Password|P@ssw0rd||
-
         ![image](https://user-images.githubusercontent.com/22209835/114993562-e3fb0180-9ed6-11eb-9b7e-5674d5f89b66.png)
+    1. `vcenter`が追加されたことを確認し、もう一度 `+`をクリックします。
+        ![image](https://user-images.githubusercontent.com/22209835/114994474-c4180d80-9ed7-11eb-8e09-4bd232a930ac.png)
+    1. 仮想マシン ubuntu の認証情報を定義し、保管します。
+        |名前|設定値|備考|
+        --|--|--
+        |Name|ubuntu||
+        |Cderential Type|Machine|検索ボックスから選択|
+        |Username|ibmuser||
+        |Password|passw0rd||
+        |SSH PRIVATE KEY||この演習では利用しませんが、SSHキーでログインするよう定義も可能です|
+        ![image](https://user-images.githubusercontent.com/22209835/114994895-3b4da180-9ed8-11eb-88e9-ffc9906ec6f3.png)
+    1. 仮想マシン desktop の認証情報を定義し、保管します。
+        |Name|desktop||
+        |Cderential Type|Machine|検索ボックスから選択|
+        |Username|ibmuser||
+        |Password|engageibm||
+        ![image](https://user-images.githubusercontent.com/22209835/114995290-a1d2bf80-9ed8-11eb-9073-c0d526449512.png)
+    1.にんｇ
+        ![image](https://user-images.githubusercontent.com/22209835/114995619-fd04b200-9ed8-11eb-8734-6718f4c2eecf.png)
 
-
-5. To add the second credentials, click the '+' sign again, and provide name (e.g. `ubuntu`). This time select type `Machine` and provide `ibmuser` as **Username** and `passw0rd` as **Password**. You can notice it is also possible to provide the SSH key as a credentials, but you won't use this method in this tutorial. Scroll down and click **Save**.
-
-   ![](images/2020-10-10-12-22-22.png)
-
-   Finally, create a third set of credentials, named `desktop`, with user `ibmuser` and password `engageibm`.
 
 6. Now, let's add new Inventory. In the menu select **Inventories**.
 
