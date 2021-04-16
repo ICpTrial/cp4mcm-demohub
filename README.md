@@ -12,7 +12,7 @@ IBM Cloud Pak for Mutlicloud Managemnet(以下 CP4MCM)を利用した マルチ�
 |3|[ポリシー＆ガバナンス](https://github.com/ICpTrial/cp4mcm-demohub/blob/master/src/pages/skytap/securitymgmt/index.mdx)|ポリシーベースでのマルチクラスター管理|
 |4|[インフラストラクチャ・モニタリング](https://github.com/ICpTrial/cp4mcm-demohub/blob/master/src/pages/skytap/monitoring/index.mdx)|管理対象クラスターの基盤モニタリング|
 |5|[アプリケーション・モニタリング](https://github.com/ICpTrial/cp4mcm-demohub/blob/master/src/pages/skytap/monitoring/apm.mdx)|シンセティック・モニタリング、アプリケーション・パフォーマンス・モニタリング|
-|6|イベント管理とRunbook Automation||
+|6|[イベント管理とRunbook Automation(https://github.com/ICpTrial/cp4mcm-demohub/blob/master/src/pages/skytap/eventmgmt/index.mdx)||イベント通知から運用の自動化|
 |7|[IBM Observability with Instana](https://github.com/ICpTrial/InstanaSandbox/blob/main/README.md)|IBMの新しいObservabilityコンポーネント|
 
 Digital Technical Exchange ハンズオンラボ用環境は、IBMの担当テクニカル・セールスのメンバーに声をかけていただくことで、個別に用意することが可能です。 担当営業を通じてご相談ください。
