@@ -128,35 +128,39 @@ Event Managementはオンプレミス、クラウドに関わらず、多様な�
         ![image](https://user-images.githubusercontent.com/22209835/114988996-f161bd00-9ed1-11eb-9c1a-70985f06bcf4.png)
     1. **Apply**をクリックします。
     1. **Enable**を On に変更し、**Save**をクリックします。
-        ![image](https://user-images.githubusercontent.com/22209835/114989289-400f5700-9ed2-11eb-8515-9d8d5b1ce39f.png)
+        ![image](https://user-images.githubusercontent.com/22209835/114989289-400f5700-9ed2-11eb-8515-9d8d5b1ce39f.png)  
+          
 1. 新しいインシデント・ポリシーが定義できました。ポリシーは、画面で見えている順に評価が行われます。順序を変更したい場合には、右端の**︙**をクリックして、**Move up**や**Move down**で順番を入れ替えます。
 ときに評価の順序は重要です。順序が正しくないと、たとえばより上位のポリシーで、Priorityが変更されてしまい、実質的に使われないポリシーができてしまうかもしれません。
 
 ***
 
-## Configure Ansible Tower
+## Ansible Towerの構成
 
-   In this section you will configure Ansible Tower. With Red Hat® Ansible® Tower you can centralize and control your IT infrastructure with a visual dashboard, role-based access control, job scheduling, integrated notifications and graphical inventory management. Ansible Tower is embeded into Cloud Pak for Multicloud Management to drive automation of event response with runbooks and is also used for configuration and compliance automation within infrastructure module.
+ここでは、**Ansible Tower**を構成していきます。  
+IBM Cloud Pak for Multicloud Managementには、**Ansible Engine**によって実行される一連の自動化ジョブを、中央で統合管理するための**Ansible Tower**コンポーネントが統合されています。
+これら **Ansible Automation**のテクノロジーを活用することにより、ここでは、運用手順の自動化 **Runbook Automation**を実現していきます。
 
-1. Open a new browser tab and use the Ansible bookmark to open Ansible Tower interface.
+1. IBM Cloud Pak for Multicloud Managementのメニューから、**Ansible Automation**を開きます。
+![image](https://user-images.githubusercontent.com/22209835/114991988-30ddd880-9ed5-11eb-99b5-486f91fe1319.png)
+1. `admin` および ブラウザに保管された認証情報でログインします。（または skytapの鍵マークから認証情報を取得してください）。
+![image](https://user-images.githubusercontent.com/22209835/114992216-78646480-9ed5-11eb-920b-77f579441148.png)
+1. Ansible Towerの ダッシュボードが開きます。この演習では、イベント管理とAnsibleとの連携が主眼ですので、細かい説明は省略します。
+![image](https://user-images.githubusercontent.com/22209835/114992391-a9dd3000-9ed5-11eb-8f47-9188671b77d0.png)
+1. まず、Ansible ジョブ実行対象に対する認証情報を定義します。左のメニューから **Credentials**を選んで、緑色の `+`ボタンをクリックして、新しい認証情報を定義します。 
+![image](https://user-images.githubusercontent.com/22209835/114992676-fc1e5100-9ed5-11eb-8f6a-54fd59b5cdcd.png)
+1. ここでは ２種類の認証情報を定義します。１つはvCenterの認証情報を定義です。これを使って、Ansible Towerは定義されたVMWare vSphereから環境の情報を取得します。もう一つは、個々の仮想マシンにSSHでアクセスして、Ansible Playbookを実行するための認証情報です。
+    1. vSphereの認証情報を定義し、保管します。
+        |名前|設定値|備考|
+        --|--|--
+        |Name|vcenter||
+        |Cderential Type|VMware vCenter|検索ボックスから選択|
+        |vCenterHost|10.0.0.100||
+        |Username|administrator@vsphere.local||
+        |Password|P@ssw0rd||
 
-   ![open ansible tower](images/2020-10-10-11-23-27.png)
+        ![image](https://user-images.githubusercontent.com/22209835/114993562-e3fb0180-9ed6-11eb-9b7e-5674d5f89b66.png)
 
-2. Provide `admin` as username and paste the password using Skytap stored credentials. IF THAT DOES NOT WORK (TEMPORARY ISSUE) USE `hemXyAF1frDlbOIxxes2h1ubbTSFtMO4` AS PASSWORD.
-
-   ![ansible credentials](images/2020-10-10-11-27-02.png)
-
-3. First, you need to define a credentails to be used with the target environments. Select **Credentials** from the menu and then click '+' sign to add new credentials.
-
-   ![new credentials](images/2020-10-10-11-44-54.png)
-
-   You will add 2 different type of credentials. First let's add a credentials to the vcenter that allows Ansible Tower to collect data from the Vmware vSphere environment. Later, you will add credentials to specific virtual machines, to allow running Ansible playbooks on these VMs using ssh.
-
-4. Provide a name (e.g. `vcenter`) (1), select the Organization `Default` (2), then select the **Credential type** lookup (3) to pick the **Vmware vCenter** option (5) available on the last tab of the list (4). Then click **Select**.
-
-   Then, provide `10.0.0.100` as **Vcenter Host**, `administrator@vsphere.local` as **Username** and `P@ssw0rd` as **Password**. Finally, click **Save**.
-
-   ![](images/2020-10-10-12-13-27.png)
 
 5. To add the second credentials, click the '+' sign again, and provide name (e.g. `ubuntu`). This time select type `Machine` and provide `ibmuser` as **Username** and `passw0rd` as **Password**. You can notice it is also possible to provide the SSH key as a credentials, but you won't use this method in this tutorial. Scroll down and click **Save**.
 
