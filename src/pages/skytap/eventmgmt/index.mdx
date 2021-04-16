@@ -22,55 +22,36 @@ Event Managementはオンプレミス、クラウドに関わらず、多様な�
 1. IBM Cloud Pak for Multicloud Management の メニューから **Administration > Monitor** と進み、モニタリング・コンポーネントの管理画面を開きます。
 ![image](https://user-images.githubusercontent.com/22209835/114964747-45f14200-9eaa-11eb-8741-4f0b5f64e22a.png)
 
-1. モニタリングコンポーネントのイベント管理機能を利用するユーザー・グループを作成します。  
+1. モニタリング・コンポーネントのイベント管理機能を利用するユーザー・グループを確認します。  
 **Users and Groups**にカーソルをあわせると **Work with Users and Groups**とメッセージが変わりますので、そこをクリックします。
 ![image](https://user-images.githubusercontent.com/22209835/114964883-9072be80-9eaa-11eb-90fe-b2c66a3c1a70.png)
     
 1. すでに何人かユーザーがいることを確認してください。**Operations Lead**（運用チームリーダー）のロールのユーザーがいます。これらの**Operations Lead**には、自動的に ClusterAdministratorの権限がアサインされます。
 ![image](https://user-images.githubusercontent.com/22209835/114965235-30304c80-9eab-11eb-96b4-a23c8c735893.png)
 
-１． 他のユーザーも追加してきましょう。デモ環境では LDAPがすでに統合されていますので、LDAPにすでに存在するメンバーを Cloud Pa
-4. するために、まずユーザーをシステムに追加しましょう。
-5. 
-6. Before we create support group, let's start with adding a user to the system. The demo environment has an LDAP configured, so you will import user from the LDAP.
-   
-5. Open the humburger **Menu** and select **Administer -> Identity and Access**
-
-   ![](images/2020-10-02-14-18-53.png)
-   
-6. Select **Teams** tab and then click on the **operations** team
-
-   ![](images/2020-10-02-14-20-56.png)
-
-   ![](images/2020-10-02-14-21-24.png)
-
-7. Select the **Users** tab (1) , and then click **Add users** (2)
-
-   ![](images/2020-10-02-14-23-21.png)
-
-8. In the **Select domain** dropdown pick **my_ldap**. This dropdown shows all identity sources registered in the Cloud Pak. In this environment, there are two sources available: a default Openshift authentication (Cloud Identity Directory) and LDAP connection my_ldap.
-
-   ![](images/2020-10-02-14-26-15.png)
-
-9. In the search box, enter **carlos** and hit Enter (1). Then, select the user **carlos** (2), change the role to **Editor** (3), and finally click **Add** button (4).
-
-   ![](images/2020-10-02-14-29-23.png)
-
-10. Now, go back to the Monitoring UI (Menu-> Monitor health-> Incidents-> Administration -> Users and Groups). You should see user `carlos` in the list with the role `Operations engineer`. This is default mapping of Cloud Pak role `Editor` to the Monitoring module roles. Click **Groups** tab
-
-    ![](images/2020-10-02-13-59-16.png)
- 
-11.	There are no groups defines so you need to create one. Click **New group**.
-
-12. Provide the name **Online Banking Support** (1), then click Users icon (2), select user **carlos** (3) and click **Assign**
-
-    ![](images/2020-10-09-16-46-31.png)
-  
-13.	Finally, click **Save**
-
-    ![](images/2020-10-02-14-43-12.png)
-
-    Now, when you have the right support group defined, let's configure which incidents should be assigned to this group and how the users should be notified.
+1. 他のユーザーを追加登録しましょう。デモ環境では LDAPがすでに統合されていますので、LDAPに事前に登録されているメンバーを Cloud Pack for MCM環境にインポートします。
+    1. メニューより、**Administter** > **Identity and accesss** を開きます。
+        ![image](https://user-images.githubusercontent.com/22209835/114972387-5d83f700-9eb9-11eb-897f-832bfd85206d.png)
+    1. **Teams**タブを開き、すでに作成されている **Operations**チームを開きます。
+        ![image](https://user-images.githubusercontent.com/22209835/114972487-8d32ff00-9eb9-11eb-8166-a6142fc855a0.png)
+    1. operationsチーム管理ページで。**Users**タブを開きます。 Usersタブ内で、右上にある 青い**Add Users**ボタンをクリックします。
+        ![image](https://user-images.githubusercontent.com/22209835/114972596-bd7a9d80-9eb9-11eb-8548-671dd5b947e6.png)
+    1. **Select domain**のドロップダウン・メニューから**my_ldap**（事前構成されているLDAPインスタンスの名前）を選びます。
+       なお、Cloud Identity Directoryは、OpenShiftのデフォルト認証の名前です。
+        ![image](https://user-images.githubusercontent.com/22209835/114972883-4abdf200-9eba-11eb-8731-1c4346777996.png)
+    1. 検索ボックスで **carlos**と入力してEnterを押し、表示された CarlosCNを選択します。ロールに**Editor**を指定して、右上の青い**追加＊＊ボタンをクリックします。
+        ![image](https://user-images.githubusercontent.com/22209835/114973123-c4ee7680-9eba-11eb-8589-a55485c715f6.png)
+1. 次に新規に登録した **Carlos**がメンバーとなるグループ**Supprt Group 01**を作成します。
+    1. モニタリング・コンポーネントのユーザー・グループを管理のページに戻ります。メニューから **Adminisiter** > **Monitor**を開き、**Users and Groups**を選択します。
+        ![image](https://user-images.githubusercontent.com/22209835/114973397-5e1d8d00-9ebb-11eb-8f52-8a12b8c79012.png)
+    1. **carlos**が **Operations Engineer**（運用エンジニア）のロールとして、リストに追加されていることを確認します。
+    ![image](https://user-images.githubusercontent.com/22209835/114973437-72618a00-9ebb-11eb-8ae4-e76a67d7922e.png)
+    1. **Groups**タブを開きます。現在は定義されているグループはありません。**New group**をクリックして、グループを新規作成します。
+    ![image](https://user-images.githubusercontent.com/22209835/114973634-d1270380-9ebb-11eb-9905-186c17d16332.png)
+    1. **Support Group 01**をグループ名に指定し、**Assigin Users**をクリックして、**carlos**にチェックを入れて、**Assign**をクリックします。
+    ![image](https://user-images.githubusercontent.com/22209835/114973912-57dbe080-9ebc-11eb-9254-438f93e7c21d.png)
+    1. 内容を確認して、**Save**をクリックします。
+    ![image](https://user-images.githubusercontent.com/22209835/114974071-aa1d0180-9ebc-11eb-8879-03625c20ce58.png)
 
 ***
 
