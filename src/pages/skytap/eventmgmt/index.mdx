@@ -1,9 +1,9 @@
 ## Chapter 6 : イベント管理 と Runbook Automation
 
-IBM Cloud Pak for Multicloud Managementには Event Managmentコンポーネントが統合され、管理対象であるリソースやアプリケーションで発生した インシデントやイベントへの対応を、自動化/半自動化していく機能を提供しています。複数のクラスター環境を横串に把握し、モニタリングから必要な方法を得て、問題を特定します。イベントは、アプリケーションやサービス、そのほか監視している対象で発生した事象です。  
+IBM Cloud Pak for Multicloud Managementのモニタリング・コンポーネントには Event Managmentコンポーネントが統合され、管理対象であるリソースやアプリケーションで発生した インシデントやイベントへの対応を、自動化/半自動化していく機能を提供しています。複数のクラスター環境を横串に把握し、モニタリングから必要な方法を得て、問題を特定します。イベントは、アプリケーションやサービス、そのほか監視している対象で発生した事象です。  
 Event Managementはオンプレミス、クラウドに関わらず、多様な監視対象からイベントを受け取ります。特定のアプリケーションや特定のクラスターに関連するイベントは、インシデントに関連付けられます。  
 
-このハンズオンでは、あなたは運用チームのリーダーとして、問題の解消に責任を持っています。あなたは、作業手順 Runbook を Ainsble を利用して用意し、問題の解消に当たります。  
+このハンズオンでは、あなたは運用サポートチームのリーダーとして、問題の解消に責任を持っています。あなたは、作業手順 Runbook を Ainsble を利用して用意し、問題の解消に当たります。  
 このチュートリアルでは、**MCMHubCluster**にログインして、以下の作業を実施します。
 
 - 運用サポートグループを定義する
@@ -17,18 +17,22 @@ Event Managementはオンプレミス、クラウドに関わらず、多様な�
 ---
 
 ## 運用サポートグループを定義する
-このハンズオンでは、ユーザー・アプリケーションに関するイベントに対応していきます。
-IBM Cloud Pak for Multicloud Management の メニューから **Monitor Health** > **Incidents**  を開きます。
+このハンズオンでは、ユーザー・アプリケーションに関するイベントに対応していきます。  
 
-2. Now, let's open the Monitoring module user inteface. Click the hamburger **Menu** and select **Monitor health -> Incidents**.
+1. IBM Cloud Pak for Multicloud Management の メニューから **Administration > Monitor** と進み、モニタリング・コンポーネントの管理画面を開きます。
+![image](https://user-images.githubusercontent.com/22209835/114964747-45f14200-9eaa-11eb-8741-4f0b5f64e22a.png)
 
-   ![](images/2020-10-02-12-09-36.png)
-
-3. To effectively handle incidents at scale, they must be automatically dispatched to the right users for handling. The first step is to create a group for users who will be responsible for handling Online Banking related events and incidents.Click the **Administration** tab (1) and then **Users and groups** (2)
-
-   ![](images/2020-10-02-13-29-30.png)
+1. モニタリングコンポーネントのイベント管理機能を利用するユーザー・グループを作成します。  
+**Users and Groups**にカーソルをあわせると **Work with Users and Groups**とメッセージが変わりますので、そこをクリックします。
+![image](https://user-images.githubusercontent.com/22209835/114964883-9072be80-9eaa-11eb-90fe-b2c66a3c1a70.png)
     
-4. Notice that some users have already been defined. There are the users with ClusterAdministrator role that were automatically assigend **Operations lead** role in the Monitoring module. Before we create support group, let's start with adding a user to the system. The demo environment has an LDAP configured, so you will import user from the LDAP.
+1. すでに何人かユーザーがいることを確認してください。**Operations Lead**（運用チームリーダー）のロールのユーザーがいます。これらの**Operations Lead**には、自動的に ClusterAdministratorの権限がアサインされます。
+![image](https://user-images.githubusercontent.com/22209835/114965235-30304c80-9eab-11eb-96b4-a23c8c735893.png)
+
+１． 他のユーザーも追加してきましょう。デモ環境では LDAPがすでに統合されていますので、LDAPにすでに存在するメンバーを Cloud Pa
+4. するために、まずユーザーをシステムに追加しましょう。
+5. 
+6. Before we create support group, let's start with adding a user to the system. The demo environment has an LDAP configured, so you will import user from the LDAP.
    
 5. Open the humburger **Menu** and select **Administer -> Identity and Access**
 
