@@ -154,7 +154,7 @@ IBM Cloud Pak for Multicloud Managementには、**Ansible Engine**によって�
 1. ここでは ２種類の認証情報を定義します。  
 １つはvCenterの認証情報を定義です。これを使って、Ansible Towerは定義されたVMWare vSphereから環境の情報を取得します。  
 もう一つは、個々の仮想マシンにSSHでアクセスして、Ansible Playbookを実行するための認証情報です。ubuntuの仮想マシン用と、desktopVM用の２つ定義します。
-    1. vSphereの認証情報を定義し、保管します。
+   1. vSphereの認証情報を定義し、保管します。
         |名前|設定値|備考|
         --|--|--
         |Name|vcenter||
@@ -162,10 +162,13 @@ IBM Cloud Pak for Multicloud Managementには、**Ansible Engine**によって�
         |vCenterHost|10.0.0.100||
         |Username|administrator@vsphere.local||
         |Password|P@ssw0rd||
+        
         ![image](https://user-images.githubusercontent.com/22209835/114993562-e3fb0180-9ed6-11eb-9b7e-5674d5f89b66.png)
-    1. `vcenter`が追加されたことを確認し、もう一度 `+`をクリックします。
+
+   1. `vcenter`が追加されたことを確認し、もう一度 `+`をクリックします。
         ![image](https://user-images.githubusercontent.com/22209835/114994474-c4180d80-9ed7-11eb-8e09-4bd232a930ac.png)
-    1. 仮想マシン ubuntu の認証情報を定義し、保管します。
+
+   1. 仮想マシン ubuntu の認証情報を定義し、保管します。
         |名前|設定値|備考|
         --|--|--
         |Name|ubuntu||
@@ -173,14 +176,18 @@ IBM Cloud Pak for Multicloud Managementには、**Ansible Engine**によって�
         |Username|ibmuser||
         |Password|passw0rd||
         |SSH PRIVATE KEY||この演習では利用しませんが、SSHキーでログインするよう定義も可能です|
+
         ![image](https://user-images.githubusercontent.com/22209835/114994895-3b4da180-9ed8-11eb-88e9-ffc9906ec6f3.png)
-    1. 仮想マシン desktop の認証情報を定義し、保管します。
+
+   1. 仮想マシン desktop の認証情報を定義し、保管します。
         |Name|desktop||
         |Cderential Type|Machine|検索ボックスから選択|
         |Username|ibmuser||
         |Password|engageibm||
+
         ![image](https://user-images.githubusercontent.com/22209835/114995290-a1d2bf80-9ed8-11eb-9073-c0d526449512.png)
-    1.にんｇ
+
+   1.にんｇ
         ![image](https://user-images.githubusercontent.com/22209835/114995619-fd04b200-9ed8-11eb-8734-6718f4c2eecf.png)
 
 
