@@ -55,37 +55,41 @@ Event Managementはオンプレミス、クラウドに関わらず、多様な�
 
 ***
 
-## Review Slack integration
+## Slackの統合を確認する
+運用チームは、さまざまな通知方法を利用することができます。メールを好む方もいるかもしれませんが、現在では PagerDutyや Slack、Microsft Teamsなどのコラボレーションが好まれます。  
+このハンズオンでは Slackを利用して、ChatOpsを試してみましょう。
 
-Operation teams use different notification methods. Some prefer emails, but many uses collaboration tools like PagerDuty, Slack or Microsoft Teams. In this exercise you will configure integration with Slack.
+1. メニューから **Administer** > **Monitoting**を開き、モニタリング・コンポーネントの管理画面を開きます。
+![image](https://user-images.githubusercontent.com/22209835/114974627-bce40600-9ebd-11eb-9497-5b96e1b358f1.png)
+1. 一番上にある **Interatios**をクリックします。
+![](images/2020-10-02-15-10-44.png)
+1. **Incoming**タブでは、このイベント管理機能に入ってくるイベントのソースを定義しています。すでにいくつか統合されているものもあります。  
+たとえば、**local-cluster**のIBM MCM Compliance ManagerやIBM Cloud Application Performance Managementがあります。
+![image](https://user-images.githubusercontent.com/22209835/114975121-aab69780-9ebe-11eb-96e6-e1312e3a58cb.png)
+1. その他、統合可能なものを確認するには、**New Integration**をクリックします。OSSや3rdベンダー含め、多様なツールが統合可能になっています。
+![image](https://user-images.githubusercontent.com/22209835/114975552-67a8f400-9ebf-11eb-87a3-ea07d447888f.png)
+1. **Integration**のページに戻ります。**Outgoing**のタブから、集約されたイベントの通知先を指定していきます。右上にある**New integration**をクリックします。
+![image](https://user-images.githubusercontent.com/22209835/114975896-f87fcf80-9ebf-11eb-9fb9-f5c19a1e00b2.png)
+1. OutOfBoxで統合可能なツールがあります。利用しているものがない場合には、一般的な**Webhook**を利用することもできます。
+![image](https://user-images.githubusercontent.com/22209835/114977521-befc9380-9ec2-11eb-8616-92d6d7f4c44b.png)
+1. このハンズオンでは、すでに 事前に用意されているSlackを利用します。
+    1. まず 連携用のSlackチャネルを用意します。
+    1. Slackのボタンを選び構成を確認し、**Configure**をクリックします。
+    ![image](https://user-images.githubusercontent.com/22209835/114977824-4b0ebb00-9ec3-11eb-9bde-a9bde318b5e8.png)
+    1. Outbound Integration名に 任意の名前を付けます。ここでは `MCM2Slack`としています
+    1. Slack の Webhook URLを指定します。WebHook用のURLは、上の手順でメモしたものを指定します。
+    ![image](https://user-images.githubusercontent.com/22209835/114979101-41865280-9ec5-11eb-9121-7909fd63b7cd.png)
+    1. Saveをクリックします。
+    ![image](https://user-images.githubusercontent.com/22209835/114979251-81e5d080-9ec5-11eb-9c15-82226937b810.png)
 
-1. Go back to the **Administration** view.
+1. Integrationの**Incoming**のタブに戻ります。イベントの統合元の右端に、**Sample events**がありますので、これを利用してサンプルイベントを発生させます。
 
-    ![](images/2020-10-02-14-48-36.png)
+![image](https://user-images.githubusercontent.com/22209835/114979374-bb1e4080-9ec5-11eb-9428-ee00a04e7ef3.png)
 
-2. Select **Integrations** tile
+1. **Success Notification**の通知が出て、サンプルのインシデントが生成されたことを確認します。
+![image](https://user-images.githubusercontent.com/22209835/114979454-d8eba580-9ec5-11eb-977c-602bca77c025.png)
 
-   ![](images/2020-10-02-15-10-44.png)
 
-3. This view shows the incoming integrations, which define the source of the events coming to the system. There may be some integrations already defined (depending on what labs you have done before), for example, Prometheus service from a managed-cluster or local IBM Cloud Application Performance Management agents (like Kubernetes data collector). To see what other sources are available out-of-thebox, click **New integration**. Review integrations available out-of-the-box, and when done click **Cancel**.
-
-4. On the Integrations view, select **Outgoing** tab (1) and then click **New integration** (2)
-
-   ![](images/2020-10-02-15-12-56.png)
-
-5. You can see multiple default integartions provided by Cloud Pak for Multicloud Management for sending information to the other systems. If your company is not using any of the pre-defined ones, you can use the Generic webhook. 
-
-   ![](images/2020-11-16-17-28-28.png)
-
-   In this exercise you will use Slack, which was already configured for you - to review configuration, click three dots in the corner of Slack tile and select **Edit**. You can notice that to configure the integration you only need a webhook generated from the Slack platfrom for your target channel. The instructions how to do this are provided on the screen. Change the webhook URL (last 3 elements) for the following value
-   
-   ```sh
-   TLQMG6B8C/B017XG4BT2T/1q9S4m9fXrcnrUWj1XIlI75u
-   ``` 
-   
-   and click **Save**.
-
-   ![](images/2020-11-16-18-03-41.png)
 
 6. Now, go back to the Incoming integrations tab. You can see that along with the configured integrations, there is an additional tile for generating **Sample events**.
  
