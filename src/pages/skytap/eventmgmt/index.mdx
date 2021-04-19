@@ -262,71 +262,55 @@ Ansible は、非常に人気のある自動化ツールです。Playbookと呼�
     ![](images/2020-11-16-16-10-49.png)
     1. 名前と説明を記載します。以下のような Runbook作業手順書のコンテンツを定義するエディターを利用して、複数のステップを定義したり、オペレーターに対してガイド付きで、実行するコマンドを指定したりできます。
 　　ここでは自動的に処理を呼び出します。**Automation**アイコンをクリックして、事前定義したrunbook自動化の定義を指定します。
- 
-    8. Provide the name and secription. Below, there is an editor allowing you to define a runbook content. You can define multiple steps, provide commands to be run along with the guidence for the operator who will use this later. You can also call automations and this is exactly what we want. Click the **Automation** icon to add previously defined automation to the runbook.
-
+    1. Provide the name and secription. Below, there is an editor allowing you to define a runbook content. You can define multiple steps, provide commands to be run along with the guidence for the operator who will use this later. You can also call automations and this is exactly what we want. Click the **Automation** icon to add previously defined automation to the runbook
    ![](images/2020-11-16-16-16-19.png)
-
-9. Click '+' sign next to **Start_Online_Banking** automation on the list to add automation to the runbook. On the dialog that pops up click **Apply** to confirm.
+    1.. '+' sign next to **Start_Online_Banking** automationの横にある`+`ボタンをクリックして、自動的に実行するrunbookを追加します。確認のポップアップでは、**Apply**をクリックします。
 
    ![](images/2020-11-16-16-18-55.png)
 
    ![](images/2020-11-16-16-20-15.png)
+    1. 定義が終わったので、作業手順書を**Publish**して、利用可能にします。
 
-   Finally, click **Publish** to complete defining the runbook.
-
-10. Finally, you need to connect the runbook with the events. This is done with the Event Policy. Go back to the **Administration** tab and select **Policies**. Previously you have used this to define incident policy that sends out Slack notifications. This time you add a new event policy. Click **New event policy**.
-
+1. 最後に、イベントとrunbook 作業手順書を関連づけます。これは イベント・ポリシー によって実行されます。
+    1. モニタリングの管理画面にもとり、**Policies**を選びます。 先ほどは、ここで Slack通知のためのIncident Policyを定義しました。今回は イベントへの対応を定義するEvent Policyを作成します。**New event policy**をクリックします。
     ![](images/2020-11-16-16-25-02.png)
-
-11. Provide the name and description.
-
+    1. 名前と説明を記載します。
     ![](images/2020-11-16-16-29-17.png)
-
-12. In the events section select **Specify conditions** and for **Condition 1**, change the attribute to **Summary**, select **"contains"** for the operator, and enter **"node process not running"** as the value.
-
+    1. イベントセクションでに、**Specify Condtions**を選び、**Condition 1**として、
+    In the events section select **Specify conditions** and for **Condition 1**, change the attribute to **Summary**, select **"contains"** for the operator, and enter **"node process not running"** を入力します・ue.
     ![](images/2020-11-16-16-31-01.png)
-
-    You can test the condition to verify that you haven't made any mistake.
-
-13. Scroll down to **Action** section. Select **Assign runbook**, and then click **Add runbook assignment**.
-
+    条件を作成したら、ミスがない検証することが可能です。
+    1. **Action** セクションまでスクロール・ダウンします。**Assign runbook**を選び、**Add runbook assignment**をクリックします。
     ![](images/2020-11-16-16-32-45.png)
-
-14. Select the available runbook and click **Apply**. Then, select **Automatically run this runbook** checkbox and click **Save**.
-
+    1. 利用可能なrunbookを選択肢、**Apply**をクリックします。そして、**Automatically run this runbook** のチェックボックスにチェックを入れて、**Save**します。
     ![](images/2020-11-16-16-35-49.png)
-
-15. If you haven't enabled the policy yet (it was possible during definition step), toggle the **Enabled** switch.
-
+    1. さいごに Poilicy を **Enabled** にします。
     ![](images/2020-11-16-16-38-10.png)
 
-    This concludes the definitions. Now, let's check how it works in action.
+これでRunbookとイベントの関連付けのステップは終了です。
+ 
 ***
 
-## Test runbook automation
+## Runbook Automationのテスト
 
-1. Go back to the **Administration** tab and select **Integrations**. Generate again sample events. Now, go back to **Administraton** and select **Incidents** tab. Select **All incidents**
-
+1. モニタリングの管理ページに戻り、**Integrations**をクリックします。
+    1. サンプル・イベントを生成します。
+    1. モニタリングの管理ページに戻り、**Incidents**を選択し、**All incidents**を表示します。
    ![](images/2020-11-16-17-07-45.png)
+    **Online Banking Application**に関連するインシデントが自動的に `Support Group 01`にアサインされていることが分かります。**Investivate**をクリックします。
 
-   You can notice, that the incident related to the Online Banking application was automatically assigned to the Online Banking Support group. Click **Investigate**
-
-2. In the Resolution view, you should see that the Slack notification was send out (1), as well as that the runbook was assigned and successfully executed by the event policy.
-
+    1. **Resolution**問題解決ビューで、Slack通知が送付されていることを確認します。
+    1. また自動的に EventPolicyによって、runbook（作業手順書）が実行されていることを確認します。
    ![](images/2020-11-16-17-10-57.png)
-
-3. To confirm, open the Management Hub terminal on the desktop and look for **rba-result.txt** file.
-
+    1. デスクトップの **Management Hub**ターミナルを開き、 定義したジョブの実行結果である **rba-result.txt**を探します。
    ![](images/2020-11-16-17-12-30.png)
-
-4. In case something went wrong and you would like to look at the details of the Ansible execution log, you can go the the Ansible Tower, or withing the Cloud Pak user interface, go to the **Administration** tab, **Runbooks** tile and look at the Executiuon tab. Here you can find the detailed log of each execution of any of the automations you defined.
+    1. もし**rba-result.txt**が見つからなければ、Ansible Towerの executionログを確認してください。
 
    ![](images/2020-11-16-17-15-35.png)
 
    ![](images/2020-11-16-17-15-44.png)
 
-   Congratulations ! You have reached the end of the tutorial.
+   異常で、イベント通知およびRuntime Automationのハンズオンは終了です。
 
 ***
 
