@@ -14,10 +14,12 @@ IBM Cloud Pak for Multicloud Management に統合された Red Hat Advanced Clus
 アプリケーションの定義は、YAMLで管理されるKubernetesリソースとして、または Helmチャートにパッケージされたアプリケーションとして Gitレポジトリーに保管されています。
 Red Hat Adanced Cluster Managementコンポーネントにおいて、ソースとなるレポジトリを指定し、払い出し先を決定するために必要となる定義を指定することで、選定されたクラスターに対してアプリケーションが自動的に配置されます。アプリケーション定義のソースはGitレポジトリにありますので、Gitに統合された開発サイクルを通じてGitレポジトリを修正すると、変更された内容が 管理対象となっているクラスター環境にも反映されます。　　
 
-このアプリケーション払い出しモデルには、チャネルとサブスクリプションというモデルが使われており、継続的に自動的に Kubernetesリソースを対象となる管理クラスターに払い出します。   
-この仕組みは、あとで解説します。  
-![image](https://user-images.githubusercontent.com/22209835/115217670-b3b69b80-a140-11eb-9191-6ddecdd2bf01.png)
 
+![image](https://user-images.githubusercontent.com/22209835/115217670-b3b69b80-a140-11eb-9191-6ddecdd2bf01.png)
+このアプリケーション払い出しモデルには、上図のようなチャネルとサブスクリプションというモデルが使われており、継続的に自動的に Kubernetesリソースを対象となる管理クラスターに払い出します。   
+この仕組みは、あとで解説します。  
+
+*** 
 ここでは、Javaアプリケーション・サーバーで稼働する サンプル・アプリケーションである ModResort アプリケーションを、アプリケーション配置機能を使って払い出しを行います。
 
 1. Red Hat Advanced Cluster Management コンポーネントの コンソールを開き、メニューより **Manage applications** を選択します。
