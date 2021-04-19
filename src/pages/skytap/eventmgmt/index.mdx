@@ -250,38 +250,20 @@ Ansible は、非常に人気のある自動化ツールです。Playbookと呼�
 さまざまなタイプのインシデントの問題解析や問題解消のための手順や仕組みを **Runbook**（作業手順書）に定義します。IBM Cloud Pak for Multicloud Managementに定義される**Runbook**は、イベントを受けて自動実行や、承認を経ての半自動実行、または手動実行を行うことが可能です。IBM Cloud Pak for Multicloud Managementに定義される**Runbook**には、Ansible TowerやBigFixなど、様々な自動化ツールを連携されることが可能です。
 
 1. IBM Cloud Pak for Multicloud Managementのコンソールに戻り、Administer>Monitoringから、**Runbooks**を開きます。
-
-1. You should be in the Administration view. Click **Runbooks** tile
-
-   ![runbooks tile](images/2020-10-09-17-24-24.png)
-
-2. Click **Connections** tab. Connections let you define automation tools that you want to use in your runbooks. Here you will define a connection to Ansible Tower
-
-   ![](images/2020-10-09-17-25-49.png)
-
-3. Click **Configure** under the Ansible Tower tile.
-
-   ![](images/2020-10-09-17-26-56.png)
-
-4. Enter Asible Tower URL: `https://ansible-tower-web-svc-ansible-tower.apps.demo.ibmdte.net`, provide `admin` as user and insert the password using the stored credentials from the Skytap menu. Finally click **Save**.
-
-   ![](images/2020-10-09-17-30-52.png)
-
-5. If you entered the credentials and URL correctly, you should see the green checkmark next to the **Connected** shown under Ansible Tower tile.
-
+1. **Connections**タブを開きます。ここでは、Runbookで利用する自動化ツールを登録できます。ここにAnsible Towerを登録していきましょう。
+    1. **Ansible Tower**の下の**Configure**ボタンをクリックします。
+    1. Asible Tower URLとして `https://ansible-tower-web-svc-ansible-tower.apps.demo.ibmdte.net`を指定し、 `admin`ユーザー を指定します。パスワードはskytapに保管されている情報から取得し、**Save**します。
+    1. 正しく定義できていれば**Connected**マークになります。
    ![](images/2020-10-09-17-32-59.png)
-
-6. Now, select the **Automations** tab and click **New automation**.
-
-   Automations are predefined tasks that can be invoked by the operator manually during the incident or executed automatically in response to the incoming events. Select **Ansible Tower** as type, provide name and select **Start_Online_Banking** template as shown below. Finally click **Save**
-
-   ![](images/2020-11-16-16-07-38.png)
-
-7. Next, you need to add a runbook. Select **Library** tab and click **Add runbook** button.
-
-   ![](images/2020-11-16-16-10-49.png)
-
-8. Provide the name and secription. Below, there is an editor allowing you to define a runbook content. You can define multiple steps, provide commands to be run along with the guidence for the operator who will use this later. You can also call automations and this is exactly what we want. Click the **Automation** icon to add previously defined automation to the runbook.
+    1. **Automations**タブの中で、**New Automation**をクリックします。
+    **Automations**は、発生したイベントへの対応として、オペレーターによって手動でキックされるか、自動で実行されることができる処理です。  
+    ここでは、タイプとして**Ansible Tower**を選び、名前を**Start_Online_Banking**と指定し、テンプレートとして 先ほど登録した**Start_Online_Banking**を選び、**Save**します。
+    1. **runbook**を追加します。**Library**タブを選択肢、**Add Runbook**ボタンをクリックします。
+    ![](images/2020-11-16-16-10-49.png)
+    1. 名前と説明を記載します。以下のような Runbook作業手順書のコンテンツを定義するエディターを利用して、複数のステップを定義したり、オペレーターに対してガイド付きで、実行するコマンドを指定したりできます。
+　　ここでは自動的に処理を呼び出します。**Automation**アイコンをクリックして、事前定義したrunbook自動化の定義を指定します。
+ 
+    8. Provide the name and secription. Below, there is an editor allowing you to define a runbook content. You can define multiple steps, provide commands to be run along with the guidence for the operator who will use this later. You can also call automations and this is exactly what we want. Click the **Automation** icon to add previously defined automation to the runbook.
 
    ![](images/2020-11-16-16-16-19.png)
 
