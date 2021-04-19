@@ -100,9 +100,11 @@ Red Hat Adanced Cluster Managementコンポーネントにおいて、ソース�
 ![image](https://user-images.githubusercontent.com/22209835/115217670-b3b69b80-a140-11eb-9191-6ddecdd2bf01.png)　
 このアプリケーション払い出しモデルには、チャネルとサブスクリプションというモデルが使われており、Kubernetesリソースを、継続的に自動的に対象となる管理クラスターに払い出します。 
     1. アプリケーション払出しに関わる定義対は、（Application.k8s.io) という定義体に関連付けられています。  
-    1. チャネル(Channel.app.ibm.com)の実体は、ハブクラスター内の名前空間を定義しおり、この名前空間にデプロイメントのための各種KubernetesリソースやHelmチャートが保管されます。今回の環境ではこのチャネルに、リソース定義ソースとなる GitRepositoryが定義されています。  
-    1. このチャネルの変化を監視するサブスクリプション(Subscription.apps.open-cluster-management.io) が定義されています。 
-    1. このサブスクリプションには、配置ターゲットを決定する配置ルール(Placements.apps.open-cluster-management.io)が関連付けられています。この配置ルールに先程指定したラベルが反映されています。
+    1. チャネル(Channel.app.ibm.com)は、払出しコンテンツのソース・レポジトリをポイントしています。  
+       チャネルの実体は、ハブクラスター内の名前空間を定義しており、この名前空間にデプロイメントのための各種KubernetesリソースやHelmチャートが保管されます。
+       今回の環境では  チャネルとして、 ModResortアプリケーションの GitRepositoryが定義されています。  
+    1. このチャネルの変化を監視するサブスクリプション(Subscription.apps.open-cluster-management.io) が、Applicationと関連付けられて定義されています。 
+    1. このサブスクリプションには、配置ターゲットを決定する配置ルール(Placements.apps.open-cluster-management.io)が関連付けられています。この配置ルールに先程指定したクラスターを選択するためのラベルが反映されています。
     1. 配置ルール(Placements)のアイコンをクリックし、右に開いたペーンから **View Resource YAML** を開きます。
     ![image](https://user-images.githubusercontent.com/22209835/113965904-2f733700-9869-11eb-998e-730cb996a2f1.png)
     1. 開いた配置ルールのYAML定義体の一番下を確認します。  
