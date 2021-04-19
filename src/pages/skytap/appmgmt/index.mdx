@@ -108,7 +108,7 @@ Red Hat Adanced Cluster Managementコンポーネントにおいて、ソース�
     1. 配置ルール(Placements)のアイコンをクリックし、右に開いたペーンから **View Resource YAML** を開きます。
     ![image](https://user-images.githubusercontent.com/22209835/113965904-2f733700-9869-11eb-998e-730cb996a2f1.png)
     1. 開いた配置ルールのYAML定義体の一番下を確認します。  
-      spec.clusterSelector として **MatchLabels**が指定され、**environemnt:qa** が指定されていることを確認します。  　
+      spec.clusterSelector として **matchLabels**が指定され、**environemnt:qa** が指定されていることを確認します。  　
       そして、その結果として status.decisions として、microk8sクラスターが選択されていることが分かります。
     ![image](https://user-images.githubusercontent.com/22209835/113966160-8aa52980-9869-11eb-8bbb-2cb2a89db0dc.png)
 
