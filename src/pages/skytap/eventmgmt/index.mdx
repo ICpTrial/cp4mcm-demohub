@@ -269,35 +269,30 @@ Ansible は、非常に人気のある自動化ツールです。Playbookと呼�
     名前を を **Online Banking Application Auto Restart** として、**Add automation Step **ボタンをクリックします。 
     ![image](https://user-images.githubusercontent.com/22209835/115179860-40e0fc80-a10f-11eb-90bb-b8281abe920b.png)
     1. Step1として、事前定義したrunbook自動化の定義を選択し、**Select this automation**をクリックします。
-    ![image](https://user-images.githubusercontent.com/22209835/115179938-6e2daa80-a10f-11eb-9355-854ef2bab6e6.png)
-    1. 
-    ![image](https://user-images.githubusercontent.com/22209835/115180030-9ddcb280-a10f-11eb-9d1d-4e894eefe9d0.png)
-
-
-    1. Provide the name and secription. Below, there is an editor allowing you to define a runbook content. You can define multiple steps, provide commands to be run along with the guidence for the operator who will use this later. You can also call automations and this is exactly what we want. Click the **Automation** icon to add previously defined automation to the runbook
-   ![](images/2020-11-16-16-16-19.png)
-    1.. '+' sign next to **Start_Online_Banking** automationの横にある`+`ボタンをクリックして、自動的に実行するrunbookを追加します。確認のポップアップでは、**Apply**をクリックします。
-
-   ![](images/2020-11-16-16-18-55.png)
-
-   ![](images/2020-11-16-16-20-15.png)
+    ![image](https://user-images.githubusercontent.com/22209835/115179938-6e2daa80-a10f-11eb-9355-854ef2bab6e6.png)認のポップアップでは、**Apply**をクリックします。
     1. 定義が終わったので、作業手順書を**Publish**して、利用可能にします。
+    ![image](https://user-images.githubusercontent.com/22209835/115183903-ad5ff980-a117-11eb-9e91-d6d3d0c98d81.png)
 
 1. 最後に、イベントとrunbook 作業手順書を関連づけます。これは イベント・ポリシー によって実行されます。
-    1. モニタリングの管理画面にもとり、**Policies**を選びます。 先ほどは、ここで Slack通知のためのIncident Policyを定義しました。今回は イベントへの対応を定義するEvent Policyを作成します。**New event policy**をクリックします。
-    ![](images/2020-11-16-16-25-02.png)
-    1. 名前と説明を記載します。
-    ![](images/2020-11-16-16-29-17.png)
-    1. イベントセクションでに、**Specify Condtions**を選び、**Condition 1**として、
-    In the events section select **Specify conditions** and for **Condition 1**, change the attribute to **Summary**, select **"contains"** for the operator, and enter **"node process not running"** を入力します・ue.
-    ![](images/2020-11-16-16-31-01.png)
-    条件を作成したら、ミスがない検証することが可能です。
-    1. **Action** セクションまでスクロール・ダウンします。**Assign runbook**を選び、**Add runbook assignment**をクリックします。
-    ![](images/2020-11-16-16-32-45.png)
-    1. 利用可能なrunbookを選択肢、**Apply**をクリックします。そして、**Automatically run this runbook** のチェックボックスにチェックを入れて、**Save**します。
-    ![](images/2020-11-16-16-35-49.png)
-    1. さいごに Poilicy を **Enabled** にします。
-    ![](images/2020-11-16-16-38-10.png)
+    1. モニタリングの管理画面にもとり、**Policies**を選びます。
+    ![image](https://user-images.githubusercontent.com/22209835/115183959-c799d780-a117-11eb-9297-992cd55c89af.png)
+    1. 先ほどは、ここで Slack通知のためのIncident Policyを定義しました。今回は イベントへの対応を定義するEvent Policyを作成します。  
+    **Event Policy**のタブで**New event policy**をクリックします。
+    1. Nameに **Online Bankind Application Event Policy **と指定します。
+    ![image](https://user-images.githubusercontent.com/22209835/115184167-370fc700-a118-11eb-8250-6e8ee17a69c1.png)
+    1. Eventセクションで、**Specify Condtions**を選び、**Condition 1**として、**Symmary** **contains** **process not running** を指定します。  
+    この条件により、イベントとアクションを紐付けます。
+    ![image](https://user-images.githubusercontent.com/22209835/115184706-5d823200-a119-11eb-9e49-65e56e41bceb.png)
+    1. 条件を作成したら、**Test**ボタンを押して、ミスがない検証することが可能です。ただしく、イベントが引っかかるか確認します。
+    ![image](https://user-images.githubusercontent.com/22209835/115184759-74c11f80-a119-11eb-87cf-e71fe74ae6fc.png)
+    1. **Action** セクションまでスクロール・ダウンします。**Assign runbook**を選び、**Add runbook assignment**の黒いボタンをクリックします。
+    ![image](https://user-images.githubusercontent.com/22209835/115184834-9b7f5600-a119-11eb-9bb4-12356c1e553a.png)
+    1. 先ほど作成したrunbook **Oneline Banking Application Auto Restart** を選択して、**Apply**をクリックします。
+    ![image](https://user-images.githubusercontent.com/22209835/115184893-bbaf1500-a119-11eb-9b6a-a2706d60ea3a.png)
+    1. Runbook構成の画面に戻りますので、、**Automatically run this runbook** のチェックボックスにチェックを入れます￥。
+    ![image](https://user-images.githubusercontent.com/22209835/115184965-e13c1e80-a119-11eb-8a07-6013e4229656.png)
+    1. さいごに 作成したEvent Poilicy を **Enabled** にしまて、**Save**します。
+    ![image](https://user-images.githubusercontent.com/22209835/115185059-0e88cc80-a11a-11eb-8521-7247968916b4.png)
 
 これでRunbookとイベントの関連付けのステップは終了です。
  
@@ -305,24 +300,23 @@ Ansible は、非常に人気のある自動化ツールです。Playbookと呼�
 
 ## Runbook Automationのテスト
 
+1. サンプル・イベントを利用して、Runbook Automationの挙動を確認します。
 1. モニタリングの管理ページに戻り、**Integrations**をクリックします。
-    1. サンプル・イベントを生成します。
-    1. モニタリングの管理ページに戻り、**Incidents**を選択し、**All incidents**を表示します。
-   ![](images/2020-11-16-17-07-45.png)
-    **Online Banking Application**に関連するインシデントが自動的に `Support Group 01`にアサインされていることが分かります。**Investivate**をクリックします。
+![image](https://user-images.githubusercontent.com/22209835/115185187-50197780-a11a-11eb-95c2-a1b1957a90f3.png)
+1. 一番右の**Sample events**のボックスで**Generate**をクリックし、イベントが作成されたことを確認します。
+![image](https://user-images.githubusercontent.com/22209835/115185301-848d3380-a11a-11eb-8be7-4e5b48bf18f2.png)
+1. モニタリングの管理ページに戻り、**Incidents**を選択します。
+![image](https://user-images.githubusercontent.com/22209835/115185341-9a9af400-a11a-11eb-8ae2-5715628ed537.png)
+1. **All incidents**のタブを開き、イベントを確認します。
+![image](https://user-images.githubusercontent.com/22209835/115185372-a981a680-a11a-11eb-908b-80cb6d04dc21.png)
+1. **Online Banking Application**に関連するインシデントが自動的に `Support Group 01`にアサインされていることが分かります。**Investivate**の青いボタンをクリックします。
+![image](https://user-images.githubusercontent.com/22209835/115185906-bb177e00-a11b-11eb-8428-3b864e3186fa.png)
+1. **Resolution**問題解決ビューのRecent timeline で、 `Notified 1 outgoing integrations`として、Slack通知が送付されていることを確認します。
+![image](https://user-images.githubusercontent.com/22209835/115185977-da161000-a11b-11eb-925e-a0ff91d9d7a9.png)
+１. また自動的に EventPolicyによって、runbook（作業手順書）が関連付けられていることを確認します。
+![image](https://user-images.githubusercontent.com/22209835/115186211-4729a580-a11c-11eb-8dee-acb1d17af841.png)
 
-    1. **Resolution**問題解決ビューで、Slack通知が送付されていることを確認します。
-    1. また自動的に EventPolicyによって、runbook（作業手順書）が実行されていることを確認します。
-   ![](images/2020-11-16-17-10-57.png)
-    1. デスクトップの **Management Hub**ターミナルを開き、 定義したジョブの実行結果である **rba-result.txt**を探します。
-   ![](images/2020-11-16-17-12-30.png)
-    1. もし**rba-result.txt**が見つからなければ、Ansible Towerの executionログを確認してください。
-
-   ![](images/2020-11-16-17-15-35.png)
-
-   ![](images/2020-11-16-17-15-44.png)
-
-   異常で、イベント通知およびRuntime Automationのハンズオンは終了です。
+以上で、イベント通知およびRuntime Automationのハンズオンは終了です。
 
 ***
 
