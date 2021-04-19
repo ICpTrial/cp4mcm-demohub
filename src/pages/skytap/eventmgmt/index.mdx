@@ -219,22 +219,21 @@ IBM Cloud Pak for Multicloud Managementには、**Ansible Engine**によって�
     ![image](https://user-images.githubusercontent.com/22209835/115170647-0cb01080-a0fc-11eb-8f32-7014a4dd9c22.png)
    ここまでで、Inventoryの構成は終わりです。
    
-
 ***
 
-## Configure Ansible playbooks
+## Ansible Plaubookの登録
+Ansible は、非常に人気のある自動化ツールです。Playbookと呼ばれる多様な自動化スクリプトが、コミュニティで開発されています。Ansibleの基礎自体は、この演習では扱いませんが、ここでは 事前定義されたサンプルのplaybooを利用して作業を実施します。Ansibleについて詳しく学びたい場合は、[Ansible website](https://www.ansible.com) を見てみて下さい。
 
-   Ansible is a very popular open-source automation tool, with a large number of available automation scripts called playbooks. Ansible basics are outside scope of this tutorials so you will just use the pre-defined sample playbook. To learn more about Ansible visit [Ansible website](https://www.ansible.com)
+ここでのサンプル・アプリケーションは、イベントが発生した際にターゲットに対して、アクションとして実行されれるものです。ここでは、アプリケーションの再起動を実施します。
 
-   Sample playbook that you will use as the automation action triggered in response to the event is meant to create a sample file at the target host. It emulates the real action which normally one would take - for example to restart failing application.
-
- 1. In order to add a new playbook with automation scripts you have to first create a project. From the left-side menu select **Projects** (1) and click '+' sign to add a new project (2).
-
-   ![](images/2020-11-16-15-25-51.png)   
-
-2. Provide the name of the project (e.g. **runbook-automation**), select **Git** as SCM Type and enter **https://github.com/dymaczew/rba-ansible-sample** as SCM URL. When done click **Save**. This action starts in the background process of retriving content of the repository. If the syncronization is successful, you should see a green dot next to the project name as pointed by the arrow on the screenshot below
-
-   ![](images/2020-11-16-15-31-57.png)
+1. Ansible Playbookを配置するプロジェクトを作成します。
+    1. メニューから**Projects**を選択し、緑色の`+`ボタンをクリックします。
+    ![image](https://user-images.githubusercontent.com/22209835/115171548-336f4680-a0fe-11eb-88fd-47bbc3483661.png)
+    1. プロジェクト名として**runbook-automation** を指定して、SCM(Source Code Management)タイプとして、**Git**を指定し、SCM URLとして **https://github.com/dymaczew/rba-ansible-sample** を入力します。**Save**をクリックして設定を保管します。
+    ![image](https://user-images.githubusercontent.com/22209835/115171780-cc05c680-a0fe-11eb-80ff-1887107bed16.png)
+    1. 定義を作成すると、登録されたSCM(今回はGitHub)と同期を取ります。正常に同期されると、左端のボタンが グルーンになります。
+    ![image](https://user-images.githubusercontent.com/22209835/115171876-02dbdc80-a0ff-11eb-9c5e-f4a5dd6c7053.png)
+    1. 
 
 3. Now, you need to create the job template within a project. Select the **Job templates** (1) tab and click '+' sign (2) to add new **Job template**.
 
