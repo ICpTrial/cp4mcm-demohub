@@ -233,26 +233,18 @@ Ansible は、非常に人気のある自動化ツールです。Playbookと呼�
     ![image](https://user-images.githubusercontent.com/22209835/115171780-cc05c680-a0fe-11eb-80ff-1887107bed16.png)
     1. 定義を作成すると、登録されたSCM(今回はGitHub)と同期を取ります。正常に同期されると、左端のボタンが グルーンになります。
     ![image](https://user-images.githubusercontent.com/22209835/115171876-02dbdc80-a0ff-11eb-9c5e-f4a5dd6c7053.png)
-    1. 
-
-3. Now, you need to create the job template within a project. Select the **Job templates** (1) tab and click '+' sign (2) to add new **Job template**.
-
-   ![](images/2020-11-16-15-36-04.png)
-
-4. Provide the following details on a Job template creation form:
-
-   - Name: **Start_Online_Banking**
-   - Inventory: **static**
-   - Credentials: **desktop**
-   - Verbosity: **0 (Normal)**
-   - Project: **runbook-automation**
-   - Playbook: **start-online-banking.yaml**
-
-   ![](images/2020-11-16-15-46-16.png)
-
-   As you can see, there is a lot more different options available to customize the job execution, but you will not explore them in this tutorial. When ready with the inputs, click **Save**.
-
-   This completes the Ansible preparation part. You have defined the automation task, created inventory file and provided credentials. Now, let's define the trigger which executes this action when the specific event occurs.
+1. 登録したPlaybookを利用して、実際に実行する**Job templates**を作成します。
+    1. プロジェクト **runbook-automation** で、**JOB TEMPLATES**のタブを開いて、緑の`+`ボタンをクリックして、以下の定義を入力して、**Save**します。
+        |項目名|値|備考|
+        --|--|--
+        |名前|Start_Online_Banking||
+        |Inventory|static|ジョブテンプレートの実行先（現在は登録した10.0.0.10のdesktopのみが登録されている|
+        |Credential|desktop|認証情報|
+        |Verbosity|0 (Normal)|ジョブのログのメッセージレベル|
+        |Porject|runbook-automation||
+        |Playbook|start-online-banking.yaml|Gitから取得されたPlaybook本体|
+    ![image](https://user-images.githubusercontent.com/22209835/115172911-23a53180-a101-11eb-97f1-a75f30a1ab1b.png)
+ これで Ansibleの準備は終了です。
 
 ## Configure Runbook automation
 
