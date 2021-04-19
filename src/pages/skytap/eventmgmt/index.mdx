@@ -189,43 +189,37 @@ IBM Cloud Pak for Multicloud Managementには、**Ansible Engine**によって�
 
         ![image](https://user-images.githubusercontent.com/22209835/114995290-a1d2bf80-9ed8-11eb-9073-c0d526449512.png)
 
-   1.
+   1. ubuntu および desktopの認証情報が追加されたことを確認します。
         ![image](https://user-images.githubusercontent.com/22209835/114995619-fd04b200-9ed8-11eb-8734-6718f4c2eecf.png)
 
 
-6. Now, let's add new Inventory. In the menu select **Inventories**.
+１. 次に インベントリー（ジョブを実行する管理対象となるサーバー）を定義していきましょう。メニューから**Inventories**をクリックします。
+![image](https://user-images.githubusercontent.com/22209835/115168567-60b7f680-a0f6-11eb-8537-44054738b94b.png)
 
-   ![](images/2020-10-10-11-29-08.png)
-
-7. An Inventory is a collection of hosts against which jobs may be launched. To create automation you must first define a set of target hosts as Inventory and assign the credentials that Ansible will use to connect to the target system. You can define a static inventory for a well known hosts in your infrastructure, as well as dynamic inventory that will be automatically populated with the virtual machines provisioned in a public or private cloud. Let's start with dynamic one. Click '+' sign on the right and select **Inventory** to create a new inventory.
-
-   ![](images/2020-10-10-11-32-46.png)
-
-   Provide the name `vmware` and click **Save**
-
-   ![](images/2020-10-10-12-37-23.png)
-
-   Now, select **Sources** tab (1) and click '+' sign (2) to add new source.
-
-   ![](images/2020-10-10-12-38-37.png)
-
-   Provide a name (e.g. `vcenter`) and select **Source** `VMware vCenter`.
-
-   ![](images/2020-10-10-12-40-14.png)
-
-   Credentials `vcenter` should be populated automatically, as there is only one entry of this type defined. If you have defined more, select the credenitals defined in step 4 above. Then, click **Save**
-
-   ![](images/2020-10-10-12-42-38.png) 
-
-8. On the Sources view, select the **Sync** icon (1) to pull inventory details from Vmware environment. When the sync job completes, you should see a green cloud icon next to the source name (2).
-
-   ![](images/2020-10-10-16-06-51.png)
-
-9. Now, add the static inventory for other hosts. Add new inventory but this time provide the name `static`, click **Save** button and then instead of sources tab, select `hosts`. Then click green '+' sign on the right to add a new entry. Provide `10.0.0.10` as **Host name** and click **Save**.
-
-   ![](images/2020-10-21-12-13-43.png)
-
-   This host is the desktop, in the next excerices you will run Ansible jobs on that host as a part of automation. However, before you can do this, there is one more step required: you need to add playbooks to your Ansible Tower.
+   1. インベントリーは、個別に情報を追加する 静的インベントリーと、認証情報を追加することにより パブリック・クラウドおよびプライベート・クラウドで稼働する仮想マシンを自動的に構成する動的インベントリーがあります。ここでは、動的インベントリーを構成します。右上の緑色の`+`ボタンをクリックし、**Inventory**をクリックします。
+   ![image](https://user-images.githubusercontent.com/22209835/115168832-2ef35f80-a0f7-11eb-8fee-5f7cff097623.png)
+   1. 名前に `vmware`と入力して保管します。
+   ![image](https://user-images.githubusercontent.com/22209835/115168849-42062f80-a0f7-11eb-9f54-95250d14777a.png)
+   1. **Sources**タブを開き、緑色の`+`ボタンをクリックします。
+   ![image](https://user-images.githubusercontent.com/22209835/115168952-a3c69980-a0f7-11eb-9387-16811d5ad2d7.png)
+   1. **Create Source**画面で、名前として `vCenter`を入力し、Sourceとして、`VMware vCenter`を指定します。
+   ![image](https://user-images.githubusercontent.com/22209835/115169615-8397da00-a0f9-11eb-853d-4b65231b6c21.png)
+   1. vcenterの認証情報は一つしか定義されていないので、 `vcenter`が自動的に選ばれているはずです。別途定義を作成して、複数認証情報がある場合は明示的に指定してください。
+    ![image](https://user-images.githubusercontent.com/22209835/115169667-a32f0280-a0f9-11eb-84df-ec8f10670348.png)
+   1. **Sources**タブに戻り、右端から二つ目の **Sync**アイコン（矢印が回転しているマーク）を クリックして、VMWare 環境から情報を取得します。
+    ![image](https://user-images.githubusercontent.com/22209835/115169778-f608ba00-a0f9-11eb-95a2-6b33977cf287.png)
+   1. **Sync**が正しくできた場合には、**Inventory**下の `vmware` の雲アイコンが緑色になります。`vmware`のリンクをクリックします。
+    ![image](https://user-images.githubusercontent.com/22209835/115169863-3405de00-a0fa-11eb-8198-c09557bbec26.png)
+   1. `vmware`の画面で**HOSTS**タブを開き、インポートされたサーバーを確認します。
+    ![image](https://user-images.githubusercontent.com/22209835/115169967-75968900-a0fa-11eb-9445-e48011e61a5d.png)
+   1. その他のホストを静的インベントリーに追加します。再び**Inventory**をメニューから選び、緑色の`+`ボタンをクリックします。
+    ![image](https://user-images.githubusercontent.com/22209835/115170198-0705fb00-a0fb-11eb-870d-24f1fde9e25d.png)
+   1. インベントリ名に `static`と指定して、**Save**をクリックします。
+    ![image](https://user-images.githubusercontent.com/22209835/115170416-8eec0500-a0fb-11eb-9745-7400eb70f697.png)
+   1. **HOSTS**タブを選び、緑色の`+`ボタンをクリックし、**Host name**に `10.0.0.10`を指定、**Save**をクリックします。このサーバーは、もろもろの 操作を実施している desktopサーバーです。
+    ![image](https://user-images.githubusercontent.com/22209835/115170647-0cb01080-a0fc-11eb-8f32-7014a4dd9c22.png)
+　　ここまでで、Inventoryの構成は終わりです。
+   
 
 ***
 
