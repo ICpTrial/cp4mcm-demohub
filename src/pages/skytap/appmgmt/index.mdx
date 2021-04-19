@@ -95,8 +95,23 @@ Red Hat Adanced Cluster Managementコンポーネントにおいて、ソース�
     NAME                                              DESIRED   CURRENT   READY   AGE
     replicaset.apps/modresort-deployment-85fcb5fdf9   1         1         1       79m
     ```
+    1. 以下のコマンドで、**modresort**名前空間に払出された Ingress を確認します。
+    ```
+    ibmuser@microk8s:~$ kubectl get ingress -n modresort
+    NAME                CLASS    HOSTS                       ADDRESS     PORTS   AGE
+    modresort-ingress   <none>   modresort.10.0.0.2.nip.io   127.0.0.1   80      79m
+    ```
+1. Ingress に指定された ホスト名でアクセスしてみます。ブラウザのキャッシュなどの問題を回避するために、Secret Windowsを開きます。
+![image](https://user-images.githubusercontent.com/22209835/115245847-516d9300-a160-11eb-8217-f31784ef9f0c.png)
 
-1. ここで、コンソールに戻り、あらためて、アプリケーション管理機能の仕組みを確認します。
+
+
+
+
+1. 以下のように トップ画面が更新され、置き換えられています。
+![image](https://user-images.githubusercontent.com/22209835/115246077-87ab1280-a160-11eb-99fc-4f5708afea69.png)
+
+3. ここで、コンソールに戻り、あらためて、アプリケーション管理機能の仕組みを確認します。
 ![image](https://user-images.githubusercontent.com/22209835/115217670-b3b69b80-a140-11eb-9191-6ddecdd2bf01.png)　
 このアプリケーション払い出しモデルには、チャネルとサブスクリプションというモデルが使われており、Kubernetesリソースを、継続的に自動的に対象となる管理クラスターに払い出します。 
     1. アプリケーション払出しに関わる定義対は、（Application.k8s.io) という定義体に関連付けられています。  
