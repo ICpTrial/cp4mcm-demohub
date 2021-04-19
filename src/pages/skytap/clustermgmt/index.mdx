@@ -25,7 +25,7 @@ IBM Cloud Pak for Multicloud Management は、マルチクラウド環境にお�
 これらの課題のなかで、あなたは IBM Cloud Pak for Multicloud Management の機能を確認しようとしています。
 
 このチュートリアルでは、 **管理ハブクラスター** で稼働する Cloud Pak for MCM および、Cloud Pak for MCM に統合された Red Hat Advanced Cluster Management を確認していきます。  
-Cloud Pak for MCM および Red Hat Advanced Cluster Management の実体も Red Hat OpenShift で稼働し、Operator により管理されるコンテナー・アプリケーションです。  
+1. Cloud Pak for MCM および Red Hat Advanced Cluster Management の実体も Red Hat OpenShift で稼働し、Operator により管理されるコンテナー・アプリケーションです。  
 また、２つ目の **管理対象クラスター** として単一ノードで稼働するMircroK8sを利用します。
 ※製品の正式なサポート対象ではありませんが、リソースをおさえた環境での演習のため、便宜的に MircoK8sとして、バニラKubernetes を利用しています。  
 
@@ -190,23 +190,22 @@ Red Hat Advanced Cluster Management の 管理コンソールを通じて、単�
 1. Red Hat Advanced Cluster Management のコンソールを開き、コンソールのヘッダーにある **Search** ボタンをクリックします。
 ![image](https://user-images.githubusercontent.com/22209835/113952277-5a04c600-9850-11eb-93f0-a9d769ef6760.png)
 
-2. サーチ・メニュー は 管理対象のクラスターの アプリケーション・リソースとKubernetesオブジェクトに対するアクセスを提供します。  
+1. サーチ・メニュー は 管理対象のクラスターの アプリケーション・リソースとKubernetesオブジェクトに対するアクセスを提供します。  
 非常に強力な機能で、 パブリック・クラウド、プライベート・クラウドどこで稼働していても、容易に 確認が必要なリソースを見つけることが可能です。  
 サーチ・オーバービューはのダッシュボードには、よく利用される検索フィルターが事前定義されています。
 これらのフィルターは、特定のアプリケーションに特化したフィルター、特定のクラスターに特化したフィルターなど、利用者のニーズに応じて作成して保管しておくことが可能です。  
-ここでは **Created Last Hour**のボタンをクリックします。
-![image](https://user-images.githubusercontent.com/22209835/113952400-91737280-9850-11eb-8f50-31d8ec206dae.png)
-
-3. **Pod**セクションをスクロールダウンしていくと、先ほど作成した**demo-modresort**Podが見えるはずです。 フィルター・セクションに search criteria を追加することで、さらに絞り込むことも可能です。
-
+1. ここでは **Unhealthy Oods**のボタンをクリックします。
+![image](https://user-images.githubusercontent.com/22209835/115199307-09357d00-a12e-11eb-8b66-05bfbe6e418d.png)
+1. もし正常ステータスでないPodが管理ハブ・クラスタ、管理対象クラスタに存在すれば、ここに表示されます。
+![image](https://user-images.githubusercontent.com/22209835/115199478-34b86780-a12e-11eb-8316-05149204b54f.png)
+1. **Created last Hour**の画面をクリックすると、先ほど 新規に統合した Microk8sクラスターの エージェントなどが見えるはずです。
+![image](https://user-images.githubusercontent.com/22209835/115199783-83fe9800-a12e-11eb-8d1a-c517e7f93e98.png)
+1. その他、触ってみてください。
 
 お疲れさまでした。 第一章の クラスター統合のハンズオンは終了です。
 ***
 
 ## Summary
-
-!
-
 この章では、IBM Cloud Pak for Multicloud Management をもちいて、以下の内容を確認しました。
 - `IBM Cloud Pak for Multicloud Management ダッシュボードから環境全体を概観する`;
 - `クラスターを新規にデプロイする`;
