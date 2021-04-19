@@ -101,17 +101,41 @@ Red Hat Adanced Cluster Managementコンポーネントにおいて、ソース�
     NAME                CLASS    HOSTS                       ADDRESS     PORTS   AGE
     modresort-ingress   <none>   modresort.10.0.0.2.nip.io   127.0.0.1   80      79m
     ```
-1. Ingress に指定された ホスト名でアクセスしてみます。ブラウザのキャッシュなどの問題を回避するために、Secret Windowsを開きます。
+1. ブラウザのキャッシュなどの問題を回避するために、Secret Windowsを開きます。
 ![image](https://user-images.githubusercontent.com/22209835/115245847-516d9300-a160-11eb-8217-f31784ef9f0c.png)
+1. Ingress に指定された ホスト名 modresort.10.0.0.2.nip.io でアクセスしてみます。
+![image](https://user-images.githubusercontent.com/22209835/115246650-0acc6880-a161-11eb-8de6-ac027c0dd549.png)
+正しくアプリケーションが配置され、稼働していることが確認できました。
 
-
-
-
-
-1. 以下のように トップ画面が更新され、置き換えられています。
+## アプリケーション定義の更新（アプリケーションのライフサイクル管理）
+アプリケーションの更新バージョン2.0ができ、コンテナとしてビルドされたと仮定し、これを環境に反映していきます。
+1. ブラウザで、アサインされた **modresort** の Gitページを開きます。https://github.com/ICpTrial/ModernResortXX XXは、アサインされた番号です。
+![image](https://user-images.githubusercontent.com/22209835/115247874-25eba800-a162-11eb-8d96-5db7925b89a7.png)
+1. **modresort-deployment.yaml**の定義を開き、右上のメニューにある 鉛筆アイコンをクリックして、編集モードに入ります。
+![image](https://user-images.githubusercontent.com/22209835/115248318-8b3f9900-a162-11eb-96c6-f43e0454df26.png)
+1. spec.template.spec.containers に コンテナイメージを指定している箇所があります
+![image](https://user-images.githubusercontent.com/22209835/115250083-369d1d80-a164-11eb-9557-f4d212508bbd.png)
+1. このイメージのバージョンを 1.0から2.0に更新します。ページの一番下までスクロールダウンして、緑色の**Commit Changes**ボタンをクリックし、変更をコミットします。 
+本来はGitの権限分離や承認フローの仕組みを回して、Mainのブランチに変更を反映しますが、今回は演習ですので割愛です。
+![image](https://user-images.githubusercontent.com/22209835/115250168-487ec080-a164-11eb-881c-54ee973a7f8c.png)
+1. ダイナミックに変更が Microk8sノードに反映されますので、**Micork8s**の黄色のターミナルを開き、以下のkubectlコマンドで podを確認します。  
+直近に更新が入っていることを確認してください（タイミングによっては更新中かもしれません）。
+```
+ibmuser@microk8s:~$ kubectl get pod -n modresort
+NAME                                    READY   STATUS    RESTARTS   AGE
+modresort-deployment-56d5b78989-dllmt   1/1     Running   0          83s
+```
+1. 以下のように podの内容を describe して、Imageの情報を取得します。microk8sで稼働しているコンテナのイメージが更新されていることを確認します。
+```
+ibmuser@microk8s:~$ kubectl describe pod -n modresort | grep Image:
+    Image:          docker.io/iwashina/modresort:2.0
+```
+1. 再度Secret Windowsを開き、Ingress に指定された ホスト名 modresort.10.0.0.2.nip.io でアクセスしてみます。  
+以下のように トップ画面が更新され、置き換えられています。
 ![image](https://user-images.githubusercontent.com/22209835/115246077-87ab1280-a160-11eb-99fc-4f5708afea69.png)
 
-3. ここで、コンソールに戻り、あらためて、アプリケーション管理機能の仕組みを確認します。
+## アプリケーション配置の更新
+1. ここで、コンソールに戻り、あらためて、アプリケーション管理機能の仕組みを確認します。
 ![image](https://user-images.githubusercontent.com/22209835/115217670-b3b69b80-a140-11eb-9191-6ddecdd2bf01.png)　
 このアプリケーション払い出しモデルには、チャネルとサブスクリプションというモデルが使われており、Kubernetesリソースを、継続的に自動的に対象となる管理クラスターに払い出します。 
     1. アプリケーション払出しに関わる定義対は、（Application.k8s.io) という定義体に関連付けられています。  
@@ -127,7 +151,6 @@ Red Hat Adanced Cluster Managementコンポーネントにおいて、ソース�
       そして、その結果として status.decisions として、microk8sクラスターが選択されていることが分かります。
     ![image](https://user-images.githubusercontent.com/22209835/113966160-8aa52980-9869-11eb-8bbb-2cb2a89db0dc.png)
 
-## アプリケーション配置の更新
 PlacementRule に定義されたラベルを変更することによって、アプリケーションの配置先クラスターを変更します。
 
 まず、**管理ハブクラスター**には、enrvironmentラベルが存在しないため、environemt:productionの ラベルを付与します。
