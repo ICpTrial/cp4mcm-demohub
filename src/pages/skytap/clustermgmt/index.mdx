@@ -111,14 +111,14 @@ kube-system       Active   180d
 1. 以下のメニューが開きますので、上の **Import an existing cluster by running a command ** (コマンド実行による既存クラスターのインポート） をクリックして、**Launch** ボタンを開きます。
 ![image](https://user-images.githubusercontent.com/22209835/113709687-c206bf80-971d-11eb-8e47-f318e875de47.png)
 1. ふたたび、 Red Hat ACMの画面が開きますので、実際に MicroK8sクラスターを **管理対象クラスター**として、インポートしていきます。
-        1. ClusterName に **microk8s** を指定します。
-        1. Environment に **qa**を指定します。これは クラスターの特徴を管理するための ラベルの一つとして反映されます。
-        1. その他、クラスターを管理するための任意のラベルを指定します。ここでは **clusterowner=support**を指定します。  クラスター追加後も任意のラベル名でカスタマイズ可能です。
-        ![image](https://user-images.githubusercontent.com/22209835/113716134-3abd4a00-9725-11eb-8548-623bdb2c6a2e.png)
-        1. 右上の **Generate Command** をクリックします。以下のように統合用の Kuberentesコマンドが生成されます。
-        ![image](https://user-images.githubusercontent.com/22209835/113716330-6fc99c80-9725-11eb-8438-f774973e8e84.png)
-        1. 生成された コマンドの右端にある 紙のアイコンをクリックして、生成されたコマンドを Copyします。
-        ![image](https://user-images.githubusercontent.com/22209835/113716620-bfa86380-9725-11eb-8d03-6c94342fa5ca.png)
+    1. ClusterName に **microk8s** を指定します。
+    1. Environment に **qa**を指定します。これは クラスターの特徴を管理するための ラベルの一つとして反映されます。
+    1. その他、クラスターを管理するための任意のラベルを指定します。ここでは **clusterowner=support**を指定します。  クラスター追加後も任意のラベル名でカスタマイズ可能です。
+    ![image](https://user-images.githubusercontent.com/22209835/113716134-3abd4a00-9725-11eb-8548-623bdb2c6a2e.png)
+    1. 右上の **Generate Command** をクリックします。以下のように統合用の Kuberentesコマンドが生成されます。
+    ![image](https://user-images.githubusercontent.com/22209835/113716330-6fc99c80-9725-11eb-8438-f774973e8e84.png)
+    1. 生成された コマンドの右端にある 紙のアイコンをクリックして、生成されたコマンドを Copyします。
+    ![image](https://user-images.githubusercontent.com/22209835/113716620-bfa86380-9725-11eb-8d03-6c94342fa5ca.png)
 1. 先程開いていた 黄色のターミナルを開き、右クリック > Pasteで、バッファーに保管されたコマンドを貼り付けます。
 ![image](https://user-images.githubusercontent.com/22209835/113717211-5a08a700-9726-11eb-9072-f81f7f7cacc8.png) 
 1. 以下のようになりますので、Enterで貼り付けた kubectlコマンドを実行します。
@@ -152,8 +152,8 @@ kube-system       Active   180d
     open-cluster-management-agent         Active   2m57s
     open-cluster-management-agent-addon   Active   76s
     ```
-    **open-cluster-management-agent** および **open-cluster-management-agent-addon** の名前空間が生成されていることに留意ください。
-    **open-cluster-management-agent** はクラスター登録のためのエージェント、**open-cluster-management-agent-addon**は クラスター管理のためのエージェントが自動的に導入され、**管理ハブクラスター** とコミュニケーションを開始しています。  
+    **open-cluster-management-agent** および、それに続いて **open-cluster-management-agent-addon** の名前空間が生成されることに留意ください。
+    **open-cluster-management-agent** はクラスター登録のためのエージェント、**open-cluster-management-agent-addon**には クラスター管理のためのエージェントが自動的に導入され、**管理ハブクラスター** とコミュニケーションを開始しています。  
     興味があるかたは、以下のコマンドでどのようなpodが稼働しているかご確認ください。
     ```
     ibmuser@microk8s:~$ kubectl get pods -n open-cluster-management-agent
