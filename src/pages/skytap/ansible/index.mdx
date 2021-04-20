@@ -1,7 +1,8 @@
 # Chapter 2 : Ansible Automation  による自動化 (作成中）
 
-IBM Cloud Pak for Multicloud Managementには、初期構成の自動化や日々の管理運用を自動化するために利用することができる **Ansible Automation** が統合されてています。  
-**Ansible Automation**の集中管理コンポーネントである **Ansible Tower**は、IBM Cloud Pak for Multilcloud Managementの管理ハブ上で稼働しており、連携して利用していくことが可能です。
+**Ansible Automation**は、初期構成の自動化や日々の管理運用を自動化するために利用することができる、市場で非常に支持されている自動化ツールです。  
+IBM Cloud Pak for Multicloud Managementには、**Ansible Engine**によって実行される一連の自動化ジョブを、中央で統合管理するための**Ansible Tower**コンポーネントが統合されています。
+**Ansible Tower**は、IBM Cloud Pak for Multilcloud Managementの管理ハブ上で稼働しており、連携して利用していくことが可能です。
 
 この Chapter 2 では、Chapter 1 で統合した環境の 初期セットアップに Ansible を利用していきます。  
 このあと [Chapter 7](https://github.com/ICpTrial/cp4mcm-demohub/blob/master/src/pages/skytap/eventmgmt/index.mdx) では、IBM Cloud Pak for Multicloud Managementに統合されたモニタリングやイベント管理機能からの通知を受け、障害対応や問題判別を自動化していくために **Ansible Automation**を利用するケースを見ていきます。
@@ -11,8 +12,6 @@ IBM Cloud Pak for Multicloud Managementには、初期構成の自動化や日�
 ## Ansible Towerの構成
 
 ここでは、**Ansible Tower**を構成していきます。  
-IBM Cloud Pak for Multicloud Managementには、**Ansible Engine**によって実行される一連の自動化ジョブを、中央で統合管理するための**Ansible Tower**コンポーネントが統合されています。
-これら **Ansible Automation**のテクノロジーを活用することにより、ここでは、運用手順の自動化 **Runbook Automation**を実現していきます。
 
 1. IBM Cloud Pak for Multicloud Managementのメニューから、**Ansible Automation**を開きます。
 ![image](https://user-images.githubusercontent.com/22209835/114991988-30ddd880-9ed5-11eb-99b5-486f91fe1319.png)
