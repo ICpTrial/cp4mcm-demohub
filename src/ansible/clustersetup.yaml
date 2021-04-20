@@ -1,7 +1,20 @@
 - hosts: all
-  tasks:
-  - name: Emulate starting Online Banking Application
-    copy:
-      dest: "/home/ibmuser/rba-result.txt"
-      content: |
-        Successfully started Online Banking Application using Ansible playbook and Runbook automation!
+  tasks: 
+  # Configure Kubernetes Resource  
+  - name: Create "demospace" namespace
+  community.kubernetes.k8s:
+    name: demospace
+    api_version: v1
+    kind: Namespace
+    state: present
+    
+  # Download and apply manifest
+  - name: Download network policy manifest to the cluster.
+    ansible.builtin.get_url:
+      url: https://raw.githubusercontent.com/ICpTrial/cp4mcm-demohub/master/src/ansible/networkpolicy.yaml
+      dest: ~/netwokpolicy.yaml
+      mode: '0664'
+  - name: Apply networkpolicy manifest to the cluster.
+    community.kubernetes.k8s:
+      state: present
+      src: ~/networkpolicy.yaml
