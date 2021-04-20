@@ -1,0 +1,7 @@
+- hosts: all
+  tasks:
+  - name: Emulate starting Online Banking Application
+    copy:
+      dest: "/home/ibmuser/rba-result.txt"
+      content: |
+        Successfully started Online Banking Application using Ansible playbook and Runbook automation!
