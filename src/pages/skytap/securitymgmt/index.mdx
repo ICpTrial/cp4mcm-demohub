@@ -43,14 +43,17 @@ kubectl get ns | grep k8sdemo
 ![image](https://user-images.githubusercontent.com/22209835/113988574-8f2e0a00-988a-11eb-9eb7-25b2b988eeb9.png)
 1. まだなにもポリシーが定義されていませんので、右上の **Create policy**をクリックして、ポリシーを作成してきいきます。
 ![image](https://user-images.githubusercontent.com/22209835/113988665-a79e2480-988a-11eb-9fd6-69f20ed04199.png)
-1. 以下の情報を指定して、ポリシーのテンプレートを作成します。
-|項目|値|備考
---|--|--
-|Name|policy-ns-k8sdemo|ポリシー名|
-|Namespace|default|ポリシー定義が配置される名前空間|
-|Specifications|Namespace|定義するポリシーのテンプレート|
-|ClusterBinding|environment:qa|ラベルでポリシーが適用されるクラスターを指定します。アプリケーション配置と同様 environment:qaでMicrok8sが選択されます。  特定アプリケーションが稼働できるクラスターにはラベルで appA-enabled:true を設定しておくなど、ラベルで様々にクラスターの特徴を管理することができます。ラベルによって指定することで、環境が増減した場合でも柔軟にポリシーを適用可能です|
+1. 以下の情報を指定して、ポリシーのテンプレートを作成します。  
+
+  |項目|値|備考|
+  --|--|--
+  |Name|policy-ns-k8sdemo|ポリシー名|
+  |Namespace|default|ポリシー定義が配置される名前空間|
+  |Specifications|Namespace|定義するポリシーのテンプレート|
+  |ClusterBinding|environment:qa|ラベルでポリシーが適用されるクラスターを指定します。アプリケーション配置と同様 environment:qaでMicrok8sが選択されます。  特定アプリケーションが稼働できるクラスターにはラベルで appA-enabled:true を設定しておくなど、ラベルで様々にクラスターの特徴を管理することができます。ラベルによって指定することで、環境が増減した場合でも柔軟にポリシーを適用可能です| 
+
 その他の値は、そのままでOKです。
+
 1. 同じページの右に開いているYAMLファイル・エディターで、詳細な指定を行っていきます。  テンプレート定義では prod ネームスペースを確認するようになっていますので、ここを **k8sdemo**に変更します。
 ```
         object-templates:
