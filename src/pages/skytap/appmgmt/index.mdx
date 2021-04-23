@@ -139,20 +139,21 @@ ibmuser@microk8s:~$ kubectl describe pod -n modresort | grep Image:
 ここで、あらためて、アプリケーション管理機能の仕組みを確認します。
 ![image](https://user-images.githubusercontent.com/22209835/115217670-b3b69b80-a140-11eb-9191-6ddecdd2bf01.png)　
 このアプリケーション払い出しモデルには、チャネルとサブスクリプションというモデルが使われており、Kubernetesリソースを、継続的に自動的に対象となる管理クラスターに払い出します。 
-    1. アプリケーション払出しに関わる定義対は、（Application.k8s.io) という定義体に関連付けられています。  
-    1. チャネル(Channel.app.ibm.com)は、払出しコンテンツのソース・レポジトリをポイントしています。  
-       チャネルの実体は、ハブクラスター内の名前空間を定義しており、この名前空間にデプロイメントのための各種KubernetesリソースやHelmチャートが保管されます。
-       今回の環境では チャネルとして、 ModResortアプリケーションの GitRepositoryが定義されています。  
-    1. このチャネルの変化を監視するサブスクリプション(Subscription.apps.open-cluster-management.io) が、Applicationと関連付けられて定義されています。 
-    1. このサブスクリプションには、配置ターゲットを決定する配置ルール(Placements.apps.open-cluster-management.io)が関連付けられています。この配置ルールに先程指定したクラスターを選択するためのラベルが反映されています。
-    1. 配置ルール(Placements)のアイコンをクリックし、右に開いたペーンから **View Resource YAML** を開きます。
-    ![image](https://user-images.githubusercontent.com/22209835/113965904-2f733700-9869-11eb-998e-730cb996a2f1.png)
-    1. 開いた配置ルールのYAML定義体の一番下を確認します。  
-      spec.clusterSelector として **matchLabels**が指定され、**environemnt:qa** が指定されていることを確認します。  　
-      そして、その結果として status.decisions として、microk8sクラスターが選択されていることが分かります。
-    ![image](https://user-images.githubusercontent.com/22209835/113966160-8aa52980-9869-11eb-8bbb-2cb2a89db0dc.png)
+  1. アプリケーション払出しに関わる定義対は、（Application.k8s.io) という定義体に関連付けられています。  
+  1. チャネル(Channel.app.ibm.com)は、払出しコンテンツのソース・レポジトリをポイントしています。  
+     チャネルの実体は、ハブクラスター内の名前空間を定義しており、この名前空間にデプロイメントのための各種KubernetesリソースやHelmチャートが保管されます。
+     今回の環境では チャネルとして、 ModResortアプリケーションの GitRepositoryが定義されています。  
+  1. このチャネルの変化を監視するサブスクリプション(Subscription.apps.open-cluster-management.io) が、Applicationと関連付けられて定義されています。 
+     先ほどは、Git チャネルの変化を、サブスクリプションを通じて検知して、定義が動的に反映されました。  
+  1. このサブスクリプションには、配置ターゲットを決定する配置ルール(Placements.apps.open-cluster-management.io)が関連付けられています。この配置ルールに先程指定したクラスターを選択するためのラベルが反映されています。
+  1. 配置ルール(Placements)のアイコンをクリックし、右に開いたペーンから **View Resource YAML** を開きます。
+  ![image](https://user-images.githubusercontent.com/22209835/113965904-2f733700-9869-11eb-998e-730cb996a2f1.png)
+  1. 開いた配置ルールのYAML定義体の一番下を確認します。  
+    spec.clusterSelector として **matchLabels**が指定され、**environemnt:qa** が指定されていることを確認します。  　
+    そして、その結果として status.decisions として、microk8sクラスターが選択されていることが分かります。
+  ![image](https://user-images.githubusercontent.com/22209835/113966160-8aa52980-9869-11eb-8bbb-2cb2a89db0dc.png)
 
-それでは、ここでは、PlacementRule に定義されたラベルを変更することによって、アプリケーションの配置先クラスターを変更します。
+それでは、Application管理シナリオの最後に、PlacementRule に定義されたラベルを変更することによって、アプリケーションの配置先クラスターを変更します。
 
 まず、**管理ハブクラスター**には、enrvironmentラベルが存在しないため、environemt:productionの ラベルを付与します。
 1. Red Hat ACMコンポーネントのコンソールを開き、メニューから Automate Infrastructure > Clusters を開きます。
