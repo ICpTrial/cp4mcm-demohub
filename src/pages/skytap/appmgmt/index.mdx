@@ -39,12 +39,12 @@ Red Hat Adanced Cluster Managementコンポーネントにおいて、ソース�
    1. レポジトリ情報として、以下の情報を指定してください。  
         |項目|値|
         --|--
-        |URL|https://github.com/ibmuser-cp4mcmlab/ModernResort| |
+        |URL|https://github.com/ibmuser-cp4mcmlab/ModernResortXX ※XXは 01-06のセミナー管理者によってアサインされた番号です|
         |UserName|（パブリック・レポジトリですので不要です）|
         |AccessToken|（パブリック・レポジトリですので不要です）|
-        |Branch|ibmuserXX ※XXは 01-06のセミナー管理者によってアサインされた番号です|
+        |Branch|mail|
         |Path|（指定不要）|
-   ![image](https://user-images.githubusercontent.com/22209835/115220471-8ae3d580-a143-11eb-95c2-f6d9f0522622.png)
+   ![image](https://user-images.githubusercontent.com/22209835/115821783-6424e800-a43e-11eb-9be8-1fea2490fa40.png)
    1. 配置先クラスターの指定
     配置先クラスターとして、すべての管理対象クラスターに払い出すことや、ハブ・クラスター(localcluster)のみに払い出すことが可能ですが、
     ここでは、ラベルによって条件を設定し、その条件にマッチするクラスターにアプリケーションを払い出します。  
@@ -109,14 +109,10 @@ Red Hat Adanced Cluster Managementコンポーネントにおいて、ソース�
 
 ## アプリケーション定義の更新（アプリケーションのライフサイクル管理）
 アプリケーションの更新バージョン2.0ができ、コンテナとしてビルドされたと仮定し、これを環境に反映していきます。
-1. ブラウザで、 **modresort**のGitページ https://github.com/ibmuser-cp4mcmlab/ModernResort を開きます。
+1. ブラウザで、 **modresort**のGitページ https://github.com/ibmuser-cp4mcmlab/ModernResortXX (※XXは 01-06のセミナー管理者によってアサインされた番号です) を開きます。
 ![image](https://user-images.githubusercontent.com/22209835/115819142-3ab58d80-a439-11eb-9899-74d0bfb9a75c.png)
 1. GitHub 右上の**Sign in**ボタンから、 `cp4mcmlab@gmail.com` として指定されたパスワードでログインします。
 ![image](https://user-images.githubusercontent.com/22209835/115819724-71d86e80-a43a-11eb-8f84-4b219bbf17b4.png)
-
-1. アサインされた ibmuserXX のブランチを開きます（ここを間違えると、ハンズオンを実施している他の人の定義を変更してしまいますのでご留意ください)。
-![image](https://user-images.githubusercontent.com/22209835/115819192-50c34e00-a439-11eb-8b77-e981644ccd87.png)
-
 1. **modresort-deployment.yaml**の定義を開き、右上のメニューにある 鉛筆アイコンをクリックして、編集モードに入ります。
 ![image](https://user-images.githubusercontent.com/22209835/115248318-8b3f9900-a162-11eb-96c6-f43e0454df26.png)
 1. spec.template.spec.containers に コンテナイメージを指定している箇所があります
