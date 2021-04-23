@@ -52,10 +52,10 @@ kubectl get ns | grep k8sdemo
   |Specifications|Namespace|定義するポリシーのテンプレート|
   |ClusterBinding|environment:qa|ラベルでポリシーが適用されるクラスターを指定します。アプリケーション配置と同様 environment:qaでMicrok8sが選択されます。  特定アプリケーションが稼働できるクラスターにはラベルで appA-enabled:true を設定しておくなど、ラベルで様々にクラスターの特徴を管理することができます。ラベルによって指定することで、環境が増減した場合でも柔軟にポリシーを適用可能です| 
 
-その他の値は、そのままでOKです。
-
+その他の値は、そのままでOKです。これで Policyの雛形YAMLが生成されました。
 1. 同じページの右に開いているYAMLファイル・エディターで、詳細な指定を行っていきます。  テンプレート定義では prod ネームスペースを確認するようになっていますので、ここを **k8sdemo**に変更します。
-```
+
+  ```
         object-templates:
           - complianceType: musthave
             objectDefinition:
@@ -63,7 +63,7 @@ kubectl get ns | grep k8sdemo
               apiVersion: v1
               metadata:
                 name: k8sdemo # <-ここを変更する
-```
+  ```
 ![image](https://user-images.githubusercontent.com/22209835/113991919-e7b2d680-988d-11eb-8dee-babca51b2a74.png)
 
 1. ポリシー・ダッシュボードが開きます。作成した policy-ns-k8sdemo が定義されていることを確認します。
