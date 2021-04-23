@@ -39,10 +39,10 @@ Red Hat Adanced Cluster Managementコンポーネントにおいて、ソース�
    1. レポジトリ情報として、以下の情報を指定してください。
         |項目|値|備考|
         --|--
-        |URL|https://github.com/ICpTrial/ModernResortXX| XXは 01-06のセミナー管理者によってアサインされた番号です| 
+        |URL|https://github.com/ibmuser-cp4mcmlab/ModernResort| | 
         |UserName|（パブリック・レポジトリですので不要です）|
         |AccessToken|（パブリック・レポジトリですので不要です）|
-        |Branch|master|
+        |Branch|ibmuserXX|XXは 01-06のセミナー管理者によってアサインされた番号です|
         |Path|（指定不要）|
    ![image](https://user-images.githubusercontent.com/22209835/115220471-8ae3d580-a143-11eb-95c2-f6d9f0522622.png)
    1. 配置先クラスターの指定
@@ -109,9 +109,10 @@ Red Hat Adanced Cluster Managementコンポーネントにおいて、ソース�
 
 ## アプリケーション定義の更新（アプリケーションのライフサイクル管理）
 アプリケーションの更新バージョン2.0ができ、コンテナとしてビルドされたと仮定し、これを環境に反映していきます。
-1. ブラウザで、アサインされた **modresort** の Gitページを開きます。https://github.com/ICpTrial/ModernResortXX XXは、アサインされた番号です。
+1. ブラウザで、 [**modresort**のGitページ](https://github.com/ibmuser-cp4mcmlab/ModernResort) を開きます。
+3. アサインされた ibmuserXX のブランチを開きます（ここを間違えると、ハンズオンを実施している他の人の定義を変更してしまいますのでご留意ください)。
 ![image](https://user-images.githubusercontent.com/22209835/115247874-25eba800-a162-11eb-8d96-5db7925b89a7.png)
-1. **modresort-deployment.yaml**の定義を開き、右上のメニューにある 鉛筆アイコンをクリックして、編集モードに入ります。
+1. **modresort-deployment.yaml**の定義を開き、右上のメニューにある 鉛筆アイコンをクリックして、編集モードに入ります。ログインが求められたら ibmuserとして指定されたパスワードでログインします。
 ![image](https://user-images.githubusercontent.com/22209835/115248318-8b3f9900-a162-11eb-96c6-f43e0454df26.png)
 1. spec.template.spec.containers に コンテナイメージを指定している箇所があります
 ![image](https://user-images.githubusercontent.com/22209835/115250083-369d1d80-a164-11eb-9557-f4d212508bbd.png)
