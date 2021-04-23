@@ -72,12 +72,19 @@ Event Managementはオンプレミス、クラウドに関わらず、多様な�
 ![image](https://user-images.githubusercontent.com/22209835/114975896-f87fcf80-9ebf-11eb-9fb9-f5c19a1e00b2.png)
 1. OutOfBoxで統合可能なツールがあります。利用しているものがない場合には、一般的な**Webhook**を利用することもできます。
 ![image](https://user-images.githubusercontent.com/22209835/114977521-befc9380-9ec2-11eb-8616-92d6d7f4c44b.png)
-1. このハンズオンでは、すでに 事前に用意されているSlackを利用します。
-    1. まず 連携用のSlackチャネルを用意します。
+1. このハンズオンでは、すでに 事前に用意されているSlackを利用します。    
     1. Slackのボタンを選び構成を確認し、**Configure**をクリックします。
     ![image](https://user-images.githubusercontent.com/22209835/114977824-4b0ebb00-9ec3-11eb-9bde-a9bde318b5e8.png)
     1. Outbound Integration名に 任意の名前を付けます。ここでは `MCM2Slack`としています
-    1. Slack の Webhook URLを指定します。WebHook用のURLは、上の手順でメモしたものを指定します。
+    1. Slack の Webhook URLを指定します。WebHook用のURLは、以下を利用します。
+　   |ユーザー|URL|(参考出力先チャネル)|
+    --|--|--
+    |01|https://hooks.slack.com/services/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|cp4mcmlab01|
+    |02|https://hooks.slack.com/services/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|cp4mcmlab02|
+    |03|https://hooks.slack.com/services/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|cp4mcmlab03|
+    |04|https://hooks.slack.com/services/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|cp4mcmlab04|
+    |05|https://hooks.slack.com/services/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|cp4mcmlab05|
+    |06|https://hooks.slack.com/services/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|cp4mcmlab06|
     ![image](https://user-images.githubusercontent.com/22209835/114979101-41865280-9ec5-11eb-9121-7909fd63b7cd.png)
     1. Saveをクリックします。
     ![image](https://user-images.githubusercontent.com/22209835/114979251-81e5d080-9ec5-11eb-9c15-82226937b810.png)
