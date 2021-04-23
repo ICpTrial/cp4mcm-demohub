@@ -10,9 +10,9 @@ IBM Cloud Pak for Multicloud Management は、マルチクラウド環境にお�
 
 あなたは、クラウド運用チームのメンバーとして、ハイブリッド・マルチクラウド環境の管理に 問題を抱えています。  
 様々な環境にまたがって展開される クラウド・ベースのサービスやデータの管理作業は毎月のように膨らんでいき、あなたのチームは押しつぶされそうです。  
-あなたの会社は、オンプレミスおおびクラウド環境にたいして、複数のKubernetesクラスターを利用しています。    
+あなたの会社は、オンプレミス及びクラウド環境に対して、複数のKubernetesクラスターを利用しています。    
 いくつかのチームは可用性のために、複数クラスター、複数リージョンにまたがるアプリケーションをデプロイしています。  
-また 開発やテストのためのクラスターもありますし、これらのKubernetesクラスターのアップグレードもしていく必要があります。  
+また、開発やテストのためのクラスターもありますし、これらのKubernetesクラスターのアップグレードもしていく必要があります。  
 
 管理対象となるクラスターが増えるに連れ、以下のようなチャレンジが出てきています。
 - このサービスはどこで稼働しているのだろうか？
@@ -22,7 +22,7 @@ IBM Cloud Pak for Multicloud Management は、マルチクラウド環境にお�
 - アプリケーションを 環境をまたがって移動させることができないか？ ポリシーベースでアプリケーションを配置できないか？
 - 複数クラスター環境を、統一した基準で管理できているだろうか？ コンプライアンスの基準は満たせているだろうか？
 
-これらの課題のなかで、あなたは IBM Cloud Pak for Multicloud Management の機能を確認しようとしています。
+これらの課題の中で、あなたは IBM Cloud Pak for Multicloud Management の機能を確認しようとしています。
 
 このチュートリアルでは、 **管理ハブクラスター** で稼働する Cloud Pak for MCM および、Cloud Pak for MCM に統合された Red Hat Advanced Cluster Management を確認していきます。  
 1. Cloud Pak for MCM および Red Hat Advanced Cluster Management の実体も Red Hat OpenShift で稼働し、Operator により管理されるコンテナー・アプリケーションです。  
@@ -37,15 +37,15 @@ IBM Cloud Pak for Multicloud Management は、マルチクラウド環境にお�
 ## 管理対象クラスターの払い出し
 
 1. ブラウザーのブックマーク・リンクから、IBM Cloud Pak for Multicloud Management をクリックします。
-1. Cloud Pak for Mutlticloud Management の認証タイプとして、**Default Authentication** を選択します。この演習環境では OpenShift認証との統合は実施されていません。
+1. Cloud Pak for Multicloud Management の認証タイプとして、**Default Authentication** を選択します。この演習環境では OpenShift認証との統合は実施されていません。
 ![image](https://user-images.githubusercontent.com/22209835/113708342-101ac380-971c-11eb-9b4e-015af36d42bd.png)
-1. admin でログインします。パスワードはブラウザに保管されてものでログインできます。
+1. admin でログインします。パスワードはブラウザに保管されているものでログインできます。
 ![image](https://user-images.githubusercontent.com/22209835/113708389-1f9a0c80-971c-11eb-83e5-febf23699b92.png)
 1. Cloud Pak Administration Hub の画面 が出たら、中央の 白文字 Cloud Pak for Multicloud Management のリンクをクリックし、Cloud Pak for MCMを開きます。   
 IBM Cloud Pak製品群は、一つのOpenShiftクラスター上に統合することが可能なため、ログイン時の初回には製品選択の画面が出ますが、二回目以降は表示されません。
 ![image](https://user-images.githubusercontent.com/22209835/113708446-30e31900-971c-11eb-9d68-7f209581fead.png)
 
-1. Cloud Pak for Multicloud Management の画面が開きます。  メニューから Obeserve environement > Overview  の画面を開きます。
+1. Cloud Pak for Multicloud Management の画面が開きます。  メニューから Observe environements > Overview  の画面を開きます。
 ![image](https://user-images.githubusercontent.com/22209835/113708616-6b4cb600-971c-11eb-8ed5-5dab1748c930.png)
 1. ダッシュボードには、Cloud Pak に統合されている管理対象が表示されています。   
 Cloud Provider に １つOpenShift Cluster が統合され、VMware環境のVMインスタンスが４つ統合されているのが確認できます。
@@ -55,7 +55,7 @@ Cloud Provider に １つOpenShift Cluster が統合され、VMware環境のVM�
 1. すでに統合されているクラスターを確認していきます。  
 メニューの Automate Infrastructure (基盤の自動化） から Clusters を開きます。
 ![image](https://user-images.githubusercontent.com/22209835/113708056-bd410c00-971b-11eb-9b13-de297362f435.png)
-1. local-cluster として、この Cloud Pak for MCM が稼働する OpenShiftクラスターが統合されています。
+1. local-cluster として、この Cloud Pak for MCM が稼働する OpenShiftクラスターが登録されています。
 
 ***
 
@@ -64,7 +64,7 @@ Cloud Provider に １つOpenShift Cluster が統合され、VMware環境のVM�
 1. クラスター管理画面の右上にある青いボタン **Add a cluster** をクリックします。
 1. 以下のメニューが開きますので、上の **Create an OpenShift Cluster** (OpenShiftクラスターの新規作成） をクリックすると、下の **Launch** ボタンが青くなりますので、クリックして開きます。
 ![image](https://user-images.githubusercontent.com/22209835/113709687-c206bf80-971d-11eb-8e47-f318e875de47.png)
-1. 今回のバージョンからマルチクラスター管理機能は、Red Hat Advacend Cluster Management (RHACM) として切り出されていますので、Red Hat ACMの画面が開きます。   
+1. 今回のバージョンからマルチクラスター管理機能は、Red Hat Advanced Cluster Management (RHACM) として統合されていますので、Red Hat ACMの画面が開きます。   
 htpasswdでのログインを選択します。
 ![image](https://user-images.githubusercontent.com/22209835/113709996-1f027580-971e-11eb-9887-d5d23b246bc5.png)
 1. ibmadmin として、ブラウザに保管された認証情報でログインします。
@@ -84,11 +84,11 @@ htpasswdでのログインを選択します。
 1. **Create a Cluster** というページタイトルの 右にある **YAML:On** を有効化することで、作成した定義のYAMLファイルが作成されます。  
 これを保存し、適宜加工することで、**管理ハブ・クラスター**のターミナルから `oc apply -f clusterdeployment.yaml `で、CLIからOpenShift環境を自動化して払い出すことが可能です。
 ![image](https://user-images.githubusercontent.com/22209835/113712761-7c4bf600-9721-11eb-9f42-1a37222285d9.png)
-1. この演習では一旦 cansel ボタンを押して、Cloud Pak for Multicloud Management の画面に戻ります。
+1. この演習では一旦 cancel ボタンを押して、Cloud Pak for Multicloud Management の画面に戻ります。
 ***
 
 ### 既存クラスターのインポート
-つぎに、すでに稼働している Kubernetesクラスターを、MCMに統合する手順を確認します。
+次に、すでに稼働している Kubernetesクラスターを、MCMに統合する手順を確認します。
 1. 一旦ブラウザの最大化をやめて、デスクトップの **MicroK8s Terminal**の ターミナルのアイコンをクリックします。黄色のターミナルが開くはずです。  
 ![image](https://user-images.githubusercontent.com/22209835/113714237-28421100-9723-11eb-8779-861e8bcb9818.png)
 1. **MicroK8s Terminal**で以下のコマンドを実行し、MicroK8sクラスターを構成するノードを確認します。
@@ -107,15 +107,15 @@ kube-node-lease   Active   180d
 kube-public       Active   180d
 kube-system       Active   180d
 ``` 
-1. 再び ブラウザに戻り、Cloud Pak for MCMクラスター管理画面の右上にある青いボタン **Add a cluster** をクリックします。
+1. 再びブラウザに戻り、Cloud Pak for MCMクラスター管理画面の右上にある青いボタン **Add a cluster** をクリックします。
 1. 以下のメニューが開きますので、上の **Import an existing cluster by running a command ** (コマンド実行による既存クラスターのインポート） をクリックして、**Launch** ボタンを開きます。
 ![image](https://user-images.githubusercontent.com/22209835/113709687-c206bf80-971d-11eb-8e47-f318e875de47.png)
-1. ふたたび、 Red Hat ACMの画面が開きますので、実際に MicroK8sクラスターを **管理対象クラスター**として、インポートしていきます。
+1. 再び、 Red Hat ACMの画面が開きますので、実際に MicroK8sクラスターを **管理対象クラスター**として、インポートしていきます。
     1. ClusterName に **microk8s** を指定します。
     1. Environment に **qa**を指定します。これは クラスターの特徴を管理するための ラベルの一つとして反映されます。
     1. その他、クラスターを管理するための任意のラベルを指定します。ここでは **clusterowner=support**を指定します。  クラスター追加後も任意のラベル名でカスタマイズ可能です。
     ![image](https://user-images.githubusercontent.com/22209835/113716134-3abd4a00-9725-11eb-8548-623bdb2c6a2e.png)
-    1. 右上の **Generate Command** をクリックします。以下のように統合用の Kuberentesコマンドが生成されます。
+    1. 右上の **Generate Command** をクリックします。以下のように統合用の Kubernetesコマンドが生成されます。
     ![image](https://user-images.githubusercontent.com/22209835/113716330-6fc99c80-9725-11eb-8438-f774973e8e84.png)
     1. 生成された コマンドの右端にある 紙のアイコンをクリックして、生成されたコマンドを Copyします。
     ![image](https://user-images.githubusercontent.com/22209835/113716620-bfa86380-9725-11eb-8d03-6c94342fa5ca.png)
@@ -206,7 +206,7 @@ Red Hat Advanced Cluster Management の 管理コンソールを通じて、単�
 ***
 
 ## Summary
-この章では、IBM Cloud Pak for Multicloud Management をもちいて、以下の内容を確認しました。
+この章では、IBM Cloud Pak for Multicloud Management を用いて、以下の内容を確認しました。
 - `IBM Cloud Pak for Multicloud Management ダッシュボードから環境全体を概観する`;
 - `クラスターを新規にデプロイする`;
 - `既存クラスターをインポートする`;
