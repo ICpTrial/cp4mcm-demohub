@@ -171,16 +171,10 @@ ibmuser@microk8s:~$ kubectl describe pod -n modresort | grep Image:
 1. 数分でアプリケーションの配置が更新されることが確認できます。配置先クラスターが **local-cluster**に更新されたことを確認してください。
 ![image](https://user-images.githubusercontent.com/22209835/113971039-f049e380-9872-11eb-88eb-aacc80059bf1.png)
 
-## Summary
+***
+以上で、アプリケーション配置のハンズオンは終了です。
 
-You completed the Cloud Pak for Multicloud Management tutorial: Multi-cluster Management. Throughout the tutorial, you explored the key takeaways:
-- `Understand Cloud Pak for Multicloud Management`
--	`Define an application with Channels and Subscriptions`
--	`Deploy the application chart from the catalog`
--	`Modify Placement Policies to move application resources across clusters`
--	`Check the application health by using Federated Prometheus Dashboard`
-
-
-If you would like to learn more about Cloud Pak for Multicloud Management, please refer to:
--	<a href="https://www.ibm.com/cloud/cloud-pak-for-management" target="blank">Cloud Pak for Multicloud Management home page</a>
-- <a href="https://www.ibm.com/demos/collection/Cloud-Pak-for-Multicloud-Management" target="blank">Cloud Pak for Multicloud Management Demos </a>
+* GitRepository をアプリケーション定義のソース（チャネル）として定義しました。
+* environment=qaのラベルを指定し、microk8sクラスターにアプリケーションを払出し、稼働の確認を行いました。
+* GitRepository のアプリケーション定義を更新することで、ダイナミックにアプリケーションの変更をクラスターに適用しました。
+* 最後に placementに適用されるラベルを更新し enviroment=prod とすることで、アプリケーションを mirok8sクラスターから local-cluster（mcmhubクラスター）へと移動させました。
