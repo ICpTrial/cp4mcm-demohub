@@ -46,9 +46,9 @@ IBM Cloud Pak for Multicloud Managementには、**Ansible Engine**によって�
    
 ***
 
-## Ansible Plaubookの登録
+## Ansible Playbookの登録
 Ansible は、非常に人気のある自動化ツールです。Playbookと呼ばれる多様な自動化スクリプトが、コミュニティで開発されています。  
-Ansibleの基礎自体は、この演習では扱いませんが、ここでは 事前定義されたサンプルのplaybooを利用して作業を実施します。  
+Ansibleの基礎自体は、この演習では扱いませんが、ここでは 事前定義されたサンプルのplaybookを利用して作業を実施します。  
 
 このサンプル Playbookは、指定された名前空間 securens を作成し、その名前空間に対してインバウンドのアクセスを制御するネットワークポリシーを適用します。
 新規に作成されたクラスターに対して、企業の標準として定義した様々な環境の構成（名前空間、リソースクォータ、RBAC定義、ネットワーク・ポリシーなど）を定義する一連の作業をイメージして頂けたらと思います。
@@ -69,13 +69,14 @@ Ansibleの基礎自体は、この演習では扱いませんが、ここでは 
         --|--|--
         |名前|create namespace and apply network policy|ジョブ・テンプレートの名前|
         |Inventory|microk8s|ジョブの実行先|
-        |Porject|cluster setup|
+        |Job Type|Run|
+        |Project|cluster setup|
         |Credential|microk8s|さきほど定義した認証情報|
         |Verbosity|0 (Normal)|ジョブのログのメッセージレベル|
         |Playbook|clustersetup.yaml|Gitから取得されたPlaybook本体|
     ![image](https://user-images.githubusercontent.com/22209835/115369412-0b1d4000-a203-11eb-98ba-e4d3aad07a68.png)
 
- これで Ansibleの準備は終了です。実際に実行して、Jobを実行してみましょう。
+ これで Ansibleの準備は終了です。実際にJobを実行してみましょう。
  
 ## Job の実行
 1. Ansible Towerのコンソールから **Templates**を開きます。
