@@ -121,8 +121,7 @@ Red Hat Adanced Cluster Managementコンポーネントにおいて、ソース�
 ![image](https://user-images.githubusercontent.com/22209835/115248318-8b3f9900-a162-11eb-96c6-f43e0454df26.png)
 1. spec.template.spec.containers に コンテナイメージを指定している箇所があります
 ![image](https://user-images.githubusercontent.com/22209835/115250083-369d1d80-a164-11eb-9557-f4d212508bbd.png)
-1. このイメージのバージョンを 1.0から2.0に更新します。ページの一番下までスクロールダウンして、緑色の**Commit Changes**ボタンをクリックし、変更をコミットします。 
-本来はGitの権限分離や承認フローの仕組みを回して、Mainのブランチに変更を反映しますが、今回は演習ですので割愛です。
+1. このイメージのバージョンを 1.0から2.0に更新します。ページの一番下までスクロールダウンして、緑色の**Commit Changes**ボタンをクリックし、変更をコミットします。  
 ![image](https://user-images.githubusercontent.com/22209835/115250168-487ec080-a164-11eb-881c-54ee973a7f8c.png)
 1. ダイナミックに変更が Microk8sノードに反映されますので、**Micork8s**の黄色のターミナルを開き、以下のkubectlコマンドで podを確認します。  
 直近に更新が入っていることを確認してください（タイミングによっては更新中かもしれません）。
