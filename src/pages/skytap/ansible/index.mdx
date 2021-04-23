@@ -112,4 +112,9 @@ Ansibleの基礎自体は、この演習では扱いませんが、ここでは 
  
  Ansible Automationには、コミュニティにおいて、様々な環境の自動化に利用可能なモジュールやコレクションが提供されています。  
  たとえば、Kubernetesの運用には、[Kubernetesモジュール](https://docs.ansible.com/ansible/2.9_ja/modules/k8s_module.html)を利用することが可能です。  
- これらのモジュールを利用することで、「冪等性」を実現する Playbookを開発していくことが可能です。  
+ これらのモジュールを利用することで、「冪等性」を実現する Playbookを開発していくことが可能です。
+   
+ また、Ansible Towerで実行されるジョブは、JenkinsなどからAPIとして呼び出すことも可能です。  
+ RHACMを使ってクラスターを払出したのち、必要となる一連の構成作業をAnsible Jobとして実行することが可能になります。
+ [Red Hat Blog : Ansible Tower Jenkins Integration](https://www.redhat.com/en/blog/take-ansible-and-jenkins-integration-next-level-cicd-ansible-tower)
+ [Jenkins Ansible Tower Plugin](https://plugins.jenkins.io/ansible-tower/)
