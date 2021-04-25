@@ -3,7 +3,7 @@
 
 ## Lab Overview
 
-この章では、マルチクラスター環境にわたって、一貫した 構成ポリシーとセキュリティ・ポリシーを効かせて管理していくための、**Governamance and Compliance, Risk** GCR機能を見ていきます。  
+この章では、マルチクラスター環境にわたって、一貫した 構成ポリシーとセキュリティ・ポリシーを効かせて管理していくための、**Governance, Risk Management and Compliance** GRC機能を見ていきます。  
 
 ## ビジネス・コンテキスト
 あなたは セキュリティ運用チーム（SecOps）チームのメンバーとして、複数クラスターから構成されるマルチクラウド・ハイブリッド環境において、各環境が会社の定めた基準に満たされていることを確認し、問題が発生するリスクを抑える必要があります。  
@@ -15,7 +15,7 @@ Red Hat Advanced Cluster Managementコンポーネントの **Govern Risk**ダ�
 ポリシー・テンプレートには、すぐに利用できる事前定義ポリシーがあります。また、追加で構成されたセキュリティ機能や3rdパーティの提供するセキュリティ機能と統合したセキュリティ・ポリシーも構成することが可能です。たとえば、これらのポリシーには IBM Cloud Pak for Multicloud Management の 脆弱性アドバイザーや改ざん検知アドバイザーと連携するポリシーもあります。   
 それぞれのポリシーには、１つまたは複数のポリシー・テンプレートが関連付けられます。
 
-ポリシーベースの Goevernance and Compliance, Riks 機能を利用することによって、以下のことができるようになります。 
+ポリシーベースの Governance, Risk Management, and Compliance機能を利用することによって、以下のことができるようになります。 
 - セキュリティやアプリケーション、基盤に対するポリシーを設定し、強制する、またはクラスター・レベルで強制する
 - 環境のパラメータや構成、ポリシーに対して準拠状況を確認する
 - ポリシーに対する違反を自動的に修正する
@@ -29,10 +29,10 @@ Red Hat Advanced Cluster Managementコンポーネントの **Govern Risk**ダ�
 このハンズオンでは、もっともシンプルな構成管理のためのポリシーとして、Namespaceポリシーの挙動を確認します。  
 Kubernetes namespace（名前空間）は、クラスター環境におけるリソースの論理的分割するための定義です。namespace に対して、リソース・クォータをかけて利用できるリソースに制限をかけることが可能です。
 たとえば、新規作成されたクラスターにおいて、あなたの会社で標準的に定義されている標準的な名前空間の作成が漏れているケースを想像してください。
-Namespaceポリシーは、その標準構成からの逸脱を検知し、ポリシーにしたがって、アクションを取ります。
+Namespaceポリシーは、その標準構成からの逸脱を検知し、ポリシーに従って、アクションを取ります。
 
 業務チームAのアプリケーションは、**k8sdemo**で稼働することを前提としています。この名前空間は必ず管理対象クラスターに存在し、ここに業務チームのアプリケーションが払出される前提があるとします。  
-これをポリシーとして定義し、かならず名前空間が存在することを担保します。  
+これをポリシーとして定義し、必ず名前空間が存在することを担保します。  
 
 1. デスクトップにといて、**Microk8s Terminal**のアイコンをクリックして、Microk8sのターミナル（黄色）を開きます。
 1. 以下のコマンドで、これから作成する 名前空間 **k8sdemo** が存在しないことを確認します。
@@ -41,7 +41,7 @@ kubectl get ns | grep k8sdemo
 ```
 1. Red Hat Advanced Cluster Management のコンソールを開き、メニューから、 **Govern risk**を開きます。
 ![image](https://user-images.githubusercontent.com/22209835/113988574-8f2e0a00-988a-11eb-9eb7-25b2b988eeb9.png)
-1. まだなにもポリシーが定義されていませんので、右上の **Create policy**をクリックして、ポリシーを作成してきいきます。
+1. まだ何もポリシーが定義されていませんので、右上の **Create policy**をクリックして、ポリシーを作成してきいきます。
 ![image](https://user-images.githubusercontent.com/22209835/113988665-a79e2480-988a-11eb-9fd6-69f20ed04199.png)
 1. 以下の情報を指定して、ポリシーのテンプレートを作成します。  
 
@@ -96,7 +96,7 @@ policy-ns-k8sdemoの右端のメニューをクリックし、**Enforce**を選�
 ![image](https://user-images.githubusercontent.com/22209835/113995726-783ee600-9891-11eb-9d05-820cc27e002d.png)
 1. メッセージ に **Compliant; notification - namespaces `k8sdemo` was missing, and was created successfully**とあり、 policyの Remediation アクションとして、microk8sクラスターに **k8sdemo**ネームスペースが自動的に作成されたことが分かります。
 ![image](https://user-images.githubusercontent.com/22209835/113995921-a58b9400-9891-11eb-85ba-8d269cc722da.png)
-1. ふたたび Microk8sのターミナルを開き、以下のコマンドで **microk8s**ネームスペースが存在していることを確認します。
+1. 再び Microk8sのターミナルを開き、以下のコマンドで **microk8s**ネームスペースが存在していることを確認します。
 ```
 ibmuser@microk8s:~$ kubectl get ns | grep k8sdemo
 k8sdemo                               Active   8m59s
