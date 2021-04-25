@@ -4,8 +4,8 @@
 Cloud Pak for Multicloud Managementにおいて、モニタリング・モジュールが構成されている場合、統合した管理対象クラスターに対して、自動的に Kubernetesデータ・コレクター（**cloud native monitoring**とも呼びます）をデプロイすることが可能です。  
 このデータ・コレクターは、管理ハブ・クラスターに すべてのノードやPodなど、Kubernetesリソースに関する情報を収集し送ることができます。
 
-### Kuberntesデータ・コレクターの構成
-まず Kubernetes データ・コレクターをデプロイします。これまでのアプリケーションのデプロイメントと同様、クラスターにラベルを付与することで、Kubentes データ・コレクターが自動的に配置されます。  
+### Kubernetesデータ・コレクターの構成
+まず Kubernetes データ・コレクターをデプロイします。これまでのアプリケーションのデプロイメントと同様、クラスターにラベルを付与することで、Kubernetes データ・コレクターが自動的に配置されます。  
 1. Cloud Pak for Multicloud Management のコンソールを開き、メニューから Automate Infrastructure > Clusters を開きます。 
 クラスターに対する定義内容は、Red Hat Advanced Cluster Managementコンポーネントを見ていますので、Red Hat Advanced Cluster Management コンポーネントのコンソールから実施して頂いても問題ありません。 
 ![image](https://user-images.githubusercontent.com/22209835/114003236-8ba17f80-9898-11eb-997c-926399ead109.png)
@@ -16,7 +16,7 @@ Cloud Pak for Multicloud Managementにおいて、モニタリング・モジュ
 1. 以下のように リストに　**ibm.com/cloud-native-monitoring=enabled**が加えられてことを確認して、**Save**をクリックします。
 ![image](https://user-images.githubusercontent.com/22209835/114004446-a1fc0b00-9899-11eb-84c9-2f63b9b9caf7.png)
 これにより、Kubernetes データ・コレクターが自動的に **microk8s**クラスターに払出され、構成されます。
-1. デスクトップの**Microk8s Teminal**をクリックして、**microk8s**クラスターのターミナルを開き、以下のコマンドを実行します。  
+1. デスクトップの**Microk8s Terminal**をクリックして、**microk8s**クラスターのターミナルを開き、以下のコマンドを実行します。  
    1. **cp4mcm-cloud-native-monitoring**ネームスペースが作成され、モニタリング・エージェントが構成されていることを確認します。
       ```
       ibmuser@microk8s:~$ kubectl get ns 
