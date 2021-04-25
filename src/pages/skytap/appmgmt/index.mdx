@@ -2,17 +2,17 @@
 
 ## ハンズオン概要
 この章では、アプリケーション管理にまつわる以下の機能を確認していきます。
--	アプリケケーション・プレイスメント機能をもちいて、アプリケーションを払い出す
--	払い出したアプリケーションを PlacementRuleをもちいて、移動させる
+-	アプリケーション・プレイスメント機能をもちいて、アプリケーションを払い出す
+-	払い出したアプリケーションを PlacementRuleを用いて、移動させる
 -	ダッシュボードVisualize the application health using Grafana dashboards
 
 IBM Cloud Pak for Multicloud Management に統合された Red Hat Advanced Cluster Management コンポーネントには、 GitOps を実現するための、アプリケーション管理機能があります。
-このアプリケーション管理機能は、クラスターにまたがってアプリケーションを払いだし、管理するプロセスを、統合しシンプルにします。    
+このアプリケーション管理機能は、クラスターをまたがってアプリケーションを払いだし、管理するプロセスを、統合しシンプルにします。    
   
 このアプリケーション管理機能を用いることによって、複雑となりがちなアプリケーション配置管理を、Gitのソースコード・レポジトリの変更管理と統合することが可能です。  
 
 アプリケーションの定義は、YAMLで管理されるKubernetesリソースとして、または Helmチャートにパッケージされたアプリケーションとして Gitレポジトリーに保管されています。
-Red Hat Adanced Cluster Managementコンポーネントにおいて、ソースとなるレポジトリを指定し、払い出し先を決定するために必要となる定義を指定することで、選定されたクラスターに対してアプリケーションが自動的に配置されます。アプリケーション定義のソースはGitレポジトリにありますので、Gitに統合された開発サイクルを通じてGitレポジトリを修正すると、変更された内容が 管理対象となっているクラスター環境にも反映されます。　　
+Red Hat Advanced Cluster Managementコンポーネントにおいて、ソースとなるレポジトリを指定し、払い出し先を決定するために必要となる定義を指定することで、選定されたクラスターに対してアプリケーションが自動的に配置されます。アプリケーション定義のソースはGitレポジトリにありますので、Gitに統合された開発サイクルを通じてGitレポジトリを修正すると、変更された内容が 管理対象となっているクラスター環境にも反映されます。　　
 
 
 ![image](https://user-images.githubusercontent.com/22209835/115217670-b3b69b80-a140-11eb-9191-6ddecdd2bf01.png)
@@ -42,7 +42,7 @@ Red Hat Adanced Cluster Managementコンポーネントにおいて、ソース�
         |URL|https://github.com/ibmuser-cp4mcmlab/ModernResortXX ※XXは 01-06のセミナー管理者によってアサインされた番号です|
         |UserName|（パブリック・レポジトリですので不要です）|
         |AccessToken|（パブリック・レポジトリですので不要です）|
-        |Branch|mail|
+        |Branch|main|
         |Path|（指定不要）|
    ![image](https://user-images.githubusercontent.com/22209835/115821783-6424e800-a43e-11eb-9be8-1fea2490fa40.png)
    1. 配置先クラスターの指定
@@ -58,8 +58,8 @@ Red Hat Adanced Cluster Managementコンポーネントにおいて、ソース�
    ![image](https://user-images.githubusercontent.com/22209835/113960323-4876ea80-985f-11eb-9e71-811528fc9d2e.png)
 1. デプロイしたアプリケーションのKubernetesリソースが表示されていますので確認していきます。
    ![image](https://user-images.githubusercontent.com/22209835/115221105-47d63200-a144-11eb-8b87-f006ad5f629a.png)
-   1. 払出しさきのクラスターとして、microk8sが選択されています。これはmicrok8sクラスターに対して作成時に指定した enviroment=qa に従って払出されています。  
-   1. これは **SubScription**に関連づけられた **Placements**の **Cluster Selector**に反映されています。
+   1. 配置先のクラスターとして、microk8sが選択されています。これはmicrok8sクラスターに対して作成時に指定した enviroment=qa に従って配置されています。  
+   1. これは **Subscription**に関連づけられた **Placements**の **Cluster Selector**に反映されています。
 　　![image](https://user-images.githubusercontent.com/22209835/115221430-a13e6100-a144-11eb-947d-ed43bb5a8654.png)
    1. その他、Gitレポジトリに定義された Ingress, Service, Deployment および ReplicaSet が払出されています。  
    それぞれのアイコンをクリックして、払出された内容を確認してみてください。
