@@ -149,7 +149,7 @@ ibmuser@microk8s:~$ kubectl describe pod -n modresort | grep Image:
   1. 配置ルール(Placements)のアイコンをクリックし、右に開いたペーンから **View Resource YAML** を開きます。
   ![image](https://user-images.githubusercontent.com/22209835/113965904-2f733700-9869-11eb-998e-730cb996a2f1.png)
   1. 開いた配置ルールのYAML定義体の一番下を確認します。  
-    spec.clusterSelector として **matchLabels**が指定され、**environemnt:qa** が指定されていることを確認します。  　
+    spec.clusterSelector として **matchLabels**が指定され、**environment:qa** が指定されていることを確認します。  　
     そして、その結果として status.decisions として、microk8sクラスターが選択されていることが分かります。
   ![image](https://user-images.githubusercontent.com/22209835/113966160-8aa52980-9869-11eb-8bbb-2cb2a89db0dc.png)
 
@@ -160,7 +160,7 @@ ibmuser@microk8s:~$ kubectl describe pod -n modresort | grep Image:
 ![image](https://user-images.githubusercontent.com/22209835/113968270-b7f3d680-986d-11eb-9ab0-172d239e5bbe.png)
 1. 管理ハブクラスターである**local-cluster**を選択し、右端にある ... をクリックして、**Edit labels**を開きます。
 ![image](https://user-images.githubusercontent.com/22209835/113968386-f1c4dd00-986d-11eb-9bad-75d45c08811f.png)
-1. Labels欄に `enviroment=prod` を指定し、**Add**ボタンをクリックします。
+1. Labels欄に `environment=prod` を指定し、**Add**ボタンをクリックします。
 1. Labelのリストの中に `environment=prod`が追加されたことを確認して、**Done**ボタンをクリックします。
 ![image](https://user-images.githubusercontent.com/22209835/113968584-541ddd80-986e-11eb-95a2-d6a03bfddd9e.png)
 1. Red Hat ACMコンポーネントのメニューから **Manage Applications**をクリックし、アプリケーション管理ページに移動します。
