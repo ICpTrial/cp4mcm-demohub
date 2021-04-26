@@ -155,7 +155,7 @@ ibmuser@microk8s:~$ kubectl describe pod -n modresort | grep Image:
 
 それでは、Application管理シナリオの最後に、PlacementRule に定義されたラベルを変更することによって、アプリケーションの配置先クラスターを変更します。
 
-まず、**管理ハブクラスター**には、enrvironmentラベルが存在しないため、environemt:prodの ラベルを付与します。
+まず、**管理ハブクラスター**には、enrvironmentラベルが存在しないため、environment:prodの ラベルを付与します。
 1. Red Hat ACMコンポーネントのコンソールを開き、メニューから Automate Infrastructure > Clusters を開きます。
 ![image](https://user-images.githubusercontent.com/22209835/113968270-b7f3d680-986d-11eb-9ab0-172d239e5bbe.png)
 1. 管理ハブクラスターである**local-cluster**を選択し、右端にある ... をクリックして、**Edit labels**を開きます。
