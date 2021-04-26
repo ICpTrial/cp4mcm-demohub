@@ -41,7 +41,13 @@ pod "sre-bastion-bastion-backend-deploy-79dd6bb44c-trjv6" deleted
 （略）
 ```
 
-## 2. CP-Console 証明書の置き換え
+## 2. インフラストラクチャ・モニタリングが表示されない問題
+インフラストラクチャ・モニタリングで統合したクラスターがひとつも表示されない場合は、ibm-common-service名前空間に　本来存在すべき route cp-proxyが 存在しないことが可能性のことがあります。  
+もし、ルートが存在しないようであれば、ibm-common-services名前空間にいる オペレーター　IBM Ingress Nginx Operator　の default というインスタンスを削除して、再度同じ名前で作成しなおしてください。  
+同じ名前空間に cp-proxy というrouteが再作成されれば問題解決できます。
+
+
+## 3. CP-Console 証明書の置き換え
 Administer > Monitor の画面が開かないなどの問題がある場合には、CP-Consoleの証明書の有効期限切れが原因のことがあります。  
 以下の手順を実施して、証明書を置き換えます。
 1. デスクトップ上の緑色のターミナルをダブルクリック
