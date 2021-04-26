@@ -177,4 +177,4 @@ ibmuser@microk8s:~$ kubectl describe pod -n modresort | grep Image:
 * GitRepository をアプリケーション定義のソース（チャネル）として定義しました。
 * environment=qaのラベルを指定し、microk8sクラスターにアプリケーションを払出し、稼働の確認を行いました。
 * GitRepository のアプリケーション定義を更新することで、ダイナミックにアプリケーションの変更をクラスターに適用しました。
-* 最後に placementに適用されるラベルを更新し enviroment=prod とすることで、アプリケーションを mirok8sクラスターから local-cluster（mcmhubクラスター）へと移動させました。
+* 最後に placementに適用されるラベルを更新し environment=prod とすることで、アプリケーションを mirok8sクラスターから local-cluster（mcmhubクラスター）へと移動させました。
