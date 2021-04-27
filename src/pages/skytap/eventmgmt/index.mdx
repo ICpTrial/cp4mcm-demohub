@@ -76,8 +76,8 @@ Event Managementはオンプレミス、クラウドに関わらず、多様な�
     1. Slackのボタンを選び構成を確認し、**Configure**をクリックします。
     ![image](https://user-images.githubusercontent.com/22209835/114977824-4b0ebb00-9ec3-11eb-9bde-a9bde318b5e8.png)
     1. Outbound Integration名に 任意の名前を付けます。ここでは `MCM2Slack`としています
-    1. Slack の Webhook URLを指定します。WebHook用のURLは、以下を利用します。
- 　　　 `GitHub上に SlackURLを公開すると、Gitが自動的に検知して、そのURLを無効化するアクションが走る（外部からの通知floodに利用されることを回避するため）ため、スペースを開けて記載しています。実際はスペースを外して一行で記載ください`
+    1. Slack の Webhook URLを指定します。WebHook用のURLは、以下を利用します。  
+ 　　　 `GitHub上に SlackURLを公開すると、外部からの通知floodに利用されることを回避するため、GitHubが自動的に検知してそのURLを無効化するアクションが走るため、スペースを開けて記載しています。実際はスペースを外して一行で記載ください`
 
       |ユーザー|URL|参考出力先チャネル|
       --|--|--
@@ -325,3 +325,15 @@ Event Managementはオンプレミス、クラウドに関わらず、多様な�
 ![image](https://user-images.githubusercontent.com/22209835/115186211-4729a580-a11c-11eb-8dee-acb1d17af841.png)
 
 以上で、イベント通知およびRuntime Automationのハンズオンは終了です。
+
+***
+
+IBM Cloud Pak for Multicloud Management に含まれる Event Manager および Runbook Automationの機能は、今後その他のAI関連コンポーネントと統合され、**IBM Cloud Pak for WatsionAIOps**に進化していきます。**IBM Cloud Pak for WatsonAIOps**は、以下のような機能を提供します。
+* AIManager ログの自然言語解析 を通じた 異常検知 （いつもと違うメッセージを自動的に検知して通知）
+* Metric Manager による 機械学習による異常検知 （いつもと違うメトリックの挙動を検知して通知）
+* Event Manager による 多様なイベントの関連付けの絞り込みと、Runbook Automation
+* AIManager による ServiceNowなどに保管された過去チケット対応内容との関連付け
+* Slack / Teamsなどへの連携による ChatOps 対応
+![image](https://user-images.githubusercontent.com/22209835/116170651-31cb0180-a742-11eb-9d01-1a15d32d5035.png)
+
+
